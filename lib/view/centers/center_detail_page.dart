@@ -16,6 +16,7 @@ class CenterDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
+      body: const Text("git test"),
     );
   }
 }
