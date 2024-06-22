@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 
 class CenterListPage extends StatelessWidget {
   CenterListPage({super.key});
+  //GetX 이용하여 센터리스트 상태관리
   final centerController = Get.put(CenterListController());
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: GetX<CenterListController>(
         builder: (controller) {
           return ListView.builder(

@@ -25,14 +25,20 @@ class CenterCard extends StatelessWidget {
         );
       },
       child: Container(
-        height: 100,
-        decoration: const BoxDecoration(),
+        height: 80,
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 247, 244, 244),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Image.network(
-              thum,
-              width: 70,
+            ClipOval(
+              child: Image.network(
+                thum,
+                width: 70,
+                fit: BoxFit.cover,
+              ),
             ),
             Text(
               title,
