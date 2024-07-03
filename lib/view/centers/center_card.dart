@@ -1,28 +1,24 @@
+import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/view/centers/center_detail_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CenterCard extends StatelessWidget {
   final int id;
   final String title, thum;
-  const CenterCard({
+  CenterCard({
     super.key,
     required this.id,
     required this.title,
     required this.thum,
   });
-
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                CenterDetailPage(id: id, title: title, thum: thum),
-            allowSnapshotting: true,
-          ),
-        );
+        centerTitleController.changeText(title);
+        Navigator.pop(context);
       },
       child: Container(
         height: 80,

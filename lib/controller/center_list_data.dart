@@ -11,7 +11,6 @@ class CenterListController extends GetxController {
   }
 
   void fetchData() async {
-    await Future.delayed(const Duration(seconds: 1));
     var centerDataEX = [
       Centers(
         id: 1,

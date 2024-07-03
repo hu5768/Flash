@@ -1,41 +1,49 @@
+import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/view/centers/center_list_page.dart';
+import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({super.key});
-
+  MainPage({super.key});
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        /*bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
-          child: Container(
-            color: Colors.blue,
-            height: 4.0, // 원하는 테두리의 높이
-          ),
-        ),*/
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Container(
           height: AppBar().preferredSize.height,
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color.fromARGB(255, 0, 0, 0),
-                width: 2.0,
+          decoration: const BoxDecoration(),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CenterListPage(),
+                    allowSnapshotting: true,
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(
+                    () => Text(
+                      centerTitleController.centerTitle.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
               ),
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              "Flash",
-              style: TextStyle(fontWeight: FontWeight.w800),
             ),
           ),
         ),
       ),
-      body: CenterListPage(),
+      body: const ProblemList(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: const Text(

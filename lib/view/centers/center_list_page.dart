@@ -10,21 +10,44 @@ class CenterListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-      child: GetX<CenterListController>(
-        builder: (controller) {
-          return ListView.builder(
-            itemCount: controller.centerCon.length,
-            itemBuilder: (context, index) {
-              return CenterCard(
-                id: controller.centerCon[index].id,
-                thum: controller.centerCon[index].thum,
-                title: controller.centerCon[index].title,
-              );
-            },
-          );
-        },
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        title: Container(
+          height: AppBar().preferredSize.height,
+          decoration: const BoxDecoration(),
+          child: const Row(
+            children: [
+              SizedBox(
+                width: 120,
+              ),
+              Center(
+                child: Text(
+                  "Flash",
+                  style: TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        child: GetX<CenterListController>(
+          builder: (controller) {
+            return ListView.builder(
+              itemCount: controller.centerCon.length,
+              itemBuilder: (context, index) {
+                return CenterCard(
+                  id: controller.centerCon[index].id,
+                  thum: controller.centerCon[index].thum,
+                  title: controller.centerCon[index].title,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
