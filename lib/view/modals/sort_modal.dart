@@ -1,8 +1,10 @@
+import 'package:flash/controller/center_sort_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SortModal extends StatelessWidget {
   const SortModal({super.key});
-
+  //컨트롤러 자료형 없이 등록하면 어떻게 되는지 질문
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,9 +30,12 @@ class SortModal extends StatelessWidget {
               ),
             ],
           ),
-          const SortOrder(title: '추천순'),
-          const SortOrder(title: '인기순'),
-          const SortOrder(title: '난이도순'),
+          SortOrder(
+            title: '추천순',
+            sortKey: 'none',
+          ),
+          SortOrder(title: '인기순', sortKey: 'views'),
+          SortOrder(title: '난이도순', sortKey: 'difficulty'),
         ],
       ),
     );
@@ -38,14 +43,17 @@ class SortModal extends StatelessWidget {
 }
 
 class SortOrder extends StatelessWidget {
-  final String title;
-  const SortOrder({
+  final CenterSortController centerTitleController = Get.find();
+  final String title, sortKey;
+  SortOrder({
     super.key,
     required this.title,
+    required this.sortKey,
   });
 
   @override
   Widget build(BuildContext context) {
+    print(centerTitleController.sortkey.toString() + sortKey);
     return Column(
       children: [
         const Divider(),
@@ -53,11 +61,14 @@ class SortOrder extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.check, color: Colors.blue),
+              centerTitleController.sortkey.toString() == sortKey
+                  ? const Icon(Icons.check, color: Colors.blue)
+                  : const SizedBox(),
               Center(child: Text(title)),
             ],
           ),
           onTap: () {
+            centerTitleController.changeText(sortKey, title);
             Navigator.of(context).pop();
           },
         ),

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 class MainPage extends StatelessWidget {
   MainPage({super.key});
   final centerTitleController = Get.put(CenterTitleController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +45,7 @@ class MainPage extends StatelessWidget {
           ),
         ),
       ),
-      body: const ProblemList(),
+      body: ProblemList(),
       //body: CarousellTest(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},

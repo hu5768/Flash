@@ -1,4 +1,4 @@
-import 'package:flash/controller/center_list_data.dart';
+import 'package:flash/controller/center_list_data_controller.dart';
 import 'package:flash/view/centers/center_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 class CenterListPage extends StatelessWidget {
   CenterListPage({super.key});
   //GetX 이용하여 센터리스트 상태관리
-  final centerController = Get.put(CenterListController());
+  final centerController = Get.put(
+      CenterListController()); //CenterListPage가 열려 CenterListController가 선언될 때마다 데이터를 새로 불러오는지 질문
 
   @override
   Widget build(BuildContext context) {
