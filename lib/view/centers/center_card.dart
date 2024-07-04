@@ -1,5 +1,4 @@
 import 'package:flash/controller/center_title_controller.dart';
-import 'package:flash/view/centers/center_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

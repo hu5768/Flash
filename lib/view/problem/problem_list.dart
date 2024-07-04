@@ -1,3 +1,5 @@
+import 'package:flash/view/modals/filter_modal.dart';
+import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,14 @@ class ProblemList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const SortModal();
+                    },
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   backgroundColor: Colors.brown[300],
@@ -24,7 +33,7 @@ class ProblemList extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
-                    Text('필터'),
+                    Text('추천순'),
                     Icon(Icons.keyboard_arrow_down),
                   ],
                 ),
@@ -33,7 +42,14 @@ class ProblemList extends StatelessWidget {
                 width: 10,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const FilterModal();
+                    },
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
                   backgroundColor: Colors.white,

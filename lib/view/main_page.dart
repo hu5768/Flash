@@ -1,4 +1,5 @@
 import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/technology_test/carousell_test.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class MainPage extends StatelessWidget {
         ),
       ),
       body: const ProblemList(),
+      //body: CarousellTest(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: const Text(
