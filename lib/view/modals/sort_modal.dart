@@ -63,7 +63,9 @@ class SortOrder extends StatelessWidget {
             children: [
               centerTitleController.sortkey.toString() == sortKey
                   ? const Icon(Icons.check, color: Colors.blue)
-                  : const SizedBox(),
+                  : const SizedBox(
+                      width: 20,
+                    ),
               Center(child: Text(title)),
             ],
           ),
