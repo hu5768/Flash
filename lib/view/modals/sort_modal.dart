@@ -1,13 +1,14 @@
-import 'package:flash/controller/center_sort_controller.dart';
+import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SortModal extends StatelessWidget {
   const SortModal({super.key});
-  //컨트롤러 자료형 없이 등록하면 어떻게 되는지 질문
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -20,7 +21,7 @@ class SortModal extends StatelessWidget {
               ),
               const Text(
                 "문제 정렬",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 onPressed: () {
@@ -43,7 +44,8 @@ class SortModal extends StatelessWidget {
 }
 
 class SortOrder extends StatelessWidget {
-  final CenterSortController centerTitleController = Get.find();
+  final ProblemSortController problemTitleController = Get.find();
+  //컨트롤러 자료형 없이 등록하면 어떻게 되는지 질문
   final String title, sortKey;
   SortOrder({
     super.key,
@@ -53,7 +55,6 @@ class SortOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(centerTitleController.sortkey.toString() + sortKey);
     return Column(
       children: [
         const Divider(),
@@ -61,16 +62,21 @@ class SortOrder extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              centerTitleController.sortkey.toString() == sortKey
+              problemTitleController.sortkey.toString() == sortKey
                   ? const Icon(Icons.check, color: Colors.blue)
                   : const SizedBox(
                       width: 20,
                     ),
-              Center(child: Text(title)),
+              Center(
+                child: Text(
+                  title,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
             ],
           ),
           onTap: () {
-            centerTitleController.changeText(sortKey, title);
+            problemTitleController.changeText(sortKey, title);
             Navigator.of(context).pop();
           },
         ),
