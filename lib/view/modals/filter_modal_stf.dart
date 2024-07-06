@@ -3,9 +3,15 @@ import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FilterModal extends StatelessWidget {
+class FilterModalStf extends StatefulWidget {
+  const FilterModalStf({super.key});
+
+  @override
+  State<FilterModalStf> createState() => _FilterModalState();
+}
+
+class _FilterModalState extends State<FilterModalStf> {
   final ProblemFilterController problemFilterController = Get.find();
-  FilterModal({super.key});
 
   @override
   Widget build(BuildContext context) {

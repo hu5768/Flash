@@ -1,6 +1,7 @@
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/view/modals/filter_modal.dart';
+import 'package:flash/view/modals/filter_modal_stf.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class ProblemList extends StatelessWidget {
                         isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
-                          return FilterModal();
+                          return const FilterModalStf();
                         },
                       );
                     },
