@@ -5,6 +5,9 @@ class ProblemFilterController extends GetxController {
   var sectorOption = ["1&2", "3&4", "5&6", "7&8"];
   var allOption = <List<String>>[].obs;
   var allSelection = <RxList<String>>[].obs; //0:difficulty , 1:sector, 2: ??
+  var allTempSelection = <RxList<String>>[].obs;
+
+  var nobodySol = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -12,13 +15,47 @@ class ProblemFilterController extends GetxController {
     allOption.add(sectorOption);
     allSelection.add(<String>[].obs);
     allSelection.add(<String>[].obs);
+    allTempSelection.add(<String>[].obs);
+    allTempSelection.add(<String>[].obs);
+  }
+
+  void inToTemp() {
+    allTempSelection.clear();
+    allTempSelection.addAll(
+      allSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
+    );
+  }
+
+  void tempToSel() {
+    allSelection.clear();
+    allSelection.addAll(
+      allTempSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
+    );
+  }
+
+  void checkBoxToggle() {
+    nobodySol.value = nobodySol.value ? true : false;
+  }
+
+  bool allEmpty() {
+    bool ans = true;
+    for (int i = 0; i < allTempSelection.length; i++) {
+      ans &= allTempSelection[i].isEmpty;
+    }
+    return ans;
+  }
+
+  void goEmpty() {
+    for (int i = 0; i < allTempSelection.length; i++) {
+      allTempSelection[i].clear();
+    }
   }
 
   void toggleSelection(String option, int index) {
-    if (allSelection[index].contains(option)) {
-      allSelection[index].remove(option);
+    if (allTempSelection[index].contains(option)) {
+      allTempSelection[index].remove(option);
     } else {
-      allSelection[index].add(option);
+      allTempSelection[index].add(option);
     }
   }
 }

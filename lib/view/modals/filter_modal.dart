@@ -1,10 +1,10 @@
-import 'package:flash/controller/filtermodal_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FilterModal extends StatelessWidget {
   final ProblemFilterController problemFilterController = Get.find();
+
   FilterModal({super.key});
 
   @override
@@ -48,7 +48,25 @@ class FilterModal extends StatelessWidget {
                   index: 1,
                   title: "섹터",
                 ),
-                const CheckBoxList(),
+                Column(
+                  children: [
+                    const Divider(),
+                    CheckboxListTile(
+                      title: const Center(
+                        child: Text(
+                          '아무도 못 푼 문제 풀기',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      value: false,
+                      onChanged: (bool? value) {
+                        problemFilterController.checkBoxToggle();
+                      },
+                    ),
+                  ],
+                ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 26, 0, 26.0),
                   alignment: Alignment.center,
@@ -60,25 +78,67 @@ class FilterModal extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(250, 50),
-                      foregroundColor: Colors.white,
-                      backgroundColor:
-                          const Color.fromRGBO(53, 113, 220, 1), // 글자 색상
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 5,
-                      ), // 패딩
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Obx(
+                        () => problemFilterController.allEmpty()
+                            ? const SizedBox()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  problemFilterController.goEmpty();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(100, 50),
+                                  side: const BorderSide(
+                                    color: Color.fromRGBO(53, 113, 220, 1),
+                                  ),
+                                  foregroundColor:
+                                      const Color.fromRGBO(53, 113, 220, 1),
+                                  backgroundColor:
+                                      const Color.fromRGBO(243, 248, 254, 1),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "초기화",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                       ),
-                    ),
-                    child: const Text(
-                      "적용하기",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
+                      ElevatedButton(
+                        onPressed: () {
+                          problemFilterController.tempToSel();
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(250, 50),
+                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              const Color.fromRGBO(53, 113, 220, 1),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          "적용하기",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -86,33 +146,6 @@ class FilterModal extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CheckBoxList extends StatelessWidget {
-  const CheckBoxList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Divider(),
-        CheckboxListTile(
-          title: const Center(
-            child: Text(
-              '아무도 못 푼 문제 풀기',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-          value: false,
-          onChanged: (bool? value) {},
-        ),
-      ],
     );
   }
 }
@@ -147,7 +180,8 @@ class FilterTab extends StatelessWidget {
               runSpacing: 20,
               children: problemFilterController.allOption[index].map(
                 (option) {
-                  final isSelected = problemFilterController.allSelection[index]
+                  final isSelected = problemFilterController
+                      .allTempSelection[index]
                       .contains(option);
                   return FilterChip(
                     showCheckmark: false,

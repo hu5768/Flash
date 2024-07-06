@@ -1,7 +1,6 @@
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/view/modals/filter_modal.dart';
-import 'package:flash/view/modals/filter_modal_stf.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ import 'package:get/get.dart';
 class ProblemList extends StatelessWidget {
   ProblemList({super.key});
   final problemTitleController = Get.put(ProblemSortController());
-  final centerFilterController = Get.put(ProblemFilterController());
+  final problemFilterController = Get.put(ProblemFilterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +60,12 @@ class ProblemList extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      problemFilterController.inToTemp();
                       showModalBottomSheet(
                         isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
-                          return const FilterModalStf();
+                          return FilterModal();
                         },
                       );
                     },

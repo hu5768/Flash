@@ -16,9 +16,10 @@ class ProblemCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 187, 203, 211),
+                color: const Color.fromARGB(255, 231, 246, 253),
                 borderRadius: BorderRadius.circular(10),
               ),
+              child: Image.asset('assets/images/problemImg.png'),
             ),
           ),
           const Padding(
