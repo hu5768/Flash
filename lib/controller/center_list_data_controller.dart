@@ -8,6 +8,7 @@ class CenterListController extends GetxController {
   void onInit() {
     super.onInit();
     fetchData();
+    print("클라이밍 리스트 로딩중");
   }
 
   void fetchData() async {

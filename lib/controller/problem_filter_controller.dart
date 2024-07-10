@@ -1,13 +1,20 @@
 import 'package:get/get.dart';
 
 class ProblemFilterController extends GetxController {
-  var gradeOption = ["초록", "파랑", "빨강", "보라", "회색"];
+  var gradeOption = [
+    "초록",
+    "파랑",
+    "빨강",
+    "보라",
+    "회색",
+  ];
   var sectorOption = ["1&2", "3&4", "5&6", "7&8"];
-  var allOption = <List<String>>[].obs;
-  var allSelection = <RxList<String>>[].obs; //0:difficulty , 1:sector, 2: ??
-  var allTempSelection = <RxList<String>>[].obs;
+  var allOption = <List<String>>[].obs; //난이도 ,벽 도메인
+  var allSelection = <RxList<String>>[].obs; // 문제 리스트 페이지에 반영될 선택 여부
+  var allTempSelection = <RxList<String>>[].obs; // 모달에서 선택중인 선택 여부
+  var nobodySol = false.obs; // 아무도 못 푼 문제 보기
+  var nobodySolTemp = false.obs;
 
-  var nobodySol = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -20,17 +27,21 @@ class ProblemFilterController extends GetxController {
   }
 
   void inToTemp() {
+    //모달 선택 여부<- 문제리스트 선택여부 값 깊은복사
     allTempSelection.clear();
     allTempSelection.addAll(
       allSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
     );
+    nobodySolTemp.value = nobodySol.value;
   }
 
   void tempToSel() {
+    //모달 선택 여부-> 문제리스트 선택여부 값 깊은복사
     allSelection.clear();
     allSelection.addAll(
       allTempSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
     );
+    nobodySol.value = nobodySolTemp.value;
   }
 
   void checkBoxToggle() {
@@ -38,14 +49,18 @@ class ProblemFilterController extends GetxController {
   }
 
   bool allEmpty() {
+    //모달의 모든 값 비었는지 확인
     bool ans = true;
     for (int i = 0; i < allTempSelection.length; i++) {
       ans &= allTempSelection[i].isEmpty;
     }
+    ans &= !nobodySolTemp.value;
     return ans;
   }
 
   void goEmpty() {
+    //모달의 모든 값 초기화
+    nobodySolTemp.value = false;
     for (int i = 0; i < allTempSelection.length; i++) {
       allTempSelection[i].clear();
     }

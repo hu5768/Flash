@@ -13,7 +13,12 @@ class CarousellTest extends StatelessWidget {
           return Builder(
             builder: (context) {
               return Column(
-                children: [const ProblemCard(), Text(tlist)],
+                children: [
+                  const ProblemCard(
+                    sector: '동작',
+                  ),
+                  Text(tlist)
+                ],
               );
             },
           );

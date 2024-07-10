@@ -9,133 +9,160 @@ class FilterModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                width: 50,
-              ),
-              const Text(
-                "문제 필터링",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.close),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.6, //자식 위젯의 크기 받아오는거 함 찾아봐야 됨
+      minChildSize: 0.5,
+      maxChildSize: 1.0,
+      builder: (context, scrollController) {
+        return SingleChildScrollView(
+          controller: scrollController,
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                FilterTab(
-                  problemFilterController: problemFilterController,
-                  index: 0,
-                  title: "난이도",
-                ),
-                FilterTab(
-                  problemFilterController: problemFilterController,
-                  index: 1,
-                  title: "섹터",
-                ),
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Divider(),
-                    CheckboxListTile(
-                      title: const Center(
-                        child: Text(
-                          '아무도 못 푼 문제 풀기',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      value: false,
-                      onChanged: (bool? value) {
-                        problemFilterController.checkBoxToggle();
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    const Text(
+                      "문제 필터링",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
                       },
+                      icon: const Icon(Icons.close),
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 26, 0, 26.0),
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: Colors.grey,
-                        width: 2.0, // 상단 테두리 두께
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(
-                        () => problemFilterController.allEmpty()
-                            ? const SizedBox()
-                            : ElevatedButton(
-                                onPressed: () {
-                                  problemFilterController.goEmpty();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(100, 50),
-                                  side: const BorderSide(
-                                    color: Color.fromRGBO(53, 113, 220, 1),
-                                  ),
-                                  foregroundColor:
-                                      const Color.fromRGBO(53, 113, 220, 1),
-                                  backgroundColor:
-                                      const Color.fromRGBO(243, 248, 254, 1),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "초기화",
+                      FilterTab(
+                        problemFilterController: problemFilterController,
+                        index: 0,
+                        title: "난이도",
+                      ),
+                      FilterTab(
+                        problemFilterController: problemFilterController,
+                        index: 1,
+                        title: "섹터",
+                      ),
+                      Column(
+                        children: [
+                          const Divider(),
+                          Obx(
+                            () => CheckboxListTile(
+                              title: const Center(
+                                child: Text(
+                                  '아무도 못 푼 문제 보기',
                                   style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
                                   ),
                                 ),
                               ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          problemFilterController.tempToSel();
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(250, 50),
-                          foregroundColor: Colors.white,
-                          backgroundColor:
-                              const Color.fromRGBO(53, 113, 220, 1),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
+                              value:
+                                  problemFilterController.nobodySolTemp.value,
+                              onChanged: (bool? value) {
+                                problemFilterController.nobodySolTemp.value =
+                                    value!;
+                                //  row와 checkbox로 새로 만들기
+                              },
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 26, 0, 26.0),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: Colors.grey,
+                              width: 2.0, // 상단 테두리 두께
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          "적용하기",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Obx(
+                              () => problemFilterController.allEmpty()
+                                  ? const SizedBox()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        problemFilterController.goEmpty();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: const Size(100, 50),
+                                        side: const BorderSide(
+                                          color:
+                                              Color.fromRGBO(53, 113, 220, 1),
+                                        ),
+                                        foregroundColor: const Color.fromRGBO(
+                                          53,
+                                          113,
+                                          220,
+                                          1,
+                                        ),
+                                        backgroundColor: const Color.fromRGBO(
+                                          243,
+                                          248,
+                                          254,
+                                          1,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 5,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "초기화",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                problemFilterController.tempToSel();
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(250, 50),
+                                foregroundColor: Colors.white,
+                                backgroundColor:
+                                    const Color.fromRGBO(53, 113, 220, 1),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: const Text(
+                                "적용하기",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -144,8 +171,8 @@ class FilterModal extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

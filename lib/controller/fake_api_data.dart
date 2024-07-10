@@ -2,8 +2,7 @@ import 'package:dio/dio.dart' as dios;
 import 'package:flash/model/fake_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-const _API_URL = "https://jsonplaceholder.typicode.com/posts";
+import 'dio_singletone.dart';
 
 class FakeController extends GetxController {
   var FaCursor = <FakeUsers>[].obs;
@@ -20,14 +19,22 @@ class FakeController extends GetxController {
 
 // 시작 로드 데이터
   void fetchData() async {
-    final dio = dios.Dio();
     dios.Response response;
-    response = await dio.get("${"$_API_URL/$page"}/comments");
-    List<Map<String, dynamic>> resMap =
-        List<Map<String, dynamic>>.from(response.data);
-    List<FakeUsers> um = resMap.map((e) => FakeUsers.fromJson(e)).toList();
-    page++;
-    FaCursor.assignAll(um);
+    try {
+      response = await DioClient().dio.get("/$page/comments");
+      List<Map<String, dynamic>> resMap =
+          List<Map<String, dynamic>>.from(response.data);
+      List<FakeUsers> um = resMap.map((e) => FakeUsers.fromJson(e)).toList();
+      page++;
+      FaCursor.clear();
+
+      FaCursor.assignAll(um);
+    } catch (e) {
+      List<FakeUsers> um = [
+        FakeUsers(id: 1, title: '오류오류오류', body: '1'),
+      ];
+      FaCursor.assignAll(um);
+    }
   }
 
 // 추가 로드 데이터
@@ -35,10 +42,9 @@ class FakeController extends GetxController {
     if (morePage &&
         !loadMoreRunning &&
         scrollController.position.extentAfter < 200) {
-      final dio = dios.Dio();
       loadMoreRunning = true;
       dios.Response response;
-      response = await dio.get("${"$_API_URL/$page"}/comments");
+      response = await DioClient().dio.get("/$page/comments");
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data);
       List<FakeUsers> um = resMap.map((e) => FakeUsers.fromJson(e)).toList();

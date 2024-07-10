@@ -1,3 +1,4 @@
+import 'package:flash/controller/fake_api_data.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/view/modals/filter_modal.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 
 class ProblemList extends StatelessWidget {
   ProblemList({super.key});
+  final controller = Get.put(FakeController()); //임시 fake api
   final problemTitleController = Get.put(ProblemSortController());
   final problemFilterController = Get.put(ProblemFilterController());
   @override
@@ -27,6 +29,7 @@ class ProblemList extends StatelessWidget {
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
+                        print("솔트버튼누름");
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
@@ -60,8 +63,11 @@ class ProblemList extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      print("필터버튼누름");
                       problemFilterController.inToTemp();
                       showModalBottomSheet(
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
@@ -85,7 +91,30 @@ class ProblemList extends StatelessWidget {
                   ),
                 ],
               ),
-              const ProblemCard(),
+              GetX<FakeController>(
+                builder: (controller) {
+                  return Expanded(
+                    child: ListView.builder(
+                      controller: controller.scrollController,
+                      itemCount: controller.FaCursor.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProblemCard(
+                              sector: controller.FaCursor[index].id.toString(),
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              //const ProblemCard(sector: 'Flat'),
             ],
           ),
         ),

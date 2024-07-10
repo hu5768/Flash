@@ -7,13 +7,12 @@ import 'package:get/get.dart';
 class CenterDetailPage extends StatelessWidget {
   // 문제 리스트 페이지
   final int id;
-  final String title, thum;
+  final String title;
 
   CenterDetailPage({
     super.key,
     required this.id,
     required this.title,
-    required this.thum,
   });
 
   final controller = Get.put(FakeController());
