@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "723913284357",
+    "project_id": "flash-43a2b",
+    "storage_bucket": "flash-43a2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723913284357:android:1a52b4cdb11aa8329a756c",
+        "android_client_info": {
+          "package_name": "com.example.flash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9dMNNPV2nsB-WoKjDy4KQ-B8TCM0BTLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
