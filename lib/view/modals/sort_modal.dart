@@ -1,3 +1,4 @@
+import 'package:flash/Colors/color_group.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,7 @@ class SortModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: ColorGroup.modalBGC,
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,7 +64,7 @@ class SortOrder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               problemTitleController.sortkey.toString() == sortKey
-                  ? const Icon(Icons.check, color: Colors.blue)
+                  ? const Icon(Icons.check, color: ColorGroup.selectBtnBGC)
                   : const SizedBox(
                       width: 20,
                     ),

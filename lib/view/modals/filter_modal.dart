@@ -1,3 +1,4 @@
+import 'package:flash/Colors/color_group.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,12 +14,12 @@ class FilterModal extends StatelessWidget {
       expand: false,
       initialChildSize: 0.6, //자식 위젯의 크기 받아오는거 함 찾아봐야 됨
       minChildSize: 0.5,
-      maxChildSize: 1.0,
+      maxChildSize: 0.9,
       builder: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
           child: Container(
-            color: Colors.white,
+            color: ColorGroup.BGC,
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -96,46 +97,41 @@ class FilterModal extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Obx(
-                              () => problemFilterController.allEmpty()
-                                  ? const SizedBox()
-                                  : ElevatedButton(
-                                      onPressed: () {
-                                        problemFilterController.goEmpty();
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        fixedSize: const Size(100, 50),
-                                        side: const BorderSide(
-                                          color:
-                                              Color.fromRGBO(53, 113, 220, 1),
-                                        ),
-                                        foregroundColor: const Color.fromRGBO(
-                                          53,
-                                          113,
-                                          220,
-                                          1,
-                                        ),
-                                        backgroundColor: const Color.fromRGBO(
-                                          243,
-                                          248,
-                                          254,
-                                          1,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 5,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "초기화",
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
+                              () => ElevatedButton(
+                                onPressed: () {
+                                  problemFilterController.goEmpty();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(100, 50),
+                                  side: BorderSide(
+                                    color:
+                                        problemFilterController.allTempEmpty()
+                                            ? ColorGroup.modalBtnBGC
+                                            : ColorGroup.selectBtnBGC,
+                                  ),
+                                  foregroundColor:
+                                      problemFilterController.allTempEmpty()
+                                          ? ColorGroup.btnFGC
+                                          : ColorGroup.selectBtnBGC,
+                                  backgroundColor:
+                                      problemFilterController.allTempEmpty()
+                                          ? ColorGroup.modalBGC
+                                          : ColorGroup.modalSBtnBGC,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "초기화",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -144,9 +140,8 @@ class FilterModal extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size(250, 50),
-                                foregroundColor: Colors.white,
-                                backgroundColor:
-                                    const Color.fromRGBO(53, 113, 220, 1),
+                                foregroundColor: ColorGroup.selectBtnFGC,
+                                backgroundColor: ColorGroup.selectBtnBGC,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 5,
                                 ),
@@ -214,22 +209,20 @@ class FilterTab extends StatelessWidget {
                     showCheckmark: false,
                     label: Text(
                       option,
-                      style: isSelected
-                          ? const TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(53, 113, 220, 1),
-                            )
-                          : const TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: isSelected
+                            ? ColorGroup.selectBtnBGC
+                            : ColorGroup.btnFGC,
+                      ),
                     ),
-                    selectedColor: const Color.fromRGBO(243, 248, 254, 1),
-                    backgroundColor: Colors.white,
-                    side: isSelected
-                        ? const BorderSide(
-                            color: Color.fromRGBO(53, 113, 220, 1),
-                          )
-                        : const BorderSide(
-                            color: Color.fromRGBO(158, 158, 163, 1),
-                          ),
+                    selectedColor: ColorGroup.modalSBtnBGC,
+                    backgroundColor: ColorGroup.btnBGC,
+                    side: BorderSide(
+                      color: isSelected
+                          ? ColorGroup.selectBtnBGC
+                          : ColorGroup.modalBtnBGC,
+                    ),
                     selected: isSelected,
                     onSelected: (bool selected) {
                       problemFilterController.toggleSelection(

@@ -1,3 +1,4 @@
+import 'package:flash/Colors/color_group.dart';
 import 'package:flash/controller/fake_api_data.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
@@ -15,11 +16,11 @@ class ProblemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: ColorGroup.BGC,
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth: 400, // 최대 너비 설정
+            maxWidth: 400,
           ),
           child: Column(
             children: [
@@ -29,7 +30,7 @@ class ProblemList extends StatelessWidget {
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
-                        print("솔트버튼누름");
+                        print("순서버튼누름");
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
@@ -38,14 +39,20 @@ class ProblemList extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
+                        side: BorderSide(
+                          color: problemTitleController.sortkey.toString() ==
+                                  "none"
+                              ? ColorGroup.modalBtnBGC
+                              : ColorGroup.selectBtnBGC,
+                        ),
                         foregroundColor:
                             problemTitleController.sortkey.toString() == "none"
-                                ? Colors.black
-                                : Colors.white,
+                                ? ColorGroup.btnFGC
+                                : ColorGroup.selectBtnBGC,
                         backgroundColor:
                             problemTitleController.sortkey.toString() == "none"
-                                ? Colors.white
-                                : Colors.brown[300],
+                                ? ColorGroup.btnBGC
+                                : ColorGroup.modalSBtnBGC,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -61,36 +68,53 @@ class ProblemList extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      print("필터버튼누름");
-                      problemFilterController.inToTemp();
-                      showModalBottomSheet(
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FilterModal();
+                  Obx(
+                    () {
+                      return ElevatedButton(
+                        onPressed: () {
+                          print("필터버튼누름");
+                          problemFilterController.inToTemp();
+                          showModalBottomSheet(
+                            backgroundColor: ColorGroup.modalBGC,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return FilterModal();
+                            },
+                          );
                         },
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(
+                            color: problemFilterController.allEmpty()
+                                ? ColorGroup.modalBtnBGC
+                                : ColorGroup.selectBtnBGC,
+                          ),
+                          foregroundColor: problemFilterController.allEmpty()
+                              ? ColorGroup.btnFGC
+                              : ColorGroup.selectBtnBGC,
+                          backgroundColor: problemFilterController.allEmpty()
+                              ? ColorGroup.btnBGC
+                              : ColorGroup.modalSBtnBGC,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            problemFilterController.allEmpty()
+                                ? const Text('필터')
+                                : Text(
+                                    '필터${problemFilterController.countFilter()}',
+                                  ),
+                            const Icon(Icons.filter_alt_outlined),
+                          ],
+                        ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: const Row(
-                      children: [
-                        Text('필터'),
-                        Icon(Icons.filter_list),
-                      ],
-                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               GetX<FakeController>(
                 builder: (controller) {
                   return Expanded(

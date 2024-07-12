@@ -11,7 +11,8 @@ class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: 'https://jsonplaceholder.typicode.com/posts',
+        baseUrl:
+            'http://flash-application-dev-env.eba-q2es2zy8.ap-northeast-2.elasticbeanstalk.com',
         connectTimeout: const Duration(milliseconds: 10000),
         receiveTimeout: const Duration(milliseconds: 10000),
       ),

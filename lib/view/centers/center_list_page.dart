@@ -1,3 +1,4 @@
+import 'package:flash/Colors/color_group.dart';
 import 'package:flash/controller/center_list_data_controller.dart';
 import 'package:flash/view/centers/center_card.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,9 @@ class CenterListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: ColorGroup.appbarBGC,
         title: Container(
           height: AppBar().preferredSize.height,
           decoration: const BoxDecoration(),
@@ -42,8 +43,8 @@ class CenterListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return CenterCard(
                   id: controller.centerCon[index].id,
-                  thum: controller.centerCon[index].thum,
-                  title: controller.centerCon[index].title,
+                  thum: controller.centerCon[index].thumbnailUrl,
+                  title: controller.centerCon[index].gymName,
                 );
               },
             );

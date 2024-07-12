@@ -16,25 +16,26 @@ class CenterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        centerTitleController.changeText(title);
+        centerTitleController.changeId(id);
+        centerTitleController.getTitle();
+        print('암장 선택');
         Navigator.pop(context);
       },
       child: Container(
         height: 80,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 247, 244, 244),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ClipOval(
+            /*ClipOval(
               child: Image.network(
                 thum,
                 width: 70,
                 fit: BoxFit.cover,
               ),
-            ),
+            ),*/
             Text(
               title,
               style: const TextStyle(

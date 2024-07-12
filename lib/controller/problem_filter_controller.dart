@@ -48,13 +48,23 @@ class ProblemFilterController extends GetxController {
     nobodySol.value = nobodySol.value ? true : false;
   }
 
-  bool allEmpty() {
+  bool allTempEmpty() {
     //모달의 모든 값 비었는지 확인
     bool ans = true;
     for (int i = 0; i < allTempSelection.length; i++) {
       ans &= allTempSelection[i].isEmpty;
     }
     ans &= !nobodySolTemp.value;
+    return ans;
+  }
+
+  bool allEmpty() {
+    //모달의 모든 값 비었는지 확인
+    bool ans = true;
+    for (int i = 0; i < allSelection.length; i++) {
+      ans &= allSelection[i].isEmpty;
+    }
+    ans &= !nobodySol.value;
     return ans;
   }
 
@@ -72,5 +82,14 @@ class ProblemFilterController extends GetxController {
     } else {
       allTempSelection[index].add(option);
     }
+  }
+
+  int countFilter() {
+    int cnt = 0;
+    for (int i = 0; i < allTempSelection.length; i++) {
+      cnt += allSelection[i].length;
+    }
+    cnt += nobodySol.value ? 1 : 0;
+    return cnt;
   }
 }

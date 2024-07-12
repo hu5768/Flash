@@ -1,12 +1,17 @@
 class Centers {
   final int id;
-  final String title, thum;
+  final String gymName, thumbnailUrl;
   //final bool fav;
 
   Centers({
     required this.id,
-    required this.title,
+    required this.gymName,
     //required this.fav,
-    required this.thum,
+    required this.thumbnailUrl,
   });
+  factory Centers.fromJson(Map<String, dynamic> json) => Centers(
+        id: json["id"],
+        gymName: json["gymName"],
+        thumbnailUrl: json["thumbnailUrl"],
+      );
 }

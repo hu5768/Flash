@@ -1,4 +1,5 @@
-import 'package:flash/view/answers/answers_carousell.dart';
+import 'package:flash/Colors/color_group.dart';
+import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
 
 class ProblemCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class ProblemCard extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 231, 246, 253),
+                  color: ColorGroup.cardBGC,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 clipBehavior: Clip.hardEdge,
