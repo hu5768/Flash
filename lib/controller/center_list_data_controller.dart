@@ -16,7 +16,9 @@ class CenterListController extends GetxController {
   void fetchData() async {
     dios.Response response;
     try {
-      response = await DioClient().dio.get("/gyms");
+      response = await DioClient().dio.get(
+            "/gyms",
+          );
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data);
       List<Centers> um = resMap.map((e) => Centers.fromJson(e)).toList();

@@ -21,7 +21,9 @@ class FakeController extends GetxController {
   void fetchData() async {
     dios.Response response;
     try {
-      response = await DioClient().dio.get("/$page/comments");
+      response = await DioClient()
+          .dio
+          .request("https://jsonplaceholder.typicode.com/post/1/comments");
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data);
       List<FakeUsers> um = resMap.map((e) => FakeUsers.fromJson(e)).toList();
@@ -30,8 +32,9 @@ class FakeController extends GetxController {
 
       FaCursor.assignAll(um);
     } catch (e) {
+      print(e);
       List<FakeUsers> um = [
-        FakeUsers(id: 1, title: '오류오류오류', body: '1'),
+        FakeUsers(id: 4, title: '오류오류오류', body: '1'),
       ];
       FaCursor.assignAll(um);
     }
@@ -44,7 +47,9 @@ class FakeController extends GetxController {
         scrollController.position.extentAfter < 200) {
       loadMoreRunning = true;
       dios.Response response;
-      response = await DioClient().dio.get("/$page/comments");
+      response = await DioClient()
+          .dio
+          .get("https://jsonplaceholder.typicode.com/post/$page/comments");
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data);
       List<FakeUsers> um = resMap.map((e) => FakeUsers.fromJson(e)).toList();

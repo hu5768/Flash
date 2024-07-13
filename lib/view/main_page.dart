@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/technology_test/carousell_test.dart';
@@ -9,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
-  MainPage({super.key});
+  final FirebaseAnalytics analytics;
+  MainPage({super.key, required this.analytics});
   final centerTitleController = Get.put(CenterTitleController());
 
   @override

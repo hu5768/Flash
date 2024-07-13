@@ -22,7 +22,9 @@ class CenterTitleController extends GetxController {
     dios.Response response;
     print(centerId.value.toString());
     try {
-      response = await DioClient().dio.get("/gyms/${centerId.value}");
+      response = await DioClient().dio.get(
+            "/gyms/${centerId.value}",
+          );
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       centerTitle.value = resMap['gymName'];
       mapImgUrl = resMap['mapImageUrl'];

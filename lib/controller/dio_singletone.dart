@@ -7,7 +7,7 @@ class DioClient {
   factory DioClient() {
     return _instance;
   }
-
+//http://flash-application-dev-env.eba-q2es2zy8.ap-northeast-2.elasticbeanstalk.com
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(

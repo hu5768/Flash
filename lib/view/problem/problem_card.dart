@@ -1,18 +1,29 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/Colors/color_group.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
 
 class ProblemCard extends StatelessWidget {
   final String sector;
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   const ProblemCard({
     super.key,
     required this.sector,
   });
+  Future<void> _sendAnalyticsEvent(String tmp) async {
+    await analytics.logEvent(
+      name: 'button_click_test$tmp',
+      parameters: <String, Object>{
+        'button_name': 'testtest',
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        _sendAnalyticsEvent(sector);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -45,8 +56,12 @@ class ProblemCard extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const Icon(
+                        Icons.circle,
+                        color: Color.fromARGB(255, 0, 47, 255),
+                      ),
                       Text(
                         sector,
                         style: const TextStyle(
@@ -66,10 +81,6 @@ class ProblemCard extends StatelessWidget {
                         width: 30,
                       ),
                       Text("파랑"),
-                      Icon(
-                        Icons.circle,
-                        color: Color.fromARGB(255, 0, 47, 255),
-                      ),
                     ],
                   ),
                 ],
