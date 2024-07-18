@@ -1,4 +1,4 @@
-import 'package:flash/technology_test/video_test.dart';
+import 'package:flash/view/answers/answer_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

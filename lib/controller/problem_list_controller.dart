@@ -97,8 +97,10 @@ class ProblemListController extends GetxController {
         morePage = false;
       } else {
         problemList.addAll(um);
-        nextCursor = response.data["meta"]["cursor"];
         morePage = response.data["meta"]["hasNext"];
+        if (morePage) {
+          nextCursor = response.data["meta"]["cursor"];
+        }
       }
       loadRunning = false;
     }

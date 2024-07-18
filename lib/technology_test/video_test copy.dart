@@ -44,6 +44,7 @@ class _VideoTestState extends State<VideoTest> {
       // 비디오 URL
     );
     await _videoController.initialize();
+    print('영상 다운');
     AnalyticsService.sendVedioEvent('start', widget.useUri);
     _videoController.play();
     iscomplet = true;
