@@ -11,8 +11,7 @@ class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl:
-            'http://flash-application-dev-env.eba-q2es2zy8.ap-northeast-2.elasticbeanstalk.com',
+        baseUrl: 'http://15.165.90.192',
         connectTimeout: const Duration(milliseconds: 10000),
         receiveTimeout: const Duration(milliseconds: 10000),
       ),

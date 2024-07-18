@@ -1,8 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flash/Colors/color_group.dart';
+import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
-import 'package:flash/technology_test/carousell_test.dart';
-import 'package:flash/technology_test/fake_api_pagination_test.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flash/view/report/report_page.dart';
@@ -10,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
-  final FirebaseAnalytics analytics;
-  MainPage({super.key, required this.analytics});
+  MainPage({
+    super.key,
+  });
   final centerTitleController = Get.put(CenterTitleController());
 
   @override
@@ -27,6 +27,8 @@ class MainPage extends StatelessWidget {
           child: Center(
             child: GestureDetector(
               onTap: () {
+                AnalyticsService.sendMainButtonEvent('center_list_button',
+                    centerTitleController.centerTitle.toString());
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -55,20 +57,50 @@ class MainPage extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
+                      AnalyticsService.sendMainButtonEvent('map_button',
+                          centerTitleController.centerTitle.toString());
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('지도'),
-                            content: const Text('안녕?'),
-                            actions: [
-                              TextButton(
-                                child: const Text('안녕!'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
+                            contentPadding: const EdgeInsets.all(0),
+                            backgroundColor: Colors.transparent,
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    AnalyticsService.sendMainButtonEvent(
+                                      'close_map_button',
+                                      centerTitleController.centerTitle
+                                          .toString(),
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                SizedBox(
+                                  child: Image.network(
+                                    width: 350,
+                                    height: 350,
+                                    centerTitleController.mapImgUrl,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        width: 350,
+                                        height: 350,
+                                        'assets/images/problem.jpeg',
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -97,6 +129,8 @@ class MainPage extends StatelessWidget {
             ),
           ),
           onPressed: () {
+            AnalyticsService.sendMainButtonEvent(
+                'upload_button', centerTitleController.centerTitle.toString());
             Navigator.push(
               context,
               MaterialPageRoute(

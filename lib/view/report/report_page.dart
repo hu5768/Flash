@@ -1,34 +1,161 @@
-import 'package:flash/Colors/color_group.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});
-
+  final String reportForm =
+      '제목: [닉네임] 영상 제보합니다!\n영상\n(선택)인스타 계정:  \n(선택)한 줄 평: ex)\n1번 한줄평 : 탑 전 홀드를 잡고 왼발을 오른쪽으로 빼며 카운터 밸런스를 이용하면 쉽게 풀려요! \n3번 한줄평 : 보라치고 쉬워요';
+  final String myEmail = 'flashclimbing3@gmail.com';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            AnalyticsService.sendCopyEvent('close_report_button');
+            Navigator.pop(context);
+          },
+        ),
         surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
         backgroundColor: ColorGroup.appbarBGC,
-        title: const Text('영상 업로드하기'),
+        title: const Text(
+          '영상 제보하기',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: Container(
-              width: context.width * 0.8,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 212, 212, 212),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Text("hu8232@naver.com 보내라\n이름이랑 한줄평까지 써라"),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '여러분의 풀이를 제보해주세요!\n보내주신 풀이 영상은 저희 답지에 업로드 됩니다.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color.fromRGBO(122, 116, 116, 1),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  '제보 양식',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: ColorGroup.selectBtnBGC,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(7.0),
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              reportForm,
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 15,
+                        right: 10,
+                        child: CopyButton(copyText: reportForm),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  '이메일',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: ColorGroup.selectBtnBGC,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 400,
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(7.0),
+                  ),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          myEmail,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Positioned(
+                        top: 5,
+                        right: 10,
+                        child: CopyButton(copyText: myEmail),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+}
+
+class CopyButton extends StatelessWidget {
+  final String copyText;
+  const CopyButton({
+    super.key,
+    required this.copyText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        AnalyticsService.sendCopyEvent(copyText);
+        Clipboard.setData(ClipboardData(text: copyText));
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(0),
+        fixedSize: const Size(90, 10),
+        side: const BorderSide(
+          color: ColorGroup.selectBtnBGC,
+          width: 1.5,
+        ),
+        foregroundColor: ColorGroup.selectBtnBGC,
+        backgroundColor: ColorGroup.modalSBtnBGC,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.all(0),
+        child: Text('복사하기', style: TextStyle(fontSize: 14)),
       ),
     );
   }

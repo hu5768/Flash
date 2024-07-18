@@ -1,7 +1,9 @@
-import 'package:flash/Colors/color_group.dart';
-import 'package:flash/controller/fake_api_data.dart';
+import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
+import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
@@ -10,9 +12,11 @@ import 'package:get/get.dart';
 
 class ProblemList extends StatelessWidget {
   ProblemList({super.key});
-  final controller = Get.put(FakeController()); //임시 fake api
+
   final problemTitleController = Get.put(ProblemSortController());
   final problemFilterController = Get.put(ProblemFilterController());
+  final scrollController = Get.put(ProblemListController());
+  final CenterTitleController centerTitleController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +34,8 @@ class ProblemList extends StatelessWidget {
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
-                        print("순서버튼누름");
+                        AnalyticsService.sendMainButtonEvent('sort_button',
+                            centerTitleController.centerTitle.toString());
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
@@ -39,18 +44,21 @@ class ProblemList extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(115, 40),
                         side: BorderSide(
                           color: problemTitleController.sortkey.toString() ==
-                                  "none"
+                                  'recommand'
                               ? ColorGroup.modalBtnBGC
                               : ColorGroup.selectBtnBGC,
                         ),
                         foregroundColor:
-                            problemTitleController.sortkey.toString() == "none"
+                            problemTitleController.sortkey.toString() ==
+                                    'recommand'
                                 ? ColorGroup.btnFGC
                                 : ColorGroup.selectBtnBGC,
                         backgroundColor:
-                            problemTitleController.sortkey.toString() == "none"
+                            problemTitleController.sortkey.toString() ==
+                                    'recommand'
                                 ? ColorGroup.btnBGC
                                 : ColorGroup.modalSBtnBGC,
                         shape: RoundedRectangleBorder(
@@ -72,7 +80,8 @@ class ProblemList extends StatelessWidget {
                     () {
                       return ElevatedButton(
                         onPressed: () {
-                          print("필터버튼누름");
+                          AnalyticsService.sendMainButtonEvent('filter_button',
+                              centerTitleController.centerTitle.toString());
                           problemFilterController.inToTemp();
                           showModalBottomSheet(
                             backgroundColor: ColorGroup.modalBGC,
@@ -84,6 +93,7 @@ class ProblemList extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(115, 40),
                           side: BorderSide(
                             color: problemFilterController.allEmpty()
                                 ? ColorGroup.modalBtnBGC
@@ -115,18 +125,35 @@ class ProblemList extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              GetX<FakeController>(
+              GetX<ProblemListController>(
                 builder: (controller) {
                   return Expanded(
                     child: ListView.builder(
-                      controller: controller.scrollController,
-                      itemCount: controller.FaCursor.length,
+                      controller: scrollController.scrollController,
+                      itemCount: scrollController.problemList.length,
                       itemBuilder: (context, index) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ProblemCard(
-                              sector: controller.FaCursor[index].id.toString(),
+                              id: scrollController.problemList[index].id
+                                  .toString(),
+                              sector: scrollController.problemList[index].sector
+                                  .toString(),
+                              difficulty: scrollController
+                                  .problemList[index].difficulty
+                                  .toString(),
+                              settingDate: scrollController
+                                  .problemList[index].settingDate
+                                  .toString(),
+                              removalDate: scrollController
+                                  .problemList[index].removalDate
+                                  .toString(),
+                              hasSolution: scrollController
+                                  .problemList[index].hasSolution!,
+                              imageUrl: scrollController
+                                  .problemList[index].imageUrl
+                                  .toString(),
                             ),
                             const SizedBox(
                               height: 50,

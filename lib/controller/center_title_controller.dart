@@ -7,7 +7,8 @@ class CenterTitleController extends GetxController {
   var centerId = 1.obs;
   var centerTitle = ''.obs;
   late String mapImgUrl;
-  late List<Map<String, dynamic>> gradeDifficulties;
+  late List<String> gradeDifficulties;
+  late List<String> secterList;
   @override
   void onInit() {
     super.onInit();
@@ -20,25 +21,30 @@ class CenterTitleController extends GetxController {
 
   void getTitle() async {
     dios.Response response;
-    print(centerId.value.toString());
     try {
       response = await DioClient().dio.get(
             "/gyms/${centerId.value}",
           );
+
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
+
       centerTitle.value = resMap['gymName'];
       mapImgUrl = resMap['mapImageUrl'];
 
-      gradeDifficulties =
-          List<Map<String, dynamic>>.from(resMap['difficulties']);
-      print(gradeDifficulties);
       ProblemFilterController problemFilterController = Get.find();
-      problemFilterController.gradeOption =
-          gradeDifficulties.map((a) => a['name'] as String).toList();
+      print(resMap);
+      gradeDifficulties = List<String>.from(resMap['difficulties']);
+
+      problemFilterController.gradeOption = gradeDifficulties;
+
+      secterList = List<String>.from(resMap['sectors']);
+      problemFilterController.sectorOption = secterList;
+
       problemFilterController.allInit();
     } catch (e) {
       print('실패');
       print(e);
+      centerTitle.value = '암장을 불러오지 못했습니다 ㅜㅜ';
     }
   }
 }

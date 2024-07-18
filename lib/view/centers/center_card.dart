@@ -1,4 +1,7 @@
 import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/controller/problem_list_controller.dart';
+import 'package:flash/controller/problem_sort_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,12 +15,17 @@ class CenterCard extends StatelessWidget {
     required this.thum,
   });
   final centerTitleController = Get.put(CenterTitleController());
+  final ProblemListController problemListController = Get.find();
+  final ProblemSortController problemSortController = Get.find();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        AnalyticsService.sendCenterButtonEvent(title);
+        problemSortController.allInit();
         centerTitleController.changeId(id);
         centerTitleController.getTitle();
+        problemListController.newFetch();
         print('암장 선택');
         Navigator.pop(context);
       },
@@ -29,13 +37,19 @@ class CenterCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            /*ClipOval(
+            ClipOval(
               child: Image.network(
                 thum,
                 width: 70,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/problem.jpeg',
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
-            ),*/
+            ),
             Text(
               title,
               style: const TextStyle(

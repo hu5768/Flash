@@ -10,7 +10,6 @@ class CenterListController extends GetxController {
   void onInit() {
     super.onInit();
     fetchData();
-    print("클라이밍 리스트 로딩중");
   }
 
   void fetchData() async {
@@ -24,10 +23,7 @@ class CenterListController extends GetxController {
       List<Centers> um = resMap.map((e) => Centers.fromJson(e)).toList();
       centerCon.assignAll(um);
     } catch (e) {
-      List<Centers> um = [
-        Centers(id: 1, gymName: '오류오류오류', thumbnailUrl: ''),
-      ];
-      centerCon.assignAll(um);
+      print('암장 리스트 로딩 실패$e');
     }
   }
 }

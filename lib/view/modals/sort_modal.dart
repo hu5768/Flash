@@ -1,5 +1,7 @@
-import 'package:flash/Colors/color_group.dart';
+import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,10 +34,7 @@ class SortModal extends StatelessWidget {
               ),
             ],
           ),
-          SortOrder(
-            title: '추천순',
-            sortKey: 'none',
-          ),
+          SortOrder(title: '추천순', sortKey: 'recommand'),
           SortOrder(title: '인기순', sortKey: 'views'),
           SortOrder(title: '난이도순', sortKey: 'difficulty'),
         ],
@@ -46,6 +45,7 @@ class SortModal extends StatelessWidget {
 
 class SortOrder extends StatelessWidget {
   final ProblemSortController problemTitleController = Get.find();
+  final ProblemListController problemListController = Get.find();
   //컨트롤러 자료형 없이 등록하면 어떻게 되는지 질문
   final String title, sortKey;
   SortOrder({
@@ -77,7 +77,9 @@ class SortOrder extends StatelessWidget {
             ],
           ),
           onTap: () {
+            AnalyticsService.sendSortModalEvent(title);
             problemTitleController.changeText(sortKey, title);
+            problemListController.newFetch();
             Navigator.of(context).pop();
           },
         ),

@@ -1,5 +1,6 @@
-import 'package:flash/Colors/color_group.dart';
+import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_list_data_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,13 @@ class CenterListPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            AnalyticsService.sendCenterButtonEvent('close_centerList_button');
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: ColorGroup.appbarBGC,
         title: Container(
           height: AppBar().preferredSize.height,

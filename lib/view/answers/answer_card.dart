@@ -2,28 +2,54 @@ import 'package:flash/technology_test/video_test.dart';
 import 'package:flutter/material.dart';
 
 class AnswerCard extends StatelessWidget {
-  const AnswerCard({super.key});
+  final String uploader, review, instagramId, videoUrl;
+  const AnswerCard({
+    super.key,
+    required this.uploader,
+    required this.review,
+    required this.instagramId,
+    required this.videoUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            VideoTest(),
+            VideoTest(
+              useUri: videoUrl,
+            ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '제보자 : 서한유!',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Text(
+                        '제보자: $uploader',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text("@$instagramId"),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Text(
-                    '스타트에서 힘 꽉 주고 탑으로 뛰어서 탑홀드를 양손으로 잡고 버티면 됩니다',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    '한줄평: $review',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),

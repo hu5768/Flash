@@ -27,10 +27,8 @@ class App extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
-      home: MainPage(
-        analytics: analytics,
-      ),
-      //home: AnswersCarousell(sector: '2'),
+      home: MainPage(),
+      //home: MainPage(),
     );
   }
 }

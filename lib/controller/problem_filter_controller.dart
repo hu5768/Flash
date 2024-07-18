@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class ProblemFilterController extends GetxController {
   List<String> gradeOption = [];
-  List<String> sectorOption = ["1&2", "3&4", "5&6", "7&8"];
+  List<String> sectorOption = [];
   var allOption = <List<String>>[].obs; //난이도 ,벽 도메인
   var allSelection = <RxList<String>>[].obs; // 문제 리스트 페이지에 반영될 선택 여부
   var allTempSelection = <RxList<String>>[].obs; // 모달에서 선택중인 선택 여부
