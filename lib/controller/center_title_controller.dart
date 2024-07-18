@@ -44,7 +44,7 @@ class CenterTitleController extends GetxController {
     } catch (e) {
       print('실패');
       print(e);
-      centerTitle.value = '암장을 불러오지 못했습니다 ㅜㅜ';
+      centerTitle.value = '암장을 불러오지 못했습니다.';
     }
   }
 }
