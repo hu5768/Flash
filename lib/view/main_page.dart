@@ -50,7 +50,8 @@ class MainPage extends StatelessWidget {
                     children: [
                       Obx(() {
                         return Text(
-                          "${centerTitleController.centerTitle}개발 서버",
+                          //"${centerTitleController.centerTitle} (개발 서버)",
+                          centerTitleController.centerTitle.toString(),
                           style: const TextStyle(fontWeight: FontWeight.w800),
                         );
                       }),
