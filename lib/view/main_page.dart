@@ -49,7 +49,7 @@ class MainPage extends StatelessWidget {
                     children: [
                       Obx(() {
                         return Text(
-                          centerTitleController.centerTitle.toString(),
+                          "${centerTitleController.centerTitle}개발 서버",
                           style: const TextStyle(fontWeight: FontWeight.w800),
                         );
                       }),
