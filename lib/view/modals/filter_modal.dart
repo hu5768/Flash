@@ -79,12 +79,6 @@ class FilterModal extends StatelessWidget {
                                 AnalyticsService.sendFilterModalEvent(
                                   'nobodySol',
                                   '못푼 문제 보기',
-                                  problemFilterController.allTempSelection[0]
-                                      .toString(),
-                                  problemFilterController.allTempSelection[1]
-                                      .toString(),
-                                  problemFilterController.nobodySolTemp.value
-                                      .toString(),
                                 );
                                 problemFilterController.nobodySolTemp.value =
                                     value!;
@@ -114,12 +108,6 @@ class FilterModal extends StatelessWidget {
                                   AnalyticsService.sendFilterModalEvent(
                                     'reset',
                                     '초기화',
-                                    problemFilterController.allTempSelection[0]
-                                        .toString(),
-                                    problemFilterController.allTempSelection[1]
-                                        .toString(),
-                                    problemFilterController.nobodySolTemp.value
-                                        .toString(),
                                   );
                                   problemFilterController.goEmpty();
                                 },
@@ -160,12 +148,6 @@ class FilterModal extends StatelessWidget {
                                 AnalyticsService.sendFilterModalEvent(
                                   'apply',
                                   '적용하기',
-                                  problemFilterController.allTempSelection[0]
-                                      .toString(),
-                                  problemFilterController.allTempSelection[1]
-                                      .toString(),
-                                  problemFilterController.nobodySolTemp.value
-                                      .toString(),
                                 );
                                 problemFilterController.tempToSel();
                                 problemListController.newFetch();
@@ -258,13 +240,7 @@ class FilterTab extends StatelessWidget {
                     ),
                     selected: isSelected,
                     onSelected: (bool selected) {
-                      AnalyticsService.sendFilterModalEvent(
-                        option,
-                        title,
-                        problemFilterController.allTempSelection[0].toString(),
-                        problemFilterController.allTempSelection[1].toString(),
-                        problemFilterController.nobodySolTemp.value.toString(),
-                      );
+                      AnalyticsService.sendFilterModalEvent(option, title);
                       problemFilterController.toggleSelection(
                         option,
                         index,

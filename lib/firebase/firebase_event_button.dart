@@ -86,27 +86,14 @@ class AnalyticsService {
     );
   }
 
-  static Future<void> sendFilterModalEvent(
-    String tmp,
-    String domain,
-    String diffOption,
-    String secOption,
-    String nobodySol,
-  ) async {
+  static Future<void> sendFilterModalEvent(String tmp, String domain) async {
     //필터 모달 버튼
-    try {
-      await analytics.logEvent(
-        name: '(test)filter_tap_click : $tmp',
-        parameters: <String, Object>{
-          'page': 'sort_modal',
-          'domain': domain,
-          'diffOption': diffOption,
-          'secOption': secOption,
-          'nobodySol': nobodySol,
-        },
-      );
-    } catch (e) {
-      print('필터모달 오류$e');
-    }
+    await analytics.logEvent(
+      name: '(test)filter_tap_click : $tmp',
+      parameters: <String, Object>{
+        'page': 'sort_modal',
+        'domain': domain,
+      },
+    );
   }
 }
