@@ -63,6 +63,11 @@ class ProblemListController extends GetxController {
       print("시작 페이지 로딩 오류$e");
     }
     loadRunning = false;
+    scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   void nextFetch() async {
