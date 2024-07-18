@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ProblemCard extends StatelessWidget {
   final String id, sector, difficulty, settingDate, removalDate, imageUrl;
@@ -37,7 +38,7 @@ class ProblemCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8, 0),
         child: Container(
           decoration: BoxDecoration(
             color: ColorGroup.cardBGC,
@@ -83,12 +84,16 @@ class ProblemCard extends StatelessWidget {
                         Text("세팅일: $settingDate"),
                       ],
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         hasSolution
                             ? const Text(
                                 "영상 있음",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorGroup.selectBtnBGC,
+                                ),
                               )
                             : const Text(
                                 "영상 없음",
