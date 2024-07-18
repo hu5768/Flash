@@ -5,6 +5,7 @@ import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flash/view/report/report_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
@@ -93,11 +94,10 @@ class MainPage extends StatelessWidget {
                                     centerTitleController.mapImgUrl,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
+                                      return const SizedBox(
                                         width: 350,
                                         height: 350,
-                                        'assets/images/problem.jpeg',
-                                        fit: BoxFit.cover,
+                                        child: Text("지도를 불러오지 못했습니다."),
                                       );
                                     },
                                   ),
