@@ -36,23 +36,24 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
       if (!widget.videoController.value.isInitialized) {
         await widget.videoController.initialize();
         print('영상 다운');
+      } else {
+        iscomplet = true;
+        AnalyticsService.sendVedioEvent('start', widget.useUri);
+        widget.videoController.seekTo(Duration.zero);
+        widget.videoController.play();
+        print('영상 실행 ');
+        widget.videoController.addListener(() {
+          if (widget.videoController.value.position ==
+              widget.videoController.value.duration) {
+            // 비디오가 끝났을 때 다시 재생
+            AnalyticsService.sendVedioEvent('restart', widget.useUri);
+            widget.videoController.seekTo(Duration.zero);
+            widget.videoController.play();
+          }
+        });
+        print('영상 이벤트 리스너 부착 ');
       }
 
-      AnalyticsService.sendVedioEvent('start', widget.useUri);
-
-      iscomplet = true;
-      widget.videoController.play();
-      print('영상 실행 ');
-      widget.videoController.addListener(() {
-        if (widget.videoController.value.position ==
-            widget.videoController.value.duration) {
-          // 비디오가 끝났을 때 다시 재생
-          AnalyticsService.sendVedioEvent('restart', widget.useUri);
-          widget.videoController.seekTo(Duration.zero);
-          widget.videoController.play();
-        }
-      });
-      print('영상 이벤트 리스너 부착 ');
       if (mounted) {
         setState(() {});
       }
