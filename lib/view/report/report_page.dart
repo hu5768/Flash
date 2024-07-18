@@ -1,9 +1,7 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});

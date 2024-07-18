@@ -1,7 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:video_player/video_player.dart';
 
 class VideoTest extends StatefulWidget {
@@ -57,6 +57,7 @@ class _VideoTestState extends State<VideoTest> {
         _videoController.play();
       }
     });
+
     setState(() {});
   }
 

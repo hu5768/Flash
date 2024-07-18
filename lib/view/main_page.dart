@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -27,8 +26,10 @@ class MainPage extends StatelessWidget {
           child: Center(
             child: GestureDetector(
               onTap: () {
-                AnalyticsService.sendMainButtonEvent('center_list_button',
-                    centerTitleController.centerTitle.toString());
+                AnalyticsService.sendMainButtonEvent(
+                  'center_list_button',
+                  centerTitleController.centerTitle.toString(),
+                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -57,8 +58,10 @@ class MainPage extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      AnalyticsService.sendMainButtonEvent('map_button',
-                          centerTitleController.centerTitle.toString());
+                      AnalyticsService.sendMainButtonEvent(
+                        'map_button',
+                        centerTitleController.centerTitle.toString(),
+                      );
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -130,7 +133,9 @@ class MainPage extends StatelessWidget {
           ),
           onPressed: () {
             AnalyticsService.sendMainButtonEvent(
-                'upload_button', centerTitleController.centerTitle.toString());
+              'upload_button',
+              centerTitleController.centerTitle.toString(),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(

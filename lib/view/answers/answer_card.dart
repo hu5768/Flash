@@ -1,14 +1,17 @@
 import 'package:flash/view/answers/answer_player.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class AnswerCard extends StatelessWidget {
   final String uploader, review, instagramId, videoUrl;
+  final VideoPlayerController videoController;
   const AnswerCard({
     super.key,
     required this.uploader,
     required this.review,
     required this.instagramId,
     required this.videoUrl,
+    required this.videoController,
   });
 
   @override
@@ -19,6 +22,7 @@ class AnswerCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AnswerPlayer(
+              videoController: videoController,
               useUri: videoUrl,
             ),
             Padding(

@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
@@ -24,7 +23,11 @@ class ProblemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         AnalyticsService.sendProblemCardEvent(
-            id, difficulty, sector, hasSolution.toString());
+          id,
+          difficulty,
+          sector,
+          hasSolution.toString(),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(

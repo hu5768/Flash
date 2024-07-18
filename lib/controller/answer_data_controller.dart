@@ -5,6 +5,7 @@ import 'package:flash/view/answers/problem_detail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
+import 'package:video_player/video_player.dart';
 import 'dio_singletone.dart';
 
 class AnswerDataController extends GetxController {
@@ -19,7 +20,6 @@ class AnswerDataController extends GetxController {
           );
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       ProblemDetailModel detailInfo = ProblemDetailModel.fromJson(resMap);
-      print(answerList);
       answerList.add(
         ProblemDetailCard(
           sector: detailInfo.sector!,
@@ -42,16 +42,23 @@ class AnswerDataController extends GetxController {
           List<Map<String, dynamic>>.from(response.data["solutions"]);
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
-      List<Widget> solutionVideoList = sm
-          .map(
-            (sM) => AnswerCard(
-              uploader: sM.uploader!,
-              review: sM.review!,
-              instagramId: sM.instagramId!,
-              videoUrl: sM.videoUrl!,
-            ),
-          )
-          .toList();
+      List<Widget> solutionVideoList = sm.map(
+        (sM) {
+          VideoPlayerController videoController = VideoPlayerController.network(
+            sM.videoUrl!,
+
+            // 비디오 URL
+          );
+
+          return AnswerCard(
+            videoController: videoController,
+            uploader: sM.uploader!,
+            review: sM.review!,
+            instagramId: sM.instagramId!,
+            videoUrl: sM.videoUrl!,
+          );
+        },
+      ).toList();
       answerList.addAll(solutionVideoList);
     } catch (e) {
       print('해설 영상 로딩 실패$e');
