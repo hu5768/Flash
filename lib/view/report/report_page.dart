@@ -101,7 +101,7 @@ class ReportPage extends StatelessWidget {
                   child: Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
                         child: Text(
                           myEmail,
                           style: const TextStyle(fontSize: 16),
