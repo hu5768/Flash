@@ -48,9 +48,9 @@ class MainPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Obx(() {
-                        return Text(
-                          "${centerTitleController.centerTitle}개발 서버",
-                          style: const TextStyle(fontWeight: FontWeight.w800),
+                        return const Text(
+                          "centerTitleController.centerTitle",
+                          style: TextStyle(fontWeight: FontWeight.w800),
                         );
                       }),
                       const Icon(Icons.arrow_drop_down),
