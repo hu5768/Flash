@@ -10,6 +10,7 @@ import 'dio_singletone.dart';
 
 class AnswerDataController extends GetxController {
   var answerList = <Widget>[].obs;
+  late List<VideoPlayerController?> videoControllerList;
   void fetchData(String problemId) async {
     dios.Response response;
     answerList.clear();
@@ -42,26 +43,31 @@ class AnswerDataController extends GetxController {
           List<Map<String, dynamic>>.from(response.data["solutions"]);
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
-      List<Widget> solutionVideoList = sm.map(
-        (sM) {
-          VideoPlayerController videoController = VideoPlayerController.network(
-            sM.videoUrl!,
-
-            // 비디오 URL
+      videoControllerList = List.generate(sm.length, (index) => null);
+      List<Widget> solutionVideoList = sm.asMap().entries.map(
+        (entry) {
+          videoControllerList[entry.key] = VideoPlayerController.network(
+            entry.value.videoUrl!,
           );
 
           return AnswerCard(
-            videoController: videoController,
-            uploader: sM.uploader!,
-            review: sM.review!,
-            instagramId: sM.instagramId!,
-            videoUrl: sM.videoUrl!,
+            videoController: videoControllerList[entry.key]!,
+            uploader: entry.value.uploader!,
+            review: entry.value.review!,
+            instagramId: entry.value.instagramId!,
+            videoUrl: entry.value.videoUrl!,
           );
         },
       ).toList();
       answerList.addAll(solutionVideoList);
     } catch (e) {
       print('해설 영상 로딩 실패$e');
+    }
+  }
+
+  void disposeVideo() {
+    for (var controller in videoControllerList) {
+      controller?.dispose();
     }
   }
 }
