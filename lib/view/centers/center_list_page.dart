@@ -19,7 +19,6 @@ class CenterListPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AnalyticsService.sendCenterButtonEvent('close_centerList_button');
             Navigator.pop(context);
           },
         ),

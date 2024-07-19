@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProblemCard extends StatelessWidget {
   final String id, sector, difficulty, settingDate, removalDate, imageUrl;
@@ -22,12 +23,6 @@ class ProblemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AnalyticsService.sendProblemCardEvent(
-          id,
-          difficulty,
-          sector,
-          hasSolution.toString(),
-        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -83,7 +78,12 @@ class ProblemCard extends StatelessWidget {
                         Text("세팅일: $settingDate"),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: id));
+                      },
+                      child: Text(id),
+                    ),
                     Row(
                       children: [
                         hasSolution

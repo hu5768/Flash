@@ -77,7 +77,6 @@ class SortOrder extends StatelessWidget {
             ],
           ),
           onTap: () {
-            AnalyticsService.sendSortModalEvent(title);
             problemTitleController.changeText(sortKey, title);
             problemListController.newFetch();
             Navigator.of(context).pop();

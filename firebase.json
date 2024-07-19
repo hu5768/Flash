@@ -1,6 +1,6 @@
 {
     "hosting": {
-        "site": "flashclimbing",
+        "site": "flash-upload",
         "public": "build/web",
         "ignore": [
             "firebase.json",

@@ -16,7 +16,6 @@ class ReportPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AnalyticsService.sendCopyEvent('close_report_button');
             Navigator.pop(context);
           },
         ),
@@ -135,7 +134,6 @@ class CopyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        AnalyticsService.sendCopyEvent(copyText);
         Clipboard.setData(ClipboardData(text: copyText));
       },
       style: ElevatedButton.styleFrom(

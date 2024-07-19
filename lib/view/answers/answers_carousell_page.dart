@@ -31,7 +31,6 @@ class AnswersCarousell extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              AnalyticsService.sendAnswerButtonEvent('close_answerList_button');
               Navigator.pop(context);
             },
           ),

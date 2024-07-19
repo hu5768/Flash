@@ -27,10 +27,6 @@ class MainPage extends StatelessWidget {
           child: Center(
             child: GestureDetector(
               onTap: () {
-                AnalyticsService.sendMainButtonEvent(
-                  'center_list_button',
-                  centerTitleController.centerTitle.toString(),
-                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -60,10 +56,6 @@ class MainPage extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      AnalyticsService.sendMainButtonEvent(
-                        'map_button',
-                        centerTitleController.centerTitle.toString(),
-                      );
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -80,11 +72,6 @@ class MainPage extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    AnalyticsService.sendMainButtonEvent(
-                                      'close_map_button',
-                                      centerTitleController.centerTitle
-                                          .toString(),
-                                    );
                                     Navigator.of(context).pop();
                                   },
                                 ),
@@ -133,10 +120,6 @@ class MainPage extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            AnalyticsService.sendMainButtonEvent(
-              'upload_button',
-              centerTitleController.centerTitle.toString(),
-            );
             Navigator.push(
               context,
               MaterialPageRoute(

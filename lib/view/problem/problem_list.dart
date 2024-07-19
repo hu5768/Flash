@@ -34,10 +34,6 @@ class ProblemList extends StatelessWidget {
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
-                        AnalyticsService.sendMainButtonEvent(
-                          'sort_button',
-                          centerTitleController.centerTitle.toString(),
-                        );
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
@@ -82,10 +78,6 @@ class ProblemList extends StatelessWidget {
                     () {
                       return ElevatedButton(
                         onPressed: () {
-                          AnalyticsService.sendMainButtonEvent(
-                            'filter_button',
-                            centerTitleController.centerTitle.toString(),
-                          );
                           problemFilterController.inToTemp();
                           showModalBottomSheet(
                             backgroundColor: ColorGroup.modalBGC,
