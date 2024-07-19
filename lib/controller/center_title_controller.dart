@@ -42,7 +42,7 @@ class CenterTitleController extends GetxController {
 
       problemFilterController.allInit();
     } catch (e) {
-      print('암장 로딩 실패 $e');
+      print('암장 리스트 실패$e');
 
       centerTitle.value = '암장을 불러오지 못했습니다.';
     }

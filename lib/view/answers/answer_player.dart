@@ -5,10 +5,11 @@ import 'package:video_player/video_player.dart';
 
 class AnswerPlayer extends StatefulWidget {
   final String useUri;
-  late VideoPlayerController videoController;
-  AnswerPlayer({
+  final VideoPlayerController videoController;
+  const AnswerPlayer({
     super.key,
     required this.useUri,
+    required this.videoController,
   });
 
   @override
@@ -25,28 +26,22 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
     initvideo();
   }
 
-  @override
-  void dispose() {
-    print('영상 삭제');
-    widget.videoController.dispose();
-    super.dispose();
-  }
-
   Future<void> initvideo() async {
-    widget.videoController = VideoPlayerController.network(
+    /*_videoController = VideoPlayerController.network(
       widget.useUri,
-    );
 
+      // 비디오 URL
+    );*/
     try {
-      //if (!widget.videoController.value.isInitialized) {
-      await widget.videoController.initialize();
-      print('영상 다운');
-      //}
+      if (!widget.videoController.value.isInitialized) {
+        await widget.videoController.initialize();
+        print('영상 다운');
+      }
       iscomplet = true;
       AnalyticsService.sendVedioEvent('start', widget.useUri);
       widget.videoController.seekTo(Duration.zero);
-      widget.videoController.play();
-      print('영상 실행 ');
+      //widget.videoController.play();
+      // print('영상 실행 ');
       widget.videoController.addListener(() {
         if (widget.videoController.value.position ==
             widget.videoController.value.duration) {
@@ -56,6 +51,7 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
           widget.videoController.play();
         }
       });
+
       if (mounted) {
         setState(() {});
       }
