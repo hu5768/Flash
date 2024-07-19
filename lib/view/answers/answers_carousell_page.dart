@@ -73,6 +73,7 @@ class AnswersCarousell extends StatelessWidget {
                                 return CarouselSlider(
                                   items: answerDataController.answerList,
                                   options: CarouselOptions(
+                                    enlargeCenterPage: true,
                                     enableInfiniteScroll: false,
                                     height: double.infinity,
                                     viewportFraction: 1.0,
