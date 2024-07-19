@@ -2,7 +2,6 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ProblemCard extends StatelessWidget {
   final String id, sector, difficulty, settingDate, removalDate, imageUrl;

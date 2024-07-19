@@ -1,12 +1,10 @@
 import 'package:flash/controller/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
-import 'package:flash/view/answers/problem_detail_card.dart';
 import 'package:flash/view/answers/wrong_answer.dart';
 import 'package:get/get.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/view/answers/answer_card.dart';
 import 'package:flutter/material.dart';
 
 class AnswersCarousell extends StatelessWidget {
@@ -17,8 +15,7 @@ class AnswersCarousell extends StatelessWidget {
     super.key,
     required this.id,
   });
-  final List textN = ["풀이1", "풀이2", "풀이3"];
-  late List<Widget> answerList;
+
   @override
   Widget build(BuildContext context) {
     answerDataController.fetchData(id);
@@ -72,6 +69,7 @@ class AnswersCarousell extends StatelessWidget {
                               return CarouselSlider(
                                 items: answerDataController.answerList,
                                 options: CarouselOptions(
+                                  //enlargeCenterPage: true,
                                   enableInfiniteScroll: false,
                                   height: double.infinity,
                                   viewportFraction: 1.0,

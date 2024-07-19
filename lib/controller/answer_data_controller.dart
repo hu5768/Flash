@@ -5,7 +5,6 @@ import 'package:flash/view/answers/problem_detail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
-import 'package:video_player/video_player.dart';
 import 'dio_singletone.dart';
 
 class AnswerDataController extends GetxController {
@@ -44,14 +43,7 @@ class AnswerDataController extends GetxController {
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       List<Widget> solutionVideoList = sm.map(
         (sM) {
-          VideoPlayerController videoController = VideoPlayerController.network(
-            sM.videoUrl!,
-
-            // 비디오 URL
-          );
-
           return AnswerCard(
-            videoController: videoController,
             uploader: sM.uploader!,
             review: sM.review!,
             instagramId: sM.instagramId!,

@@ -5,11 +5,10 @@ import 'package:video_player/video_player.dart';
 
 class AnswerPlayer extends StatefulWidget {
   final String useUri;
-  final VideoPlayerController videoController;
-  const AnswerPlayer({
+  late VideoPlayerController videoController;
+  AnswerPlayer({
     super.key,
     required this.useUri,
-    required this.videoController,
   });
 
   @override
@@ -26,34 +25,37 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
     initvideo();
   }
 
+  @override
+  void dispose() {
+    print('영상 삭제');
+    widget.videoController.dispose();
+    super.dispose();
+  }
+
   Future<void> initvideo() async {
-    /*_videoController = VideoPlayerController.network(
+    widget.videoController = VideoPlayerController.network(
       widget.useUri,
+    );
 
-      // 비디오 URL
-    );*/
     try {
-      if (!widget.videoController.value.isInitialized) {
-        await widget.videoController.initialize();
-        print('영상 다운');
-      } else {
-        iscomplet = true;
-        AnalyticsService.sendVedioEvent('start', widget.useUri);
-        widget.videoController.seekTo(Duration.zero);
-        widget.videoController.play();
-        print('영상 실행 ');
-        widget.videoController.addListener(() {
-          if (widget.videoController.value.position ==
-              widget.videoController.value.duration) {
-            // 비디오가 끝났을 때 다시 재생
-            AnalyticsService.sendVedioEvent('restart', widget.useUri);
-            widget.videoController.seekTo(Duration.zero);
-            widget.videoController.play();
-          }
-        });
-        print('영상 이벤트 리스너 부착 ');
-      }
-
+      //if (!widget.videoController.value.isInitialized) {
+      await widget.videoController.initialize();
+      print('영상 다운');
+      //}
+      iscomplet = true;
+      AnalyticsService.sendVedioEvent('start', widget.useUri);
+      widget.videoController.seekTo(Duration.zero);
+      widget.videoController.play();
+      print('영상 실행 ');
+      widget.videoController.addListener(() {
+        if (widget.videoController.value.position ==
+            widget.videoController.value.duration) {
+          // 비디오가 끝났을 때 다시 재생
+          AnalyticsService.sendVedioEvent('restart', widget.useUri);
+          widget.videoController.seekTo(Duration.zero);
+          widget.videoController.play();
+        }
+      });
       if (mounted) {
         setState(() {});
       }

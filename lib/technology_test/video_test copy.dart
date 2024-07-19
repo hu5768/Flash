@@ -40,8 +40,6 @@ class _VideoTestState extends State<VideoTest> {
   Future<void> initvideo() async {
     _videoController = VideoPlayerController.network(
       widget.useUri,
-
-      // 비디오 URL
     );
     await _videoController.initialize();
     print('영상 다운');

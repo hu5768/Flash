@@ -26,7 +26,7 @@ class CenterCard extends StatelessWidget {
         centerTitleController.changeId(id);
         centerTitleController.getTitle();
         problemListController.newFetch();
-        print('암장 선택');
+
         Navigator.pop(context);
       },
       child: Container(

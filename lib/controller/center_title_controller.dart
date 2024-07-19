@@ -32,7 +32,7 @@ class CenterTitleController extends GetxController {
       mapImgUrl = resMap['mapImageUrl'];
 
       ProblemFilterController problemFilterController = Get.find();
-      print(resMap);
+
       gradeDifficulties = List<String>.from(resMap['difficulties']);
 
       problemFilterController.gradeOption = gradeDifficulties;
@@ -42,8 +42,8 @@ class CenterTitleController extends GetxController {
 
       problemFilterController.allInit();
     } catch (e) {
-      print('실패');
-      print(e);
+      print('암장 로딩 실패 $e');
+
       centerTitle.value = '암장을 불러오지 못했습니다.';
     }
   }
