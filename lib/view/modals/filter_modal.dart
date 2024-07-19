@@ -14,8 +14,8 @@ class FilterModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.6, //자식 위젯의 크기 받아오는거 함 찾아봐야 됨
-      minChildSize: 0.5,
+      initialChildSize: 0.8, //자식 위젯의 크기 받아오는거 함 찾아봐야 됨
+      minChildSize: 0.7,
       maxChildSize: 0.9,
       builder: (context, scrollController) {
         return SingleChildScrollView(
