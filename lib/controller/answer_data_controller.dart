@@ -46,6 +46,7 @@ class AnswerDataController extends GetxController {
       videoControllerList = List.generate(sm.length, (index) => null);
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
+          //바꾸면 오류나서 추후 수정
           videoControllerList[entry.key] = VideoPlayerController.network(
             entry.value.videoUrl!,
           );
@@ -66,6 +67,7 @@ class AnswerDataController extends GetxController {
   }
 
   void disposeVideo() {
+    //비디오 컨트롤러에 저장된 영상 해제
     for (var controller in videoControllerList) {
       controller?.dispose();
     }
