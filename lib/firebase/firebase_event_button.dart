@@ -52,8 +52,9 @@ class AnalyticsService {
     String hasSolution,
   ) async {
     await analytics.logEvent(
-      name: '(test)problem_click id:$tmp',
+      name: '(test)problem_click',
       parameters: <String, Object>{
+        'id': tmp,
         'page': 'problem_list_page',
         'difficulty': difficulty,
         'sector': sector,
@@ -86,13 +87,17 @@ class AnalyticsService {
     );
   }
 
-  static Future<void> sendFilterModalEvent(String tmp, String domain) async {
+  static Future<void> sendFilterModalEvent(String tmp, String domain,
+      String diffOption, String secOption, String nobodySol) async {
     //필터 모달 버튼
     await analytics.logEvent(
       name: '(test)filter_tap_click : $tmp',
       parameters: <String, Object>{
         'page': 'sort_modal',
         'domain': domain,
+        'diffOption': diffOption,
+        'secOption': secOption,
+        'nobodySol': nobodySol,
       },
     );
   }
