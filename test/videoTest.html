@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload</title>
+</head>
+<body>
+    <h1>Video Upload</h1>
+    <form id="uploadForm">
+        <label for="video">Choose a video:</label>
+        <input type="file" id="video" name="video" accept="video/*" required><br><br>
+        <label for="problem_id">Problem ID:</label>
+        <input type="text" id="problem_id" name="problem_id" required><br><br>
+        <label for="uploader">Uploader:</label>
+        <input type="text" id="uploader" name="uploader" required><br><br>
+        <label for="review">Review:</label>
+        <textarea id="review" name="review" required></textarea><br><br>
+        <label for="instagram_id">Instagram ID:</label>
+        <input type="text" id="instagram_id" name="instagram_id" required><br><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            document.getElementById('response').innerText = ''; // Clear the response text
+
+            const video = document.getElementById('video').files[0];
+            const problem_id = document.getElementById('problem_id').value;
+            const uploader = document.getElementById('uploader').value;
+            const review = document.getElementById('review').value;
+            const instagram_id = document.getElementById('instagram_id').value;
+
+            // Step 1: Get presigned URL
+            try {
+                const presignedUrlResponse = await fetch('https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions/presigned-url');
+                const presignedUrlData = await presignedUrlResponse.json();
+                const uploadUrl = presignedUrlData.body.upload_url;
+                const fileName = presignedUrlData.body.file_name;
+
+                // Step 2: Upload video
+                const uploadResponse = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': video.type
+                    },
+                    body: video
+                });
+
+                if (uploadResponse.ok) {
+                    // Step 3: Send additional data
+                    const apiResponse = await fetch('https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            problem_id: problem_id,
+                            video_name: fileName,
+                            uploader: uploader,
+                            review: review,
+                            instagram_id: instagram_id
+                        })
+                    });
+
+                    if (apiResponse.ok) {
+                        const apiResponseData = await apiResponse.json();
+                        document.getElementById('response').innerText = 'Video uploaded and data sent successfully!\n' + 
+                                                                       'Response: ' + JSON.stringify(apiResponseData, null, 2);
+                    } else {
+                        const apiResponseData = await apiResponse.json();
+                        document.getElementById('response').innerText = 'Data submission failed!\n' + 
+                                                                       'Response: ' + JSON.stringify(apiResponseData, null, 2);
+                    }
+                } else {
+                    const uploadResponseData = await uploadResponse.text();
+                    document.getElementById('response').innerText = 'Video upload failed!\n' + 
+                                                                   'Response: ' + uploadResponseData;
+                }
+            } catch (error) {
+                document.getElementById('response').innerText = 'An error occurred: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

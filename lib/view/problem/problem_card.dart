@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
+import 'package:flash/view/problem/answer_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -80,9 +81,24 @@ class ProblemCard extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: id));
+                        Clipboard.setData(
+                          ClipboardData(text: id),
+                        );
                       },
                       child: Text(id),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AnswerUpload(id: id, imageUrl: imageUrl),
+                            allowSnapshotting: true,
+                          ),
+                        );
+                      },
+                      child: const Text("업로드"),
                     ),
                     Row(
                       children: [
