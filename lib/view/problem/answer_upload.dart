@@ -25,15 +25,20 @@ class _AnswerUploadState extends State<AnswerUpload> {
   VideoPlayerController? videoController;
   //File? _videoFile;
   Uint8List? _videoBytes;
-  String nickName = '', instaId = '', oneLinePyeong = '';
+  String nickName = 'Flash',
+      instaId = 'climbing_answer',
+      oneLinePyeong = '다른 풀이가 있으면 제보해주세요!';
   final TextEditingController nicCon = TextEditingController();
   final TextEditingController inCon = TextEditingController();
   final TextEditingController oneCon = TextEditingController();
-
+  Color uplod200 = Colors.grey;
   @override
   void initState() {
     super.initState();
     // 텍스트 필드의 값을 변수에 저장
+    nicCon.text = 'Flash';
+    inCon.text = 'climbing_answer';
+    oneCon.text = '다른 풀이가 있으면 제보해주세요!';
     nicCon.addListener(() {
       setState(() {
         nickName = nicCon.text;
@@ -115,6 +120,11 @@ class _AnswerUploadState extends State<AnswerUpload> {
             'instagram_id': instaId,
           },
         );
+        if (apiResponse.statusCode == 200) {
+          setState(() {
+            uplod200 = const Color.fromARGB(255, 0, 255, 8);
+          });
+        }
       }
     } catch (e) {
       print('영상 업로드 오류$e');
@@ -209,12 +219,21 @@ class _AnswerUploadState extends State<AnswerUpload> {
           const SizedBox(
             height: 50,
           ),
-          ElevatedButton(
-            onPressed: () {
-              print(nickName + instaId + oneLinePyeong);
-              _uploadVideo();
-            },
-            child: const Text('upload'),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  print(nickName + instaId + oneLinePyeong);
+                  _uploadVideo();
+                },
+                child: const Text('upload'),
+              ),
+              Icon(
+                Icons.upload,
+                color: uplod200,
+                size: 100,
+              ),
+            ],
           ),
         ],
       ),
