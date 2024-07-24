@@ -3,6 +3,16 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
+  static Future<void> screenView(String screenName, String gymId) async {
+    //제보페이지 버튼
+    await analytics.logScreenView(
+      screenName: screenName,
+      parameters: <String, Object>{
+        'gymId': gymId,
+      },
+    );
+  }
+
   static Future<void> sendCopyEvent(String tmp) async {
     //제보페이지 버튼
     await analytics.logEvent(
@@ -87,8 +97,13 @@ class AnalyticsService {
     );
   }
 
-  static Future<void> sendFilterModalEvent(String tmp, String domain,
-      String diffOption, String secOption, String nobodySol) async {
+  static Future<void> sendFilterModalEvent(
+    String tmp,
+    String domain,
+    String diffOption,
+    String secOption,
+    String nobodySol,
+  ) async {
     //필터 모달 버튼
     await analytics.logEvent(
       name: '(test)filter_tap_click : $tmp',

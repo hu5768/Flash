@@ -1,46 +1,45 @@
 {
-    "hosting": {
-        "site": "flash-43a2b",
-        "public": "build/web",
-        "ignore": [
-            "firebase.json",
-            "**/.*",
-            "**/node_modules/**"
-        ],
-        "rewrites": [
-            {
-                "source": "**",
-                "destination": "/index.html"
-            }
-        ]
-    },
-    "flutter": {
-        "platforms": {
-            "android": {
-                "default": {
-                    "projectId": "flash-43a2b",
-                    "appId": "1:723913284357:android:1a52b4cdb11aa8329a756c",
-                    "fileOutput": "android/app/google-services.json"
-                }
-            },
-            "ios": {
-                "default": {
-                    "projectId": "flash-43a2b",
-                    "appId": "1:723913284357:ios:604ae04899ef8b889a756c",
-                    "uploadDebugSymbols": false,
-                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
-                }
-            },
-            "dart": {
-                "lib/firebase_options.dart": {
-                    "projectId": "flash-43a2b",
-                    "configurations": {
-                        "android": "1:723913284357:android:1a52b4cdb11aa8329a756c",
-                        "ios": "1:723913284357:ios:604ae04899ef8b889a756c",
-                        "web": "1:723913284357:web:3e4488db09c512af9a756c"
-                    }
-                }
-            }
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "flash-43a2b",
+          "appId": "1:723913284357:android:1a52b4cdb11aa8329a756c",
+          "fileOutput": "android/app/google-services.json"
         }
+      },
+      "ios": {
+        "default": {
+          "projectId": "flash-43a2b",
+          "appId": "1:723913284357:ios:604ae04899ef8b889a756c",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "flash-43a2b",
+          "configurations": {
+            "android": "1:723913284357:android:1a52b4cdb11aa8329a756c",
+            "ios": "1:723913284357:ios:604ae04899ef8b889a756c",
+            "web": "1:723913284357:web:3e4488db09c512af9a756c"
+          }
+        }
+      }
     }
+  }
 }

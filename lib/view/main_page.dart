@@ -16,6 +16,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView(
+        'main_page', centerTitleController.centerTitle.string);
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
