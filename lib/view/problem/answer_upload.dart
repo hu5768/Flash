@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:html' as html;
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/controller/dio_singletone.dart';
@@ -22,7 +23,8 @@ class AnswerUpload extends StatefulWidget {
 
 class _AnswerUploadState extends State<AnswerUpload> {
   VideoPlayerController? videoController;
-  File? _videoFile;
+  //File? _videoFile;
+  Uint8List? _videoBytes;
   String nickName = '', instaId = '', oneLinePyeong = '';
   final TextEditingController nicCon = TextEditingController();
   final TextEditingController inCon = TextEditingController();
@@ -56,7 +58,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
         type: FileType.video,
       );
       if (result != null) {
-        _videoFile = File(result.files.first.path!);
+        _videoBytes = result.files.single.bytes;
         final file = result.files.single;
         final blob = html.Blob([file.bytes!]);
         final url = html.Url.createObjectUrlFromBlob(blob);
@@ -75,22 +77,25 @@ class _AnswerUploadState extends State<AnswerUpload> {
   }
 
   Future<void> _uploadVideo() async {
-    if (_videoFile == null) return;
+    if (_videoBytes == null) return;
     try {
-      //put에서 url 받아오기
+      //get에서 url 받아오기
       final presignedUrlResponse = await DioClient().dio.get(
             'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions/presigned-url',
           );
+      print("get요청 받는중");
       final presignedUrlData = presignedUrlResponse.data;
+      print(presignedUrlData);
       final uploadUrl = presignedUrlData['body']['upload_url'];
       final fileName = presignedUrlData['body']['file_name'];
 // s3에 put
+      print('s3에  put 하는중');
       final uploadResponse = await DioClient().dio.put(
             uploadUrl,
-            data: _videoFile!.openRead(),
+            data: Stream.fromIterable(_videoBytes!.map((e) => [e])),
             options: Options(
               headers: {
-                'Content-Type': 'video.type',
+                'Content-Type': 'video/*',
 
                 ///*
               },
@@ -99,6 +104,17 @@ class _AnswerUploadState extends State<AnswerUpload> {
 // put 성공하면
       if (uploadResponse.statusCode == 200) {
         print("업로드 성공?????????" + fileName);
+
+        final apiResponse = await DioClient().dio.post(
+          'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions',
+          data: {
+            'problem_id': widget.id,
+            'video_name': fileName,
+            'uploader': nickName,
+            'review': oneLinePyeong,
+            'instagram_id': instaId,
+          },
+        );
       }
     } catch (e) {
       print('영상 업로드 오류$e');
