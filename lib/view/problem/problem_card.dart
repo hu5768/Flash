@@ -4,11 +4,18 @@ import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
 
 class ProblemCard extends StatelessWidget {
-  final String id, sector, difficulty, settingDate, removalDate, imageUrl;
+  final String gymName,
+      id,
+      sector,
+      difficulty,
+      settingDate,
+      removalDate,
+      imageUrl;
   final bool hasSolution;
 
   const ProblemCard({
     super.key,
+    required this.gymName,
     required this.id,
     required this.sector,
     required this.difficulty,
@@ -31,7 +38,7 @@ class ProblemCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AnswersCarousell(id: id),
+            builder: (context) => AnswersCarousell(gymName: gymName, id: id),
             allowSnapshotting: true,
           ),
         );

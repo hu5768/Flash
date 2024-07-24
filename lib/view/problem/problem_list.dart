@@ -140,6 +140,7 @@ class ProblemList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ProblemCard(
+                              gymName: centerTitleController.centerTitle.value,
                               id: scrollController.problemList[index].id
                                   .toString(),
                               sector: scrollController.problemList[index].sector

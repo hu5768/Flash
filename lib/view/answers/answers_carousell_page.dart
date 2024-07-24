@@ -8,11 +8,12 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flutter/material.dart';
 
 class AnswersCarousell extends StatelessWidget {
-  final String id;
+  final String gymName, id;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final answerDataController = Get.put(AnswerDataController());
   AnswersCarousell({
     super.key,
+    required this.gymName,
     required this.id,
   });
   @override
@@ -38,14 +39,14 @@ class AnswersCarousell extends StatelessWidget {
           backgroundColor: ColorGroup.appbarBGC,
           title: SizedBox(
             height: AppBar().preferredSize.height,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '더클라임 강남',
-                  style: TextStyle(fontWeight: FontWeight.w800),
+                  gymName,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 80,
                 ),
               ],

@@ -41,7 +41,7 @@ class ProblemDetailCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '더클라임 강남 $sector',
+                        sector,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
