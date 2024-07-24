@@ -1,9 +1,10 @@
-import 'dart:html' as html; // dart:html 패키지 임포트
+import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flash/controller/dio_singletone.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:dio/dio.dart' as dios;
 
 class AnswerUpload extends StatefulWidget {
   final String id, imageUrl;
@@ -19,7 +20,7 @@ class AnswerUpload extends StatefulWidget {
 
 class _AnswerUploadState extends State<AnswerUpload> {
   VideoPlayerController? videoController;
-  Uint8List? _videoBytes; // File 대신 Uint8List 사용
+  Uint8List? _videoBytes;
   String nickName = 'Flash',
       instaId = 'climbing_answer',
       oneLinePyeong = '다른 풀이가 있으면 제보해주세요!';
@@ -27,10 +28,10 @@ class _AnswerUploadState extends State<AnswerUpload> {
   final TextEditingController inCon = TextEditingController();
   final TextEditingController oneCon = TextEditingController();
   Color uplod200 = Colors.grey;
-
   @override
   void initState() {
     super.initState();
+    // 텍스트 필드의 값을 변수에 저장
     nicCon.text = 'Flash';
     inCon.text = 'climbing_answer';
     oneCon.text = '다른 풀이가 있으면 제보해주세요!';
@@ -52,63 +53,60 @@ class _AnswerUploadState extends State<AnswerUpload> {
   }
 
   Future<void> _pickVideo() async {
+    // 파일 선택 다이얼로그 열기
     try {
-      // HTML input element를 사용하여 파일 선택 다이얼로그 열기
-      html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-      uploadInput.accept = 'video/*';
-      uploadInput.click();
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.video,
+      );
+      if (result != null) {
+        _videoBytes = result.files.single.bytes;
+        final file = result.files.single;
+        final blob = html.Blob([file.bytes!]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
 
-      uploadInput.onChange.listen((e) {
-        final files = uploadInput.files;
-        if (files!.isEmpty) return;
-        final reader = html.FileReader();
-
-        reader.onLoadEnd.listen((e) {
-          setState(() {
-            _videoBytes = reader.result as Uint8List;
-            final blob = html.Blob([_videoBytes!]);
-            final url = html.Url.createObjectUrlFromBlob(blob);
-
-            videoController = VideoPlayerController.network(url)
-              ..initialize().then((_) {
-                setState(() {});
-                videoController!.play();
-              });
-          });
+        setState(() {
+          videoController = VideoPlayerController.network(url)
+            ..initialize().then((_) {
+              setState(() {});
+              videoController!.play();
+            });
         });
-        reader.readAsArrayBuffer(files[0]);
-      });
+      }
     } catch (e) {
-      print("비디오 선택 오류 $e");
+      print("비디오 왜 오류 $e");
     }
   }
 
   Future<void> _uploadVideo() async {
-    setState(() {
-      uplod200 = const Color.fromARGB(255, 255, 149, 0);
-    });
-
     if (_videoBytes == null) return;
     try {
-      final presignedUrlResponse = await Dio().get(
-        'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions/presigned-url',
-      );
+      //get에서 url 받아오기
+      final presignedUrlResponse = await DioClient().dio.get(
+            'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions/presigned-url',
+          );
+      print("get요청 받는중");
       final presignedUrlData = presignedUrlResponse.data;
+      print(presignedUrlData);
       final uploadUrl = presignedUrlData['body']['upload_url'];
       final fileName = presignedUrlData['body']['file_name'];
+// s3에 put
+      print('s3에  put 하는중');
+      final uploadResponse = await DioClient().dio.put(
+            uploadUrl,
+            data: Stream.fromIterable(_videoBytes!.map((e) => [e])),
+            options: Options(
+              headers: {
+                'Content-Type': 'video/*',
 
-      final uploadResponse = await Dio().put(
-        uploadUrl,
-        data: Stream.fromIterable(_videoBytes!.map((e) => [e])), // Uint8List 사용
-        options: Options(
-          headers: {
-            'Content-Type': 'video/*',
-          },
-        ),
-      );
-
+                ///*
+              },
+            ),
+          );
+// put 성공하면
       if (uploadResponse.statusCode == 200) {
-        final apiResponse = await Dio().post(
+        print("업로드 성공?????????" + fileName);
+
+        final apiResponse = await DioClient().dio.post(
           'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions',
           data: {
             'problem_id': widget.id,
@@ -125,11 +123,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
         }
       }
     } catch (e) {
-      setState(() {
-        uplod200 = Colors.red;
-      });
-
-      print('영상 업로드 오류 $e');
+      print('영상 업로드 오류$e');
     }
   }
 
@@ -143,7 +137,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.id} 업로드"),
+        title: Text("${widget.id}업로드"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -161,7 +155,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                       )
                     : const SizedBox(
                         width: 200,
-                        child: Text('비디오를 선택해주세요'),
+                        child: Text('비디오 골라라'),
                       ),
                 SizedBox(
                   child: Image.network(
@@ -171,7 +165,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 ),
               ],
             ),
-            ElevatedButton(onPressed: _pickVideo, child: const Text('비디오 선택')),
+            ElevatedButton(onPressed: _pickVideo, child: const Text('video')),
             const SizedBox(
               height: 50,
             ),
@@ -184,8 +178,8 @@ class _AnswerUploadState extends State<AnswerUpload> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: '닉네임',
-                      fillColor: Colors.white,
-                      filled: true,
+                      fillColor: Colors.white, // 배경색을 흰색으로 설정
+                      filled: true, // 배경색을 적용하도록 설정
                     ),
                   ),
                 ),
@@ -199,8 +193,8 @@ class _AnswerUploadState extends State<AnswerUpload> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: '인스타 아이디',
-                      fillColor: Colors.white,
-                      filled: true,
+                      fillColor: Colors.white, // 배경색을 흰색으로 설정
+                      filled: true, // 배경색을 적용하도록 설정
                     ),
                   ),
                 ),
@@ -215,8 +209,8 @@ class _AnswerUploadState extends State<AnswerUpload> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '한줄평',
-                fillColor: Colors.white,
-                filled: true,
+                fillColor: Colors.white, // 배경색을 흰색으로 설정
+                filled: true, // 배경색을 적용하도록 설정
               ),
             ),
             const SizedBox(
@@ -225,8 +219,11 @@ class _AnswerUploadState extends State<AnswerUpload> {
             Row(
               children: [
                 ElevatedButton(
-                  onPressed: _uploadVideo,
-                  child: const Text('업로드'),
+                  onPressed: () {
+                    print(nickName + instaId + oneLinePyeong);
+                    _uploadVideo();
+                  },
+                  child: const Text('upload'),
                 ),
                 Icon(
                   Icons.upload,
