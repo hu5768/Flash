@@ -53,12 +53,12 @@ class ProblemDetailCard extends StatelessWidget {
                     height: 10,
                   ),
                   InfoText(
-                    title: '영상',
+                    title: '',
                     textInfo: hasSolution ? '영상 있음' : '영상 없음',
                   ),
-                  InfoText(title: '난이도', textInfo: difficulty),
-                  InfoText(title: '탈거일', textInfo: settingDate),
-                  InfoText(title: '세팅일', textInfo: removalDate),
+                  InfoText(title: '', textInfo: difficulty),
+                  InfoText(title: '탈거일: ', textInfo: settingDate),
+                  InfoText(title: '세팅일: ', textInfo: removalDate),
                 ],
               ),
             ),
@@ -84,9 +84,13 @@ class InfoText extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Text(
-          textInfo,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        Row(
+          children: [
+            Text(
+              '$title$textInfo',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ],
         ),
       ],
     );
