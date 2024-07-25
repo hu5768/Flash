@@ -34,8 +34,9 @@ class ProblemList extends StatelessWidget {
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
-                        AnalyticsService.sendMainButtonEvent(
-                          'sort_button',
+                        AnalyticsService.buttonClick(
+                          '문제리스트 페이지',
+                          '정렬 버튼',
                           centerTitleController.centerTitle.toString(),
                         );
                         showModalBottomSheet(
@@ -82,8 +83,9 @@ class ProblemList extends StatelessWidget {
                     () {
                       return ElevatedButton(
                         onPressed: () {
-                          AnalyticsService.sendMainButtonEvent(
-                            'filter_button',
+                          AnalyticsService.buttonClick(
+                            '문제리스트 페이지',
+                            '필터 버튼',
                             centerTitleController.centerTitle.toString(),
                           );
                           problemFilterController.inToTemp();

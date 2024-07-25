@@ -16,7 +16,7 @@ class ReportPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AnalyticsService.sendCopyEvent('close_report_button');
+            AnalyticsService.buttonClick('제보 페이지', '제보페이지 닫기 버튼', '');
             Navigator.pop(context);
           },
         ),
@@ -76,7 +76,7 @@ class ReportPage extends StatelessWidget {
                       Positioned(
                         top: 15,
                         right: 10,
-                        child: CopyButton(copyText: reportForm),
+                        child: CopyButton(copyText: reportForm, analText: "양식"),
                       ),
                     ],
                   ),
@@ -110,7 +110,7 @@ class ReportPage extends StatelessWidget {
                       Positioned(
                         top: 5,
                         right: 10,
-                        child: CopyButton(copyText: myEmail),
+                        child: CopyButton(copyText: myEmail, analText: "이메일"),
                       ),
                     ],
                   ),
@@ -125,17 +125,18 @@ class ReportPage extends StatelessWidget {
 }
 
 class CopyButton extends StatelessWidget {
-  final String copyText;
+  final String copyText, analText;
   const CopyButton({
     super.key,
     required this.copyText,
+    required this.analText,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        AnalyticsService.sendCopyEvent(copyText);
+        AnalyticsService.buttonClick('제보 페이지', '$analText 복사 버튼', '');
         Clipboard.setData(ClipboardData(text: copyText));
       },
       style: ElevatedButton.styleFrom(

@@ -77,7 +77,11 @@ class SortOrder extends StatelessWidget {
             ],
           ),
           onTap: () {
-            AnalyticsService.sendSortModalEvent(title);
+            AnalyticsService.buttonClick(
+              '문제리스트 페이지',
+              '$title 정렬 버튼',
+              "",
+            );
             problemTitleController.changeText(sortKey, title);
             problemListController.newFetch();
             Navigator.of(context).pop();

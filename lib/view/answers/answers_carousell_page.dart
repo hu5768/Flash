@@ -18,6 +18,10 @@ class AnswersCarousell extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView(
+      'main_page',
+      gymName,
+    );
     answerDataController.fetchData(id);
     answerCarouselController.cIndex.value = 0;
 
@@ -32,7 +36,11 @@ class AnswersCarousell extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              AnalyticsService.sendAnswerButtonEvent('close_answerList_button');
+              AnalyticsService.buttonClick(
+                '답지리스트 페이지',
+                '답지 닫기 버튼',
+                "",
+              );
               Navigator.pop(context);
             },
           ),
@@ -79,6 +87,12 @@ class AnswersCarousell extends StatelessWidget {
                                     height: double.infinity,
                                     viewportFraction: 1.0,
                                     onPageChanged: (index, reason) {
+                                      AnalyticsService.answerSlide(
+                                        index.toString(),
+                                        id,
+                                        answerDataController.difficulty,
+                                        answerDataController.sector,
+                                      );
                                       answerCarouselController.cIndex.value =
                                           index;
                                       if (0 <= index - 1 &&

@@ -13,13 +13,21 @@ class CenterListPage extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView(
+      '센터리스트 페이지',
+      '',
+    );
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AnalyticsService.sendCenterButtonEvent('close_centerList_button');
+            AnalyticsService.buttonClick(
+              '문제리스트 페이지',
+              '센터 리스트 닫기 버튼',
+              "",
+            );
             Navigator.pop(context);
           },
         ),

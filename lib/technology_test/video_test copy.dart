@@ -43,14 +43,12 @@ class _VideoTestState extends State<VideoTest> {
     );
     await _videoController.initialize();
     print('영상 다운');
-    AnalyticsService.sendVedioEvent('start', widget.useUri);
     _videoController.play();
     iscomplet = true;
 
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
         // 비디오가 끝났을 때 다시 재생
-        AnalyticsService.sendVedioEvent('restart', widget.useUri);
         _videoController.seekTo(Duration.zero);
         _videoController.play();
       }

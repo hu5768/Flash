@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 class FilterModal extends StatelessWidget {
   final ProblemFilterController problemFilterController = Get.find();
   final ProblemListController problemListController = Get.find();
+  final CenterTitleController centerTitleController = Get.find();
   FilterModal({super.key});
 
   @override
@@ -76,9 +78,9 @@ class FilterModal extends StatelessWidget {
                               value:
                                   problemFilterController.nobodySolTemp.value,
                               onChanged: (bool? value) {
-                                AnalyticsService.sendFilterModalEvent(
-                                  'nobodySol',
+                                AnalyticsService.modalClick(
                                   '못푼 문제 보기',
+                                  centerTitleController.centerTitle.string,
                                   problemFilterController.allTempSelection[0]
                                       .toString(),
                                   problemFilterController.allTempSelection[1]
@@ -111,9 +113,9 @@ class FilterModal extends StatelessWidget {
                             Obx(
                               () => ElevatedButton(
                                 onPressed: () {
-                                  AnalyticsService.sendFilterModalEvent(
-                                    'reset',
+                                  AnalyticsService.modalClick(
                                     '초기화',
+                                    centerTitleController.centerTitle.string,
                                     problemFilterController.allTempSelection[0]
                                         .toString(),
                                     problemFilterController.allTempSelection[1]
@@ -157,9 +159,9 @@ class FilterModal extends StatelessWidget {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                AnalyticsService.sendFilterModalEvent(
-                                  'apply',
+                                AnalyticsService.modalClick(
                                   '적용하기',
+                                  centerTitleController.centerTitle.string,
                                   problemFilterController.allTempSelection[0]
                                       .toString(),
                                   problemFilterController.allTempSelection[1]
@@ -206,7 +208,7 @@ class FilterModal extends StatelessWidget {
 }
 
 class FilterTab extends StatelessWidget {
-  const FilterTab({
+  FilterTab({
     super.key,
     required this.problemFilterController,
     required this.index,
@@ -215,7 +217,7 @@ class FilterTab extends StatelessWidget {
   final int index;
   final String title;
   final ProblemFilterController problemFilterController;
-
+  final CenterTitleController centerTitleController = Get.find(); //analytics
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -258,9 +260,9 @@ class FilterTab extends StatelessWidget {
                     ),
                     selected: isSelected,
                     onSelected: (bool selected) {
-                      AnalyticsService.sendFilterModalEvent(
-                        option,
+                      AnalyticsService.modalClick(
                         title,
+                        centerTitleController.centerTitle.string,
                         problemFilterController.allTempSelection[0].toString(),
                         problemFilterController.allTempSelection[1].toString(),
                         problemFilterController.nobodySolTemp.value.toString(),

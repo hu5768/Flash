@@ -17,7 +17,9 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView(
-        'main_page', centerTitleController.centerTitle.string);
+      'main_page',
+      centerTitleController.centerTitle.string,
+    );
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
@@ -29,8 +31,9 @@ class MainPage extends StatelessWidget {
           child: Center(
             child: GestureDetector(
               onTap: () {
-                AnalyticsService.sendMainButtonEvent(
-                  'center_list_button',
+                AnalyticsService.buttonClick(
+                  '문제리스트 페이지',
+                  '센터 리스트 버튼',
                   centerTitleController.centerTitle.toString(),
                 );
                 Navigator.push(
@@ -62,8 +65,9 @@ class MainPage extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      AnalyticsService.sendMainButtonEvent(
-                        'map_button',
+                      AnalyticsService.buttonClick(
+                        '문제리스트 페이지',
+                        '지도 버튼',
                         centerTitleController.centerTitle.toString(),
                       );
                       showDialog(
@@ -82,8 +86,9 @@ class MainPage extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    AnalyticsService.sendMainButtonEvent(
-                                      'close_map_button',
+                                    AnalyticsService.buttonClick(
+                                      '문제리스트 페이지',
+                                      '지도 종료 버튼',
                                       centerTitleController.centerTitle
                                           .toString(),
                                     );
@@ -135,8 +140,9 @@ class MainPage extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            AnalyticsService.sendMainButtonEvent(
-              'upload_button',
+            AnalyticsService.buttonClick(
+              '문제리스트 페이지',
+              '제보버튼',
               centerTitleController.centerTitle.toString(),
             );
             Navigator.push(

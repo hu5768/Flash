@@ -6,66 +6,36 @@ class AnalyticsService {
   static Future<void> screenView(String screenName, String gymId) async {
     //제보페이지 버튼
     await analytics.logScreenView(
-      screenName: screenName,
+      screenName: '(1.0)$screenName',
       parameters: <String, Object>{
         'gymId': gymId,
       },
     );
   }
 
-  static Future<void> sendCopyEvent(String tmp) async {
-    //제보페이지 버튼
+  static Future<void> buttonClick(String buttonName, pageName, gymName) async {
+    //버튼클릭 이벤트
     await analytics.logEvent(
-      name: '(test)button_click : $tmp',
+      name: '(1.0)$buttonName',
       parameters: <String, Object>{
-        'page': 'report_page',
+        'buttonName': buttonName,
+        'pageName': pageName,
+        'gymName': gymName,
       },
     );
   }
 
-  static Future<void> sendMainButtonEvent(String tmp, String gym) async {
-    //문제리스트 페이지 버튼
-    await analytics.logEvent(
-      name: '(test)button_click : $tmp',
-      parameters: <String, Object>{
-        'page': 'problem_list_page',
-        'gym': gym,
-      },
-    );
-  }
-
-  static Future<void> sendCenterButtonEvent(String tmp) async {
-    //암장리스트 페이지 버튼
-    await analytics.logEvent(
-      name: '(test)button_click : $tmp',
-      parameters: <String, Object>{
-        'page': 'center_list_page',
-      },
-    );
-  }
-
-  static Future<void> sendAnswerButtonEvent(String tmp) async {
-    //답지리스트 페이지 버튼
-    await analytics.logEvent(
-      name: '(test)button_click : $tmp',
-      parameters: <String, Object>{
-        'page': 'answer_list_page',
-      },
-    );
-  }
-
-  static Future<void> sendProblemCardEvent(
+  static Future<void> problemClick(
     //문제 선택 이벤트
-    String tmp,
+    String id,
     String difficulty,
     String sector,
     String hasSolution,
   ) async {
     await analytics.logEvent(
-      name: '(test)problem_click',
+      name: '(1.0)문제 선택',
       parameters: <String, Object>{
-        'id': tmp,
-        'page': 'problem_list_page',
+        'id': id,
         'difficulty': difficulty,
         'sector': sector,
         'hasSolution': hasSolution,
@@ -75,44 +45,51 @@ class AnalyticsService {
 
   static Future<void> sendVedioEvent(
     //비디오 플레이 이벤트
-    String tmp,
+    String type,
     String useuri,
   ) async {
     await analytics.logEvent(
-      name: '(test)video id:$tmp',
+      name: '(1.0)video',
       parameters: <String, Object>{
-        'page': 'answer_list_page',
+        'type': type,
         'videoUrl': useuri,
       },
     );
   }
 
-  static Future<void> sendSortModalEvent(String tmp) async {
-    //정렬 모달 버튼
-    await analytics.logEvent(
-      name: '(test)sort_tap_click : $tmp',
-      parameters: <String, Object>{
-        'page': 'sort_modal',
-      },
-    );
-  }
-
-  static Future<void> sendFilterModalEvent(
-    String tmp,
-    String domain,
+  static Future<void> modalClick(
+    String buttonName,
+    String gymName,
     String diffOption,
     String secOption,
     String nobodySol,
   ) async {
     //필터 모달 버튼
     await analytics.logEvent(
-      name: '(test)filter_tap_click : $tmp',
+      name: '(1.0): $buttonName',
       parameters: <String, Object>{
-        'page': 'sort_modal',
-        'domain': domain,
+        'gymName': diffOption,
         'diffOption': diffOption,
         'secOption': secOption,
         'nobodySol': nobodySol,
+      },
+    );
+  }
+
+  static Future<void> answerSlide(
+    //비디오 플레이 이벤트
+    String index,
+    String id,
+    String difficulty,
+    String sector,
+  ) async {
+    await analytics.logEvent(
+      name: '(1.0)풀이 슬라이드',
+      parameters: <String, Object>{
+        'index': index,
+        'id': id,
+        'difficulty': difficulty,
+        'sector': sector,
       },
     );
   }

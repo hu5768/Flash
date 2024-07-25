@@ -21,7 +21,11 @@ class CenterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AnalyticsService.sendCenterButtonEvent(title);
+        AnalyticsService.buttonClick(
+          '센터리스트 페이지',
+          '$title 센터 리스트 버튼',
+          centerTitleController.centerTitle.toString(),
+        );
         problemSortController.allInit();
         centerTitleController.changeId(id);
         centerTitleController.getTitle();

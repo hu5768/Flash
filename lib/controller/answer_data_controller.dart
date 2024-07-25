@@ -10,6 +10,8 @@ import 'dio_singletone.dart';
 
 class AnswerDataController extends GetxController {
   var answerList = <Widget>[].obs;
+  String difficulty = '';
+  String sector = '';
   late List<VideoPlayerController?> videoControllerList;
   void fetchData(String problemId) async {
     dios.Response response;
@@ -21,6 +23,9 @@ class AnswerDataController extends GetxController {
           );
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       ProblemDetailModel detailInfo = ProblemDetailModel.fromJson(resMap);
+      //analytics용
+      difficulty = detailInfo.difficulty!;
+      sector = detailInfo.sector!;
       answerList.add(
         ProblemDetailCard(
           sector: detailInfo.sector!,

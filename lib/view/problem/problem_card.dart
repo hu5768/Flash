@@ -29,7 +29,7 @@ class ProblemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AnalyticsService.sendProblemCardEvent(
+        AnalyticsService.problemClick(
           id,
           difficulty,
           sector,
