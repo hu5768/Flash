@@ -66,7 +66,7 @@ class AnalyticsService {
   ) async {
     //필터 모달 버튼
     await analytics.logEvent(
-      name: '(1.0): $buttonName',
+      name: '(1.0)모달클릭 $buttonName',
       parameters: <String, Object>{
         'gymName': diffOption,
         'diffOption': diffOption,
