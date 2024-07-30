@@ -33,7 +33,7 @@ class AnalyticsService {
     String hasSolution,
   ) async {
     await analytics.logEvent(
-      name: '(1.0)문제 선택',
+      name: '문제 선택(1.0)',
       parameters: <String, Object>{
         'id': id,
         'difficulty': difficulty,

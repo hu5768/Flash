@@ -52,8 +52,9 @@ class AnswerDataController extends GetxController {
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
           //바꾸면 오류나서 추후 수정
-          videoControllerList[entry.key] = VideoPlayerController.network(
-            entry.value.videoUrl!,
+
+          videoControllerList[entry.key] = VideoPlayerController.networkUrl(
+            Uri.parse(entry.value.videoUrl!),
           );
 
           return AnswerCard(
