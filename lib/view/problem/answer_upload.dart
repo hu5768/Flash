@@ -1,5 +1,4 @@
-import 'dart:io' as io;
-import 'dart:typed_data';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/controller/dio_singletone.dart';
@@ -20,7 +19,7 @@ class AnswerUpload extends StatefulWidget {
 
 class _AnswerUploadState extends State<AnswerUpload> {
   VideoPlayerController? videoController;
-  Uint8List? _videoBytes;
+  File? _video;
   String nickName = 'Flash',
       instaId = 'climbing_answer',
       oneLinePyeong = '다른 풀이가 있으면 제보해주세요!';
@@ -59,12 +58,11 @@ class _AnswerUploadState extends State<AnswerUpload> {
         type: FileType.video,
       );
       if (result != null) {
-        _videoBytes = await io.File(result.files.single.path!).readAsBytes();
-        final file = io.File(result.files.single.path!);
-        final url = file.path;
+        _video = File(result.files.single.path!);
+        final url = _video?.path;
 
         setState(() {
-          videoController = VideoPlayerController.network(url)
+          videoController = VideoPlayerController.network(url!)
             ..initialize().then((_) {
               setState(() {});
               videoController!.play();
@@ -77,7 +75,10 @@ class _AnswerUploadState extends State<AnswerUpload> {
   }
 
   Future<void> _uploadVideo() async {
-    if (_videoBytes == null) return;
+    if (_video == null) return;
+    setState(() {
+      uplod200 = const Color.fromARGB(255, 255, 140, 0);
+    });
     try {
       //get에서 url 받아오기
       final presignedUrlResponse = await DioClient().dio.get(
@@ -88,16 +89,17 @@ class _AnswerUploadState extends State<AnswerUpload> {
       print(presignedUrlData);
       final uploadUrl = presignedUrlData['body']['upload_url'];
       final fileName = presignedUrlData['body']['file_name'];
+
+      List<int> videoBytes = await _video!.readAsBytes();
 // s3에 put
       print('s3에  put 하는중');
       final uploadResponse = await DioClient().dio.put(
             uploadUrl,
-            data: Stream.fromIterable(_videoBytes!.map((e) => [e])),
+            data: Stream.fromIterable(videoBytes.map((e) => [e])),
             options: Options(
               headers: {
-                'Content-Type': 'video/*',
-
-                ///*
+                "Content-Type": "video/mp4",
+                "Content-Length": videoBytes.length.toString(),
               },
             ),
           );

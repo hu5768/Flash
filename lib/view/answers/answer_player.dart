@@ -65,8 +65,15 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
       child: Container(
         decoration: const BoxDecoration(color: Color.fromARGB(255, 0, 0, 0)),
         child: iscomplet
-            ? VideoPlayer(
-                widget.videoController,
+            ? FittedBox(
+                fit: BoxFit.contain,
+                child: SizedBox(
+                  width: widget.videoController.value.size.width,
+                  height: widget.videoController.value.size.height,
+                  child: VideoPlayer(
+                    widget.videoController,
+                  ),
+                ),
               )
             : const Center(
                 child: SizedBox(

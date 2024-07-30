@@ -79,6 +79,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   Future<void> _uploadVideo() async {
     if (_videoBytes == null) return;
+    setState(() {
+      uplod200 = const Color.fromARGB(255, 255, 140, 0);
+    });
     try {
       //get에서 url 받아오기
       final presignedUrlResponse = await DioClient().dio.get(
