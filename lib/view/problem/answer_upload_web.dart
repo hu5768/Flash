@@ -135,6 +135,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   @override
   Widget build(BuildContext context) {
+    print('web upload');
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.id}업로드"),
