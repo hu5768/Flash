@@ -53,6 +53,62 @@ class MainPage extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      IconButton(
+                        onPressed: () {
+                          AnalyticsService.buttonClick(
+                            '문제리스트 페이지',
+                            '지도 버튼',
+                            centerTitleController.centerTitle.toString(),
+                          );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                contentPadding: const EdgeInsets.all(0),
+                                backgroundColor: Colors.transparent,
+                                content: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        AnalyticsService.buttonClick(
+                                          '문제리스트 페이지',
+                                          '지도 종료 버튼',
+                                          centerTitleController.centerTitle
+                                              .toString(),
+                                        );
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    SizedBox(
+                                      child: Image.network(
+                                        width: 350,
+                                        height: 350,
+                                        centerTitleController.mapImgUrl,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const SizedBox(
+                                            width: 350,
+                                            height: 350,
+                                            child: Text("지도를 불러오지 못했습니다."),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.map),
+                      ),
                       Obx(() {
                         return Text(
                           //"${centerTitleController.centerTitle} (개발 서버)",
@@ -62,61 +118,6 @@ class MainPage extends StatelessWidget {
                       }),
                       const Icon(Icons.arrow_drop_down),
                     ],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      AnalyticsService.buttonClick(
-                        '문제리스트 페이지',
-                        '지도 버튼',
-                        centerTitleController.centerTitle.toString(),
-                      );
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            contentPadding: const EdgeInsets.all(0),
-                            backgroundColor: Colors.transparent,
-                            content: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    AnalyticsService.buttonClick(
-                                      '문제리스트 페이지',
-                                      '지도 종료 버튼',
-                                      centerTitleController.centerTitle
-                                          .toString(),
-                                    );
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                SizedBox(
-                                  child: Image.network(
-                                    width: 350,
-                                    height: 350,
-                                    centerTitleController.mapImgUrl,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const SizedBox(
-                                        width: 350,
-                                        height: 350,
-                                        child: Text("지도를 불러오지 못했습니다."),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.map),
                   ),
                 ],
               ),
