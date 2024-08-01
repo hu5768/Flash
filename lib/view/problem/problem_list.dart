@@ -12,9 +12,9 @@ import 'package:get/get.dart';
 
 class ProblemList extends StatelessWidget {
   ProblemList({super.key});
+  final ProblemSortController problemTitleController = Get.find();
 
-  final problemTitleController = Get.put(ProblemSortController());
-  final problemFilterController = Get.put(ProblemFilterController());
+  final ProblemFilterController problemFilterController = Get.find();
   final scrollController = Get.put(ProblemListController());
   final CenterTitleController centerTitleController = Get.find();
   @override
@@ -28,7 +28,7 @@ class ProblemList extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Row(
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Obx(
@@ -76,9 +76,7 @@ class ProblemList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  
                   Obx(
                     () {
                       return ElevatedButton(
@@ -128,8 +126,9 @@ class ProblemList extends StatelessWidget {
                       );
                     },
                   ),
+                
                 ],
-              ),
+              ),*/
               const SizedBox(height: 10),
               GetX<ProblemListController>(
                 builder: (controller) {

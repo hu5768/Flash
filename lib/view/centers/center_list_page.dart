@@ -13,44 +13,9 @@ class CenterListPage extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView(
-      '센터리스트 페이지',
-      '',
-    );
-    return Scaffold(
-      backgroundColor: ColorGroup.BGC,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            AnalyticsService.buttonClick(
-              '문제리스트 페이지',
-              '센터 리스트 닫기 버튼',
-              "",
-            );
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: ColorGroup.appbarBGC,
-        title: Container(
-          height: AppBar().preferredSize.height,
-          decoration: const BoxDecoration(),
-          child: const Row(
-            children: [
-              SizedBox(
-                width: 120,
-              ),
-              Center(
-                child: Text(
-                  "Flash",
-                  style: TextStyle(fontWeight: FontWeight.w800),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: Padding(
+    return Container(
+      color: ColorGroup.BGC,
+      child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: GetX<CenterListController>(
           builder: (controller) {

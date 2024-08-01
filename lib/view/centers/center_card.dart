@@ -14,7 +14,7 @@ class CenterCard extends StatelessWidget {
     required this.title,
     required this.thum,
   });
-  final centerTitleController = Get.put(CenterTitleController());
+  final CenterTitleController centerTitleController = Get.find();
   final ProblemListController problemListController = Get.find();
   final ProblemSortController problemSortController = Get.find();
   @override
