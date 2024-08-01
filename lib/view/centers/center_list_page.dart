@@ -14,23 +14,52 @@ class CenterListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorGroup.BGC,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-        child: GetX<CenterListController>(
-          builder: (controller) {
-            return ListView.builder(
-              itemCount: controller.centerCon.length,
-              itemBuilder: (context, index) {
-                return CenterCard(
-                  id: controller.centerCon[index].id,
-                  thum: controller.centerCon[index].thumbnailUrl,
-                  title: controller.centerCon[index].gymName,
-                );
-              },
-            );
-          },
-        ),
+      height: MediaQuery.of(context).size.height * 0.9,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: ColorGroup.modalBGC,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(
+                width: 50,
+              ),
+              const Text(
+                "클라이밍장 선택",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: GetX<CenterListController>(
+                builder: (controller) {
+                  return ListView.builder(
+                    itemCount: controller.centerCon.length,
+                    itemBuilder: (context, index) {
+                      return CenterCard(
+                        id: controller.centerCon[index].id,
+                        thum: controller.centerCon[index].thumbnailUrl,
+                        title: controller.centerCon[index].gymName,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

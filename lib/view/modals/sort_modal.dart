@@ -11,8 +11,11 @@ class SortModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorGroup.modalBGC,
       padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: ColorGroup.modalBGC,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -23,8 +26,8 @@ class SortModal extends StatelessWidget {
                 width: 50,
               ),
               const Text(
-                "문제 정렬",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                "문제 정렬 선택",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 onPressed: () {
@@ -33,6 +36,9 @@ class SortModal extends StatelessWidget {
                 icon: const Icon(Icons.close),
               ),
             ],
+          ),
+          SizedBox(
+            height: 15,
           ),
           SortOrder(title: '추천순', sortKey: 'recommand'),
           SortOrder(title: '인기순', sortKey: 'views'),
@@ -46,7 +52,6 @@ class SortModal extends StatelessWidget {
 class SortOrder extends StatelessWidget {
   final ProblemSortController problemTitleController = Get.find();
   final ProblemListController problemListController = Get.find();
-  //컨트롤러 자료형 없이 등록하면 어떻게 되는지 질문
   final String title, sortKey;
   SortOrder({
     super.key,
@@ -58,22 +63,21 @@ class SortOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Divider(),
         ListTile(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                title,
+                style: problemTitleController.sortkey.toString() == sortKey
+                    ? TextStyle(fontSize: 18, color: ColorGroup.selectBtnBGC)
+                    : TextStyle(fontSize: 18),
+              ),
               problemTitleController.sortkey.toString() == sortKey
                   ? const Icon(Icons.check, color: ColorGroup.selectBtnBGC)
                   : const SizedBox(
-                      width: 20,
+                      width: 18,
                     ),
-              Center(
-                child: Text(
-                  title,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
             ],
           ),
           onTap: () {
@@ -87,6 +91,7 @@ class SortOrder extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
+        SizedBox(height: 15),
       ],
     );
   }

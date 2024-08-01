@@ -1,3 +1,4 @@
+import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
@@ -39,32 +40,45 @@ class CenterCard extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ClipOval(
-              child: Image.network(
-                thum,
-                width: 70,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/problem.jpeg',
+            Row(
+              children: [
+                ClipOval(
+                  child: Image.network(
+                    thum,
+                    width: 55,
                     fit: BoxFit.cover,
-                  );
-                },
-              ),
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/problem.jpeg',
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(width: 15),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 20), //여기에 주소 추가
+                  ],
+                ),
+              ],
             ),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(
-              width: 70,
-            ),
-            const Icon(Icons.arrow_forward_ios_rounded),
+            centerTitleController.centerId == id
+                ? Icon(
+                    Icons.check,
+                    color: ColorGroup.selectBtnBGC,
+                  )
+                : SizedBox(width: 50),
           ],
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/modals/filter_modal.dart';
+import 'package:flash/view/modals/map_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/mypage/mypage.dart';
 import 'package:flash/view/problem/problem_list.dart';
@@ -50,6 +51,7 @@ class MainPage extends StatelessWidget {
                     );
                     showModalBottomSheet(
                       context: context,
+                      isScrollControlled: true,
                       builder: (BuildContext context) {
                         return CenterListPage();
                       },
@@ -261,47 +263,14 @@ class MapButton extends StatelessWidget {
             '지도 버튼',
             centerTitleController.centerTitle.toString(),
           );
-          showDialog(
+          showModalBottomSheet(
+            backgroundColor: ColorGroup.modalBGC,
+            isScrollControlled: true,
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                contentPadding: const EdgeInsets.all(0),
-                backgroundColor: Colors.transparent,
-                content: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        AnalyticsService.buttonClick(
-                          '문제리스트 페이지',
-                          '지도 종료 버튼',
-                          centerTitleController.centerTitle.toString(),
-                        );
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      child: Image.network(
-                        width: 350,
-                        height: 350,
-                        centerTitleController.mapImgUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const SizedBox(
-                            width: 350,
-                            height: 350,
-                            child: Text("지도를 불러오지 못했습니다."),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+              return MapModal(
+                mapImgUrl: centerTitleController.mapImgUrl,
+                gymName: centerTitleController.centerTitle.string,
               );
             },
           );
