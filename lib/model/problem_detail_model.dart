@@ -1,5 +1,6 @@
 class ProblemDetailModel {
   String? id;
+  String? gymName;
   String? sector;
   String? difficulty;
   String? settingDate;
@@ -10,6 +11,7 @@ class ProblemDetailModel {
 
   ProblemDetailModel({
     this.id,
+    this.gymName,
     this.sector,
     this.difficulty,
     this.settingDate,
@@ -21,6 +23,7 @@ class ProblemDetailModel {
 
   ProblemDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    gymName = json['gymName'];
     sector = json['sector'];
     difficulty = json['difficulty'];
     settingDate = json['settingDate'];
@@ -33,6 +36,7 @@ class ProblemDetailModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['gymName'] = gymName;
     data['sector'] = sector;
     data['difficulty'] = difficulty;
     data['settingDate'] = settingDate;

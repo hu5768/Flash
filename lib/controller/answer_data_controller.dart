@@ -28,6 +28,7 @@ class AnswerDataController extends GetxController {
       sector = detailInfo.sector!;
       answerList.add(
         ProblemDetailCard(
+          gymName: detailInfo.gymName!,
           sector: detailInfo.sector!,
           difficulty: detailInfo.difficulty!,
           settingDate: detailInfo.settingDate!,

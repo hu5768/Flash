@@ -25,10 +25,6 @@ class MainPage extends StatelessWidget {
   final mainpageController = Get.put(MainpageController());
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView(
-      'main_page',
-      centerTitleController.centerTitle.string,
-    );
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
@@ -45,11 +41,6 @@ class MainPage extends StatelessWidget {
                 MapButton(centerTitleController: centerTitleController),
                 GestureDetector(
                   onTap: () {
-                    AnalyticsService.buttonClick(
-                      '문제리스트 페이지',
-                      '센터 리스트 버튼',
-                      centerTitleController.centerTitle.toString(),
-                    );
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
@@ -283,11 +274,6 @@ class MapButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () {
-          AnalyticsService.buttonClick(
-            '문제리스트 페이지',
-            '지도 버튼',
-            centerTitleController.centerTitle.toString(),
-          );
           showModalBottomSheet(
             backgroundColor: ColorGroup.modalBGC,
             isScrollControlled: true,

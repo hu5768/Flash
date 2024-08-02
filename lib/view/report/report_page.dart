@@ -16,7 +16,6 @@ class ReportPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AnalyticsService.buttonClick('제보 페이지', '제보페이지 닫기 버튼', '');
             Navigator.pop(context);
           },
         ),
@@ -136,7 +135,6 @@ class CopyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        AnalyticsService.buttonClick('제보 페이지', '$analText 복사 버튼', '');
         Clipboard.setData(ClipboardData(text: copyText));
       },
       style: ElevatedButton.styleFrom(

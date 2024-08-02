@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  /*WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  );*/
   runApp(const App());
 }
 
@@ -22,10 +22,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flash',
       debugShowCheckedModeBanner: false,
-
+/*
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
-      ],
+      ],*/
       home: MainPage(),
       //home: MainPage(),
     );

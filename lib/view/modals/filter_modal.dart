@@ -105,16 +105,6 @@ class FilterModal extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              AnalyticsService.modalClick(
-                                '적용하기',
-                                centerTitleController.centerTitle.string,
-                                problemFilterController.allTempSelection[0]
-                                    .toString(),
-                                problemFilterController.allTempSelection[1]
-                                    .toString(),
-                                problemFilterController.nobodySolTemp.value
-                                    .toString(),
-                              );
                               problemFilterController.tempToSel();
                               problemListController.newFetch();
                               Navigator.of(context).pop();
@@ -204,13 +194,6 @@ class FilterTab extends StatelessWidget {
                     ),
                     selected: isSelected,
                     onSelected: (bool selected) {
-                      AnalyticsService.modalClick(
-                        title,
-                        centerTitleController.centerTitle.string,
-                        problemFilterController.allTempSelection[0].toString(),
-                        problemFilterController.allTempSelection[1].toString(),
-                        problemFilterController.nobodySolTemp.value.toString(),
-                      );
                       problemFilterController.toggleSelection(
                         option,
                         index,

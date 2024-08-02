@@ -1,12 +1,12 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-
+/*
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   static Future<void> screenView(String screenName, String gymId) async {
     //제보페이지 버튼
     await analytics.logScreenView(
-      screenName: '(1.0)$screenName',
+      screenName: '$screenName(1.0)',
       parameters: <String, Object>{
         'gymId': gymId,
       },
@@ -16,7 +16,7 @@ class AnalyticsService {
   static Future<void> buttonClick(String buttonName, pageName, gymName) async {
     //버튼클릭 이벤트
     await analytics.logEvent(
-      name: '(1.0)$buttonName',
+      name: '$buttonName(1.0)',
       parameters: <String, Object>{
         'buttonName': buttonName,
         'pageName': pageName,
@@ -49,7 +49,7 @@ class AnalyticsService {
     String useuri,
   ) async {
     await analytics.logEvent(
-      name: '(1.0)video',
+      name: 'video(1.0)',
       parameters: <String, Object>{
         'type': type,
         'videoUrl': useuri,
@@ -66,7 +66,7 @@ class AnalyticsService {
   ) async {
     //필터 모달 버튼
     await analytics.logEvent(
-      name: '(1.0)모달클릭 $buttonName',
+      name: '모달클릭 $buttonName(1.0)',
       parameters: <String, Object>{
         'gymName': diffOption,
         'diffOption': diffOption,
@@ -84,7 +84,7 @@ class AnalyticsService {
     String sector,
   ) async {
     await analytics.logEvent(
-      name: '(1.0)풀이 슬라이드',
+      name: '풀이 슬라이드(1.0)',
       parameters: <String, Object>{
         'index': index,
         'id': id,
@@ -94,3 +94,4 @@ class AnalyticsService {
     );
   }
 }
+*/

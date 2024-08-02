@@ -1,6 +1,5 @@
 import 'package:flash/controller/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
-import 'package:flash/view/answers/wrong_answer.dart';
 import 'package:get/get.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -18,10 +17,6 @@ class AnswersCarousell extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView(
-      'main_page',
-      gymName,
-    );
     answerDataController.fetchData(id);
     answerCarouselController.cIndex.value = 0;
 
@@ -32,126 +27,125 @@ class AnswersCarousell extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: ColorGroup.BGC,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              AnalyticsService.buttonClick(
-                '답지리스트 페이지',
-                '답지 닫기 버튼',
-                "",
-              );
-              Navigator.pop(context);
-            },
-          ),
-          backgroundColor: ColorGroup.appbarBGC,
-          title: SizedBox(
-            height: AppBar().preferredSize.height,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  gymName,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(
-                  width: 80,
-                ),
-              ],
+        body: SafeArea(
+          child: Center(
+            child: Container(
+              child: Stack(
+                alignment: AlignmentDirectional.topCenter,
+                children: [
+                  Positioned(
+                    child: GetX<AnswerDataController>(
+                      builder: (controller) {
+                        return CarouselSlider(
+                          items: answerDataController.answerList,
+                          options: CarouselOptions(
+                            enableInfiniteScroll: false,
+                            height: double.infinity,
+                            viewportFraction: 1.0,
+                            onPageChanged: (index, reason) {
+                              answerCarouselController.cIndex.value = index;
+                              if (0 <= index - 1 &&
+                                  index - 1 <
+                                      answerDataController
+                                          .videoControllerList.length) {
+                                answerDataController
+                                    .videoControllerList[index - 1]!
+                                    .play();
+                                //print('영상 실행');
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    //인디케이터
+                    top: 10,
+                    child: CarouselIndicator(
+                      answerDataController: answerDataController,
+                      answerCarouselController: answerCarouselController,
+                    ),
+                  ),
+                  Positioned(
+                    top: 30,
+                    right: 15,
+                    child: CloseButton(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        body: true
-            ? Center(
-                child: ConstrainedBox(
-                  constraints:
-                      const BoxConstraints(maxWidth: 400), //이 사이부분 빌드 시 오류남
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Stack(
-                      alignment: AlignmentDirectional.topCenter,
-                      children: [
-                        Positioned(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 25),
-                            child: GetX<AnswerDataController>(
-                              builder: (controller) {
-                                return CarouselSlider(
-                                  items: answerDataController.answerList,
-                                  options: CarouselOptions(
-                                    enlargeCenterPage: true,
-                                    enableInfiniteScroll: false,
-                                    height: double.infinity,
-                                    viewportFraction: 1.0,
-                                    onPageChanged: (index, reason) {
-                                      AnalyticsService.answerSlide(
-                                        index.toString(),
-                                        id,
-                                        answerDataController.difficulty,
-                                        answerDataController.sector,
-                                      );
-                                      answerCarouselController.cIndex.value =
-                                          index;
-                                      if (0 <= index - 1 &&
-                                          index - 1 <
-                                              answerDataController
-                                                  .videoControllerList.length) {
-                                        answerDataController
-                                            .videoControllerList[index - 1]!
-                                            .play();
-                                        //print('영상 실행');
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          //인디케이터
-                          bottom: 15,
-                          child: SizedBox(
-                            width: 100 +
-                                8 *
-                                    answerDataController.answerList.length
-                                        .toDouble(),
-                            child: Obx(
-                              () {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: answerDataController.answerList
-                                      .asMap()
-                                      .entries
-                                      .map((entry) {
-                                    return Container(
-                                      width: 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: entry.key ==
-                                                answerCarouselController
-                                                    .cIndex.value
-                                            ? ColorGroup.selectBtnBGC
-                                            : ColorGroup.modalBtnBGC,
-                                      ),
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+      ),
+    );
+  }
+}
+
+class CloseButton extends StatelessWidget {
+  const CloseButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7), // 배경색 설정
+        shape: BoxShape.circle, // 동그란 모양으로 설정
+      ),
+      child: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(
+          Icons.close,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class CarouselIndicator extends StatelessWidget {
+  const CarouselIndicator({
+    super.key,
+    required this.answerDataController,
+    required this.answerCarouselController,
+  });
+
+  final AnswerDataController answerDataController;
+  final AnswerCarouselController answerCarouselController;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Obx(
+        () {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children:
+                answerDataController.answerList.asMap().entries.map((entry) {
+              double indicatorSize = MediaQuery.of(context).size.width /
+                      answerDataController.answerList.length -
+                  20;
+              return Container(
+                width: indicatorSize > 10 ? indicatorSize : 10,
+                height: 4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: entry.key == answerCarouselController.cIndex.value
+                      ? const Color.fromARGB(255, 255, 255, 255)
+                      : const Color.fromARGB(255, 194, 194, 194)
+                          .withOpacity(0.5),
                 ),
-              )
-            : const WrongAnswer(),
+              );
+            }).toList(),
+          );
+        },
       ),
     );
   }

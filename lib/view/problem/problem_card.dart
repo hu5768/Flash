@@ -31,12 +31,6 @@ class ProblemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AnalyticsService.problemClick(
-          id,
-          difficulty,
-          sector,
-          hasSolution.toString(),
-        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -103,12 +97,12 @@ class ProblemCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 4.0),
+                    SizedBox(height: 2.0),
                     Text(
                       formatDateString(settingDate) + ' 세팅',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.0,
+                        fontSize: 12.0,
                       ),
                     ),
                     SizedBox(height: 8.0),
@@ -124,13 +118,20 @@ class ProblemCard extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.circle,
-                                color:
-                                    CenterColor.TheClimbColorList[difficulty],
-                                size: 20.0,
+                              Container(
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color:
+                                      CenterColor.TheClimbColorList[difficulty],
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white, // 테두리 색상
+                                    width: 1,
+                                  ),
+                                ),
                               ),
-                              SizedBox(width: 5),
+                              SizedBox(width: 4),
                               Text(
                                 difficulty,
                                 style: TextStyle(color: ColorGroup.btnBGC),
