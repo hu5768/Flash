@@ -87,6 +87,7 @@ class ProblemFilterController extends GetxController {
   }
 
   int countFilter() {
+    //필터 갯수 리턴
     int cnt = 0;
     for (int i = 0; i < allTempSelection.length; i++) {
       cnt += allSelection[i].length;

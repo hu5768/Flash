@@ -35,6 +35,7 @@ class MainPage extends StatelessWidget {
         surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
         backgroundColor: ColorGroup.appbarBGC,
         title: Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           height: AppBar().preferredSize.height,
           decoration: const BoxDecoration(),
           child: Center(
@@ -56,20 +57,44 @@ class MainPage extends StatelessWidget {
                         return CenterListPage();
                       },
                     );
-                    /*
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CenterListPage(),
-                        allowSnapshotting: true,
-                      ),
-                    );*/
                   },
                   child:
                       TitleButton(centerTitleController: centerTitleController),
                 ),
-                FilterButton(
-                  problemFilterController: problemFilterController,
+                Obx(
+                  () => Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      FilterButton(
+                        problemFilterController: problemFilterController,
+                      ),
+                      problemFilterController.allEmpty()
+                          ? SizedBox()
+                          : Positioned(
+                              right: -10,
+                              top: -8,
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                  color: ColorGroup.selectBtnBGC, // 배경색 설정
+                                  shape: BoxShape.circle, // 동그란 모양으로 설정
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    problemFilterController
+                                        .countFilter()
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: ColorGroup.BGC,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
                 ),
               ],
             ),
