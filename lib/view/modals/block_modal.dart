@@ -35,6 +35,7 @@ class BlockModal extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text('추후 추가될 기능입니다'),
                 ListTile(
                   minVerticalPadding: 20,
                   leading: Icon(Icons.block, color: Colors.black),
@@ -50,13 +51,16 @@ class BlockModal extends StatelessWidget {
                 Divider(height: 1),
                 ListTile(
                   minVerticalPadding: 20,
-                  leading: Icon(Icons.error_outline,
-                      color: const Color.fromARGB(255, 255, 0, 0)),
+                  leading: Icon(
+                    Icons.error_outline,
+                    color: const Color.fromARGB(255, 255, 0, 0),
+                  ),
                   title: Text(
                     '신고하기',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 255, 0, 0)),
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 255, 0, 0),
+                    ),
                   ),
                   onTap: () {
                     // 삭제하기 클릭 시 동작

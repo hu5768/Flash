@@ -139,7 +139,15 @@ class ProblemDetailCard extends StatelessWidget {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            backgroundColor: ColorGroup.modalBGC,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Text('추후 추가될 기능입니다');
+                            },
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           backgroundColor: Colors.grey.withOpacity(0.3),

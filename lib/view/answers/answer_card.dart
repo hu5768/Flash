@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/view/answers/answer_player.dart';
+import 'package:flash/view/modals/block_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -113,7 +114,7 @@ class AnswerCard extends StatelessWidget {
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
                               builder: (BuildContext context) {
-                                return ManageModal();
+                                return BlockModal();
                               },
                             );
                           },
