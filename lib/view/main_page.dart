@@ -1,6 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
-import 'package:flash/controller/mainpage_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -15,173 +14,175 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   MainPage({
     super.key,
   });
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int currentIndex = 0;
+
   final problemTitleController = Get.put(ProblemSortController());
   final centerTitleController = Get.put(CenterTitleController());
   final problemFilterController = Get.put(ProblemFilterController());
-  final mainpageController = Get.put(MainpageController());
+
+  static List<PreferredSizeWidget> _appBars = [
+    ProblemAppBar(),
+    MyPageAppBar(),
+    MyPageAppBar(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
-      appBar: AppBar(
-        surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
-        backgroundColor: ColorGroup.appbarBGC,
-        title: Container(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          height: AppBar().preferredSize.height,
-          decoration: const BoxDecoration(),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                MapButton(centerTitleController: centerTitleController),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return CenterListPage();
-                      },
-                    );
-                  },
-                  child:
-                      TitleButton(centerTitleController: centerTitleController),
-                ),
-                Obx(
-                  () => Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      FilterButton(
-                        problemFilterController: problemFilterController,
-                      ),
-                      problemFilterController.allEmpty()
-                          ? SizedBox()
-                          : Positioned(
-                              right: -10,
-                              top: -8,
-                              child: Container(
-                                width: 25,
-                                height: 25,
-                                decoration: BoxDecoration(
-                                  color: ColorGroup.selectBtnBGC, // 배경색 설정
-                                  shape: BoxShape.circle, // 동그란 모양으로 설정
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    problemFilterController
-                                        .countFilter()
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: ColorGroup.BGC,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: GetX<MainpageController>(
-        builder: (controller) {
-          return IndexedStack(
-            index: mainpageController.currentIndex.value,
-            children: [
-              ProblemList(),
-              Mypage(),
-              Mypage(),
-            ],
-          );
-        },
+      appBar: _appBars[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: [
+          ProblemList(),
+          Mypage(),
+          Mypage(),
+        ],
       ),
       //body: CarousellTest(),
-      floatingActionButton:
-          SortedButton(problemTitleController: problemTitleController),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          backgroundColor: ColorGroup.BGC,
-          unselectedItemColor: ColorGroup.modalBtnBGC,
-          selectedItemColor: ColorGroup.btnFGC,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: mainpageController.currentIndex.value,
-          onTap: (int index) {
-            mainpageController.currentIndex.value = index;
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: '홈',
-            ),
-            /*
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        backgroundColor: ColorGroup.BGC,
+        unselectedItemColor: ColorGroup.modalBtnBGC,
+        selectedItemColor: ColorGroup.btnFGC,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        onTap: (int index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '홈',
+          ),
+          /*
             BottomNavigationBarItem(
               icon: Icon(Icons.add_circle),
               label: '업로드',
             ),*/
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: '문의',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '마이',
-            ),
-          ],
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: '문의',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '마이',
+          ),
+        ],
       ),
     );
   }
 }
 
-class SortedButton extends StatelessWidget {
-  const SortedButton({
+class MyPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyPageAppBar({
     super.key,
-    required this.problemTitleController,
   });
 
-  final ProblemSortController problemTitleController;
-
+  @override
+  Size get preferredSize => Size.fromHeight(52);
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 115,
-      height: 60,
-      child: FloatingActionButton(
-        foregroundColor: ColorGroup.btnFGC,
-        backgroundColor: ColorGroup.btnBGC,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40.0),
+    return AppBar(
+      title: Container(
+        child: Center(
+          child: Text(
+            '마이페이지',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(33, 33, 33, 1),
+            ),
+          ),
         ),
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return const SortModal();
-            },
-          );
-        },
+      ),
+      backgroundColor: ColorGroup.appbarBGC,
+    );
+  }
+}
+
+class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
+  ProblemAppBar({
+    super.key,
+  });
+  @override
+  Size get preferredSize => Size.fromHeight(52);
+
+  CenterTitleController centerTitleController = Get.find();
+  ProblemFilterController problemFilterController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
+      backgroundColor: ColorGroup.appbarBGC,
+      title: Container(
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        height: AppBar().preferredSize.height,
+        decoration: const BoxDecoration(),
         child: Center(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                size: 25,
+              MapButton(centerTitleController: centerTitleController),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return CenterListPage();
+                    },
+                  );
+                },
+                child:
+                    TitleButton(centerTitleController: centerTitleController),
               ),
-              Text(
-                problemTitleController.sorttitle.toString(),
-                style: TextStyle(fontSize: 17),
+              Obx(
+                () => Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    FilterButton(
+                      problemFilterController: problemFilterController,
+                    ),
+                    problemFilterController.allEmpty()
+                        ? SizedBox()
+                        : Positioned(
+                            right: -10,
+                            top: -8,
+                            child: Container(
+                              width: 25,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                color: ColorGroup.selectBtnBGC, // 배경색 설정
+                                shape: BoxShape.circle, // 동그란 모양으로 설정
+                              ),
+                              child: Center(
+                                child: Text(
+                                  problemFilterController
+                                      .countFilter()
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorGroup.BGC,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
               ),
             ],
           ),

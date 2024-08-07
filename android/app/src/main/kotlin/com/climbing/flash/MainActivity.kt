@@ -1,4 +1,4 @@
-package com.example.flash
+package com.climbing.flash
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723913284357:android:1a52b4cdb11aa8329a756c",
+        "mobilesdk_app_id": "1:723913284357:android:67e49ad3cc8f522c9a756c",
         "android_client_info": {
           "package_name": "com.climbing.flash"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "723913284357-t8elqpuuo35cp7ct2hilruhlrqht1s89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.climbing.flash",
+            "certificate_hash": "2eebddc77435dca818be02d1496835eedc83eba9"
+          }
+        },
+        {
+          "client_id": "723913284357-1cq61a5d64us9f339scobafi59is3mnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9dMNNPV2nsB-WoKjDy4KQ-B8TCM0BTLI"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723913284357-1cq61a5d64us9f339scobafi59is3mnh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "723913284357-8sdicd0he3g2d8mangd9cnnkaq4vjkqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.climbing.flash"
+              }
+            }
+          ]
         }
       }
     }

@@ -21,6 +21,9 @@ class ProblemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton:
+          SortedButton(problemTitleController: problemTitleController),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
@@ -172,6 +175,53 @@ class ProblemList extends StatelessWidget {
                 },
               ),
               //const ProblemCard(sector: 'Flat'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SortedButton extends StatelessWidget {
+  const SortedButton({
+    super.key,
+    required this.problemTitleController,
+  });
+
+  final ProblemSortController problemTitleController;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 115,
+      height: 60,
+      child: FloatingActionButton(
+        foregroundColor: ColorGroup.btnFGC,
+        backgroundColor: ColorGroup.btnBGC,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40.0),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return const SortModal();
+            },
+          );
+        },
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                size: 25,
+              ),
+              Text(
+                problemTitleController.sorttitle.toString(),
+                style: TextStyle(fontSize: 17),
+              ),
             ],
           ),
         ),

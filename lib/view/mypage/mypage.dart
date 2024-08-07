@@ -1,67 +1,94 @@
+import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/view/mypage/my_grid_view.dart';
 import 'package:flutter/material.dart';
 
 class Mypage extends StatelessWidget {
-  const Mypage({super.key});
+  Mypage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      backgroundColor: ColorGroup.BGC,
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: NetworkImage(
-                    'https://via.placeholder.com/150',
-                  ), // 사용자 이미지 URL 사용
-                ),
-                SizedBox(width: 16.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '서한유',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 68,
+                        height: 68,
+                        child: CircleAvatar(
+                          radius: 40.0,
+                          backgroundImage: NetworkImage(
+                            'https://via.placeholder.com/150',
+                          ), // 사용자 이미지 URL 사용
+                        ),
                       ),
-                    ),
-                    Text(
-                      '@seo_hanyu',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.grey,
+                      SizedBox(width: 12.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '서한유',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '@seo_hanyu',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {
-                    // 수정하기 버튼 눌렸을 때 실행될 코드
-                  },
-                  child: Text(
-                    '수정하기',
-                    style: TextStyle(
-                      color: Colors.blue,
-                    ),
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          // 수정하기 버튼 눌렸을 때 실행될 코드
+                        },
+                        child: Text(
+                          '수정하기',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 16.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: InfoCard(label: '성별', value: '남성', cm: false),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: InfoCard(label: '키', value: '186.3', cm: true),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: InfoCard(label: '리치', value: '184', cm: true),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 24.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InfoCard(label: '성별', value: '남성'),
-                InfoCard(label: '키', value: '186.3 cm'),
-                InfoCard(label: '리치', value: '184 cm'),
-              ],
+            Divider(),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: MyGridView(),
             ),
           ],
         ),
@@ -73,8 +100,8 @@ class Mypage extends StatelessWidget {
 class InfoCard extends StatelessWidget {
   final String label;
   final String value;
-
-  InfoCard({required this.label, required this.value});
+  final bool cm;
+  InfoCard({required this.label, required this.value, required this.cm});
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +109,38 @@ class InfoCard extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Text(
             label,
             style: TextStyle(
-              fontSize: 16.0,
+              fontSize: 14.0,
               color: Colors.grey,
             ),
           ),
           SizedBox(height: 8.0),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              cm
+                  ? Text(
+                      ' cm',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromRGBO(187, 187, 187, 1),
+                      ),
+                    )
+                  : SizedBox(),
+            ],
           ),
         ],
       ),
