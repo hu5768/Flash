@@ -22,7 +22,7 @@ class AnswerUpload extends StatelessWidget {
                   icon: Icon(Icons.arrow_back_ios),
                 ),
                 Text(
-                  '내 풀이 작성',
+                  '내 풀이 작성(추후 추가될 기능입니다)',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,

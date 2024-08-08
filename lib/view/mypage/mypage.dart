@@ -74,11 +74,11 @@ class Mypage extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(label: '키', value: '186.3', cm: true),
+                        child: InfoCard(label: '키', value: '177.8', cm: true),
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(label: '리치', value: '184', cm: true),
+                        child: InfoCard(label: '리치', value: '183', cm: true),
                       ),
                     ],
                   ),
