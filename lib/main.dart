@@ -29,8 +29,8 @@ class App extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],*/
-      //home: LoginPage(),
-      home: MainPage(),
+      home: LoginPage(),
+      //home: MainPage(),
     );
   }
 }
