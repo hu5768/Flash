@@ -12,7 +12,7 @@ class ManageModal extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 34),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 242, 242, 242),
+        color: Color.fromRGBO(247, 247, 247, 1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(

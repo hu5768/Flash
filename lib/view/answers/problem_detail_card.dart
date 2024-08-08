@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
+import 'package:flash/view/upload/answer_upload.dart';
 import 'package:flutter/material.dart';
 
 class ProblemDetailCard extends StatelessWidget {
@@ -140,12 +141,11 @@ class ProblemDetailCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            backgroundColor: ColorGroup.modalBGC,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Text('추후 추가될 기능입니다');
-                            },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AnswerUpload(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
