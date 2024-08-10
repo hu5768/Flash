@@ -1,12 +1,16 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flash/controller/login_controller.dart';
 import 'package:flash/firebase_options.dart';
 import 'package:flash/view/login/login_page.dart';
+import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
-  /*WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  LoginController.initAccount();
+  /*
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );*/
@@ -29,8 +33,9 @@ class App extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],*/
-      home: LoginPage(),
+      //home: LoginPage(),
       //home: MainPage(),
+      home: UserOnboardingPage(),
     );
   }
 }

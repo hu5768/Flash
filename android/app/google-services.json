@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "723913284357-npkc8dkbg7a42e0od5uphd0he69b9j3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.climbing.flash",
+            "certificate_hash": "d88dff7155a9ac65c418b145b77a3188e0d2e2e2"
+          }
+        },
+        {
           "client_id": "723913284357-t8elqpuuo35cp7ct2hilruhlrqht1s89.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.climbing.flash",
             "certificate_hash": "2eebddc77435dca818be02d1496835eedc83eba9"
+          }
+        },
+        {
+          "client_id": "723913284357-tibktbpaiqdiqdcdik5rq8bgnnjbop7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.climbing.flash",
+            "certificate_hash": "8f81c82b266ca3e09dcedb45aa59fa2e761e3234"
           }
         },
         {

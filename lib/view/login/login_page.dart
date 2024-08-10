@@ -6,7 +6,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //LoginController.initAccount();
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
@@ -42,7 +41,7 @@ class LoginPage extends StatelessWidget {
                     btnText: '카카오로 시작하기',
                     bgnColor: Colors.yellow,
                     fgnColor: Colors.black,
-                    onPressed: LoginController.googleSignOut,
+                    onPressed: LoginController.kakaoLogin,
                   ),
                   SizedBox(height: 16),
                   LoginButton(

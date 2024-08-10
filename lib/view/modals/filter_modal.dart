@@ -110,14 +110,14 @@ class FilterModal extends StatelessWidget {
                               Navigator.of(context).pop();
                             },
                             style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(250, 50),
+                              fixedSize: const Size(250, 60),
                               foregroundColor: ColorGroup.selectBtnFGC,
                               backgroundColor: ColorGroup.selectBtnBGC,
                               padding: const EdgeInsets.symmetric(
                                 vertical: 5,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(16),
                               ),
                             ),
                             child: const Text(
