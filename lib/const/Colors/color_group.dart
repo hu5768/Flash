@@ -9,7 +9,7 @@ class ColorGroup {
   static const Color btnBGC = Color.fromARGB(255, 255, 255, 255); //버튼배경색
   static const Color btnFGC = Color.fromARGB(255, 0, 0, 0); //버튼색
 
-  static const Color selectBtnBGC = Color.fromRGBO(53, 113, 220, 1); //선택버튼배경색
+  static const Color selectBtnBGC = Color.fromRGBO(0, 87, 255, 1); //선택버튼배경색
   static const Color selectBtnFGC = Color.fromARGB(255, 255, 255, 255); //선택버튼색
   static const Color modalBtnBGC = Color.fromRGBO(158, 158, 163, 1); //모달 버튼배경색
   static const Color modalSBtnBGC =

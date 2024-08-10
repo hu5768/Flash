@@ -10,11 +10,11 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
+            /*image: DecorationImage(
             image: AssetImage('assets/images/background1.jpeg'),
             fit: BoxFit.cover, // 이미지를 화면에 맞게 조정
-          ),
-        ),
+          ),*/
+            ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

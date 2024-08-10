@@ -4,6 +4,7 @@ import 'package:flash/firebase_options.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
+import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -33,9 +34,9 @@ class App extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],*/
-      //home: LoginPage(),
+
       //home: MainPage(),
-      home: UserOnboardingPage(),
+      home: SplashScreen(),
     );
   }
 }

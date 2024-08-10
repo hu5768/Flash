@@ -6,10 +6,8 @@ import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/map_modal.dart';
-import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/mypage/mypage.dart';
 import 'package:flash/view/problem/problem_list.dart';
-import 'package:flash/view/report/report_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';

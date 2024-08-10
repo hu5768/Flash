@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+
+List<Widget> onboardList = [
+  SizedBox(),
+  //1 닉네임
+  TextField(
+    style: TextStyle(fontSize: 24),
+    maxLines: null,
+    decoration: InputDecoration(
+      hintText: '닉네임을 입력해주세요',
+      hintStyle: TextStyle(fontSize: 24),
+      border: InputBorder.none,
+    ),
+  ),
+//2 인스타그람 id
+  TextField(
+    style: TextStyle(fontSize: 24),
+    maxLines: null,
+    decoration: InputDecoration(
+      hintText: '인스타그램 id를 입력해주세요',
+      hintStyle: TextStyle(fontSize: 24),
+      border: InputBorder.none,
+    ),
+  ),
+  //3 키
+  TextField(
+    style: TextStyle(fontSize: 24),
+    maxLines: null,
+    decoration: InputDecoration(
+      hintText: '키를 입력해주세요',
+      hintStyle: TextStyle(fontSize: 24),
+      border: InputBorder.none,
+    ),
+  ),
+  //4 리치
+  TextField(
+    style: TextStyle(fontSize: 24),
+    maxLines: null,
+    decoration: InputDecoration(
+      hintText: '리치 길이를 입력해주세요',
+      hintStyle: TextStyle(fontSize: 24),
+      border: InputBorder.none,
+    ),
+  ),
+];
