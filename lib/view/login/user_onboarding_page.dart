@@ -18,6 +18,7 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: ColorGroup.appbarBGC,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

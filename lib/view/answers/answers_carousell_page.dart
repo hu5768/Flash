@@ -1,4 +1,4 @@
-import 'package:flash/controller/answer_data_controller.dart';
+import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:get/get.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';

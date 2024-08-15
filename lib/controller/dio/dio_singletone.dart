@@ -13,11 +13,15 @@ class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: baseUrlDev,
         connectTimeout: const Duration(milliseconds: 10000),
         receiveTimeout: const Duration(milliseconds: 10000),
       ),
     );
+  }
+  void updateOptions({required String token}) {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+    _dio.options.headers['Content-Type'] = 'application/json';
   }
 
   Dio get dio => _dio;

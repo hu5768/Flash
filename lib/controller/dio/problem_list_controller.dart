@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' as dios;
-import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/model/problems_model.dart';
@@ -42,6 +43,8 @@ class ProblemListController extends GetxController {
       bool hasSol = !problemFilterController.nobodySol.value; //아무도 안푼문제 필터
       String solText = hasSol ? "" : "&has-solution=$hasSol";
 
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
       response = await DioClient()
           .dio
           .request("/gyms/$gymId/problems$sortText$diffText$secText$solText");
@@ -88,6 +91,8 @@ class ProblemListController extends GetxController {
 
       loadRunning = true;
       dios.Response response;
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get(
             "/gyms/$gymId/problems?cursor=$nextCursor$sortText$diffText$secText$solText",
           );

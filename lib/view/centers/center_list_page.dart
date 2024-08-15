@@ -1,5 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/controller/center_list_data_controller.dart';
+import 'package:flash/controller/dio/center_list_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_card.dart';
 import 'package:flutter/material.dart';

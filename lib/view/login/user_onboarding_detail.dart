@@ -1,4 +1,9 @@
+import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+final UserOnboardingControlle textFieldController =
+    Get.put(UserOnboardingControlle());
 
 List<Widget> onboardList = [
   SizedBox(),
@@ -11,6 +16,9 @@ List<Widget> onboardList = [
       hintStyle: TextStyle(fontSize: 24),
       border: InputBorder.none,
     ),
+    onChanged: (value) {
+      textFieldController.nickname.value = value;
+    },
   ),
 //2 인스타그람 id
   TextField(

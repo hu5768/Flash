@@ -1,4 +1,4 @@
-import 'package:flash/controller/login_controller.dart';
+import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -33,7 +33,9 @@ class LoginPage extends StatelessWidget {
                     btnText: 'Google로 시작하기',
                     bgnColor: Color.fromRGBO(250, 250, 250, 0.2),
                     fgnColor: Colors.white,
-                    onPressed: LoginController.googleSignIn,
+                    onPressed: () {
+                      LoginController.googleSignIn(context);
+                    },
                   ),
                   SizedBox(height: 16),
                   LoginButton(
@@ -41,7 +43,9 @@ class LoginPage extends StatelessWidget {
                     btnText: '카카오로 시작하기',
                     bgnColor: Colors.yellow,
                     fgnColor: Colors.black,
-                    onPressed: LoginController.kakaoLogin,
+                    onPressed: () {
+                      LoginController.kakaoLogin(context);
+                    },
                   ),
                   SizedBox(height: 16),
                   LoginButton(
@@ -49,7 +53,9 @@ class LoginPage extends StatelessWidget {
                     btnText: 'Apple로 시작하기',
                     bgnColor: Colors.white,
                     fgnColor: Colors.black,
-                    onPressed: LoginController.appleLogin,
+                    onPressed: () {
+                      LoginController.appleLogin(context);
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),

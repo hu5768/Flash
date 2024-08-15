@@ -1,9 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flash/controller/login_controller.dart';
+import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flash/firebase_options.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
+
 import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,8 +36,9 @@ class App extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: analytics),
       ],*/
 
-      //home: MainPage(),
-      home: SplashScreen(),
+      home: LoginPage(),
+      //home: UserOnboardingPage(),
+      //home: SplashScreen(),
     );
   }
 }

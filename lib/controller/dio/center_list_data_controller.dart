@@ -1,3 +1,4 @@
+import 'package:flash/const/data.dart';
 import 'package:flash/model/center_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
@@ -14,10 +15,13 @@ class CenterListController extends GetxController {
 
   void fetchData() async {
     dios.Response response;
+    final token = await storage.read(key: ACCESS_TOKEN_KEY);
+    DioClient().updateOptions(token: token.toString());
     try {
       response = await DioClient().dio.get(
             "/gyms",
           );
+      print(response.statusCode);
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data);
       List<Centers> um = resMap.map((e) => Centers.fromJson(e)).toList();
