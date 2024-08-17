@@ -4,9 +4,11 @@ import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +19,7 @@ class ProblemList extends StatelessWidget {
   final problemFilterController = Get.put(ProblemFilterController());
   final scrollController = Get.put(ProblemListController());
   final CenterTitleController centerTitleController = Get.find();
+  final TextEditingController idCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +31,32 @@ class ProblemList extends StatelessWidget {
           ),
           child: Column(
             children: [
+              TextField(
+                controller: idCon,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '',
+                  fillColor: Colors.white, // 배경색을 흰색으로 설정
+                  filled: true, // 배경색을 적용하도록 설정
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      print("문제id${idCon.value}");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AnswersCarousell(id: idCon.text),
+                          allowSnapshotting: true,
+                        ),
+                      );
+                    },
+                    child: const Text('문제 탐색'),
+                  ),
                   Obx(
                     () => ElevatedButton(
                       onPressed: () {
