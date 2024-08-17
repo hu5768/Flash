@@ -38,7 +38,7 @@ class Mypage extends StatelessWidget {
                             '서한유',
                             style: TextStyle(
                               fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           SizedBox(height: 4),

@@ -36,9 +36,10 @@ class App extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: analytics),
       ],*/
 
-      home: LoginPage(),
+      //home: LoginPage(),
       //home: UserOnboardingPage(),
       //home: SplashScreen(),
+      home: MainPage(),
     );
   }
 }
