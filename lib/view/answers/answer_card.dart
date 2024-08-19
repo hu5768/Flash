@@ -59,8 +59,8 @@ class AnswerCard extends StatelessWidget {
                       Row(
                         children: [
                           ClipOval(
-                            child: Image.network(
-                              '프로필 이미지!',
+                            child: Image.asset(
+                              'assets/images/problem.jpeg',
                               height: 45,
                               width: 45,
                               fit: BoxFit.cover,
