@@ -21,7 +21,7 @@ class DioClient {
     );
   }
   void updateOptions({required String token}) {
-    _dio.options.headers['Authorization'] = 'Bearer $token';
+    //_dio.options.headers['Authorization'] = 'Bearer $token';
     _dio.options.headers['Content-Type'] = 'application/json';
   }
 

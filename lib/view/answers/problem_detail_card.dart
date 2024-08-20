@@ -1,14 +1,24 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
+import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/view/upload/answer_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProblemDetailCard extends StatelessWidget {
-  final String gymName, sector, difficulty, settingDate, removalDate, imgUrl;
+  final answerDataController = Get.put(AnswerDataController());
+  final String problemId,
+      gymName,
+      sector,
+      difficulty,
+      settingDate,
+      removalDate,
+      imgUrl;
   final bool hasSolution;
-  const ProblemDetailCard({
+  ProblemDetailCard({
     super.key,
+    required this.problemId,
     required this.gymName,
     required this.sector,
     required this.difficulty,
@@ -140,13 +150,19 @@ class ProblemDetailCard extends StatelessWidget {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
+                        onPressed: () async {
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AnswerUpload(),
+                              builder: (context) => AnswerUpload(
+                                problemId: problemId,
+                                gymName: gymName,
+                                difficulty: difficulty,
+                              ),
                             ),
                           );
+                          answerDataController.disposeVideo();
+                          answerDataController.fetchData(problemId);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16.0),
