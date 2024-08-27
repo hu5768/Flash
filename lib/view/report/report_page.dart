@@ -2,12 +2,22 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});
   final String reportForm =
       '제목: [닉네임] 영상 제보합니다!\n영상\n(선택)인스타 계정:  \n(선택)한 줄 평: ex)\n1번 한줄평 : 탑 전 홀드를 잡고 왼발을 오른쪽으로 빼며 카운터 밸런스를 이용하면 쉽게 풀려요! \n3번 한줄평 : 보라치고 쉬워요';
   final String myEmail = 'flashclimbing3@gmail.com';
+  final String personalInformation =
+      'https://sites.google.com/view/flash-climbing/%ED%99%88';
+  Future<void> OpenPI() async {
+    await launchUrl(
+      Uri.parse(personalInformation),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +123,24 @@ class ReportPage extends StatelessWidget {
                         child: CopyButton(copyText: myEmail, analText: "이메일"),
                       ),
                     ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: OpenPI,
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all<EdgeInsets>(
+                      EdgeInsets.zero,
+                    ),
+                    minimumSize: WidgetStateProperty.all<Size>(
+                      Size(0, 0),
+                    ), // 최소 크기 설정
+                  ),
+                  child: Text(
+                    '개인정보 처리방침',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                    ),
                   ),
                 ),
               ],
