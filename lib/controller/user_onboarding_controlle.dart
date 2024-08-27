@@ -1,21 +1,53 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserOnboardingControlle extends GetxController {
-  var onboardIndex = 1.obs;
+  var onboardIndex = 0.obs;
   int maxIndex = 6;
+  final pageController = PageController();
 
-  var nickname = ''.obs;
-  var instarId = ''.obs;
+  final TextEditingController nicknameText = TextEditingController();
+  final TextEditingController instaridText = TextEditingController();
+  final TextEditingController heightText = TextEditingController();
+  final TextEditingController reachText = TextEditingController();
+  var selectedGender = ''.obs;
+  var selectedImage = Rxn<File>();
+
+  Future<void> pickImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+
+    if (result != null && result.files.single.path != null) {
+      selectedImage.value = File(result.files.single.path!);
+    }
+  }
 
   void nextPage() {
-    if (onboardIndex.value < maxIndex)
-      onboardIndex.value += 1;
-    else {}
+    if (onboardIndex.value < maxIndex) {
+      pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    } else {}
   }
 
   void backPage() {
-    if (onboardIndex.value > 1)
-      onboardIndex.value -= 1;
-    else {}
+    if (onboardIndex.value > 0) {
+      pageController.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    } else {
+      Get.back();
+    }
+  }
+
+  void onPageChanged(int index) {
+    onboardIndex.value = index;
   }
 }

@@ -1,6 +1,11 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
-import 'package:flash/view/login/user_onboarding_detail.dart';
+import 'package:flash/view/login/user_onboarding/gender_field.dart';
+import 'package:flash/view/login/user_onboarding/height_field.dart';
+import 'package:flash/view/login/user_onboarding/instarid_field.dart';
+import 'package:flash/view/login/user_onboarding/nickname_field.dart';
+import 'package:flash/view/login/user_onboarding/profile_field.dart';
+import 'package:flash/view/login/user_onboarding/reach_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +46,7 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
               children: [
                 Obx(
                   () => Text(
-                    userOnboardingControlle.onboardIndex.string,
+                    (userOnboardingControlle.onboardIndex.value + 1).toString(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -62,76 +67,18 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Obx(
-          () => Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              onboardList[userOnboardingControlle.onboardIndex.value],
-              Column(
-                children: [
-                  userOnboardingControlle.onboardIndex != 1
-                      ? SizedBox(
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () {
-                              userOnboardingControlle.nextPage();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(250, 60),
-                              backgroundColor: ColorGroup.selectBtnFGC,
-                              foregroundColor: ColorGroup.selectBtnBGC,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 5,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: const Text(
-                              "건너뛰기",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        )
-                      : SizedBox(),
-                  SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        userOnboardingControlle.nextPage();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(250, 60),
-                        foregroundColor: ColorGroup.selectBtnFGC,
-                        backgroundColor: ColorGroup.selectBtnBGC,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: const Text(
-                        "다음",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+      body: PageView(
+        controller: userOnboardingControlle.pageController,
+        onPageChanged: userOnboardingControlle.onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          NicknameField(),
+          InstaridField(),
+          HeightField(),
+          ReachField(),
+          GenderField(),
+          ProfileField(),
+        ],
       ),
     );
   }
