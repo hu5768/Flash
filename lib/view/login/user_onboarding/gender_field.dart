@@ -22,38 +22,38 @@ class GenderField extends StatelessWidget {
                     leading: Icon(Icons.male),
                     title: Text('남성입니다'),
                     tileColor:
-                        userOnboardingControlle.selectedGender.value == '남성'
+                        userOnboardingControlle.selectedGender.value == 'MALE'
                             ? Colors.blue.shade100
                             : Colors.grey.shade100,
                     textColor:
-                        userOnboardingControlle.selectedGender.value == '남성'
+                        userOnboardingControlle.selectedGender.value == 'MALE'
                             ? Colors.blue
                             : Colors.grey,
                     trailing:
-                        userOnboardingControlle.selectedGender.value == '남성'
+                        userOnboardingControlle.selectedGender.value == 'MALE'
                             ? Icon(Icons.check, color: Colors.blue)
                             : null,
                     onTap: () =>
-                        userOnboardingControlle.selectedGender.value = '남성',
+                        userOnboardingControlle.selectedGender.value = 'MALE',
                   ),
                   SizedBox(height: 8),
                   ListTile(
                     leading: Icon(Icons.female),
                     title: Text('여성입니다'),
                     tileColor:
-                        userOnboardingControlle.selectedGender.value == '여성'
+                        userOnboardingControlle.selectedGender.value == 'FEMALE'
                             ? Colors.blue.shade100
                             : Colors.grey.shade100,
                     textColor:
-                        userOnboardingControlle.selectedGender.value == '여성'
+                        userOnboardingControlle.selectedGender.value == 'FEMALE'
                             ? Colors.blue
                             : Colors.grey,
                     trailing:
-                        userOnboardingControlle.selectedGender.value == '여성'
+                        userOnboardingControlle.selectedGender.value == 'FEMALE'
                             ? Icon(Icons.check, color: Colors.blue)
                             : null,
                     onTap: () =>
-                        userOnboardingControlle.selectedGender.value = '여성',
+                        userOnboardingControlle.selectedGender.value = 'FEMALE',
                   ),
                 ],
               );

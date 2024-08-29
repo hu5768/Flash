@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
@@ -8,6 +10,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dio_singletone.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginController {
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -87,21 +90,39 @@ class LoginController {
         // 요청 실패 시 처리
         print('Request failed with status: ${response.statusCode}');
       }
-    } catch (error) {
-      print(error);
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null) {
+          print('DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+        } else {
+          print('Error: ${e.message}');
+        }
+      }
+      //print(e);
     }
   }
 
   static Future<void> appleLogin(context) async {
     //애플 로그인
     try {
+      final AppleAuthProvider provider = AppleAuthProvider()..addScope('email');
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithProvider(provider);
+/*
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      final idToken = credential.identityToken;
+      final idToken = credential.identityToken;*/
+      final idToken;
+      if (Platform.isAndroid) {
+        idToken = await userCredential.user?.getIdToken();
+      } else {
+        idToken = userCredential.credential?.accessToken;
+      }
       final response = await DioClient().dio.post(
         "/auth/login",
         data: {
@@ -145,14 +166,14 @@ class LoginController {
   static Future<void> kakaoLogin(context) async {
     try {
       bool isInstalled = await isKakaoTalkInstalled();
+      print(isInstalled);
+      OAuthToken idToken;
       if (isInstalled) {
-        await UserApi.instance.loginWithKakaoTalk();
+        idToken = await UserApi.instance.loginWithKakaoTalk();
       } else {
-        await UserApi.instance.loginWithKakaoAccount();
+        idToken = await UserApi.instance.loginWithKakaoAccount();
       }
       // 로그인 성공 후 유저 정보 가져오기
-      User user = await UserApi.instance.me();
-      OAuthToken idToken = await UserApi.instance.loginWithKakaoAccount();
       print('카카오 로그인 성공: ${idToken.accessToken}');
       final response = await DioClient().dio.post(
         "/auth/login",

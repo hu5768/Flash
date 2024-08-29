@@ -114,7 +114,7 @@ class AnswerCard extends StatelessWidget {
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
                               builder: (BuildContext context) {
-                                return BlockModal();
+                                return ManageModal();
                               },
                             );
                           },

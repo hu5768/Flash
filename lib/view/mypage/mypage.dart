@@ -1,12 +1,25 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
+import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/view/mypage/my_grid_view.dart';
+import 'package:flash/view/mypage/my_modify.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class Mypage extends StatelessWidget {
+class Mypage extends StatefulWidget {
   Mypage({super.key});
 
   @override
+  State<Mypage> createState() => _MypageState();
+}
+
+class _MypageState extends State<Mypage> {
+  final mypageModifyController = Get.put(MypageModifyController());
+  final mypageController = Get.put(MypageController());
+
+  @override
   Widget build(BuildContext context) {
+    mypageController.fetchMemberData();
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       body: SingleChildScrollView(
@@ -35,15 +48,15 @@ class Mypage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '서한유',
+                            mypageController.userModel.nickName!,
                             style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          //SizedBox(height: 4),
                           Text(
-                            '@seo_hanyu',
+                            '@' + mypageController.userModel.instagramId!,
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.grey,
@@ -53,8 +66,16 @@ class Mypage extends StatelessWidget {
                       ),
                       Spacer(),
                       TextButton(
-                        onPressed: () {
-                          // 수정하기 버튼 눌렸을 때 실행될 코드
+                        onPressed: () async {
+                          mypageModifyController.fetchMemberData();
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyModify(),
+                            ),
+                          );
+                          //내 정보 다시 가져오기
+                          setState(() {});
                         },
                         child: Text(
                           '수정하기',
@@ -70,22 +91,38 @@ class Mypage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: InfoCard(label: '성별', value: '남성', cm: false),
+                        child: InfoCard(
+                          label: '성별',
+                          value: mypageController.userModel.gender == 'MALE'
+                              ? '남성'
+                              : '여성',
+                          cm: false,
+                        ),
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(label: '키', value: '177.8', cm: true),
+                        child: InfoCard(
+                          label: '키',
+                          value: mypageController.userModel.height.toString(),
+                          cm: true,
+                        ),
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(label: '리치', value: '183', cm: true),
+                        child: InfoCard(
+                          label: '리치',
+                          value: mypageController.userModel.reach.toString(),
+                          cm: true,
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            Divider(),
+            Divider(
+              color: Color.fromRGBO(245, 245, 245, 1),
+            ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: MyGridView(),
@@ -108,7 +145,7 @@ class InfoCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Color.fromRGBO(245, 245, 245, 1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
+import 'package:flash/view/login/user_onboarding/profile_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserOnboardingControlle extends GetxController {
+  final mypageController = Get.put(MypageController());
   var onboardIndex = 0.obs;
   int maxIndex = 6;
   final pageController = PageController();
@@ -49,5 +52,16 @@ class UserOnboardingControlle extends GetxController {
 
   void onPageChanged(int index) {
     onboardIndex.value = index;
+  }
+
+  void updateOnboardInfo() {
+    mypageController.updateMemberInfo(
+      nicknameText.text,
+      instaridText.text,
+      double.tryParse(heightText.text)!,
+      double.tryParse(reachText.text)!,
+      selectedGender.value,
+      "https://example.com/profile.jpg",
+    );
   }
 }

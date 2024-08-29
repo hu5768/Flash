@@ -15,6 +15,7 @@ class HeightField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            keyboardType: TextInputType.number,
             controller: userOnboardingControlle.heightText,
             style: TextStyle(fontSize: 24),
             maxLines: null,

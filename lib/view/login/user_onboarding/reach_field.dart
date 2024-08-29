@@ -15,6 +15,7 @@ class ReachField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            keyboardType: TextInputType.number,
             controller: userOnboardingControlle.reachText,
             style: TextStyle(fontSize: 24),
             maxLines: null,

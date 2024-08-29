@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
+import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -60,14 +61,14 @@ class ProfileField extends StatelessWidget {
                     ),
                     child: imageFile != null
                         ? Text(
-                            '프로필 이미지 변경하기',
+                            '프로필 이미지 변경',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           )
                         : Text(
-                            '프로필 이미지 선택하기',
+                            '프로필 이미지 선택',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -112,6 +113,12 @@ class ProfileField extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     //서버에 데이터 전송하는 버튼
+                    userOnboardingControlle.updateOnboardInfo();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(250, 60),

@@ -11,6 +11,7 @@ import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -33,6 +34,16 @@ class _MainPageState extends State<MainPage> {
     MyPageAppBar(),
     MyPageAppBar(),
   ];
+
+  String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
+  Future<void> OpenForm() async {
+    if (await canLaunchUrl(Uri.parse(inquiryForm))) {
+      await launchUrl(Uri.parse(inquiryForm));
+    } else {
+      throw 'Could not launch $inquiryForm';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     centerTitleController.getContext(context);
@@ -57,6 +68,10 @@ class _MainPageState extends State<MainPage> {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         onTap: (int index) {
+          if (index == 1) {
+            OpenForm();
+            return;
+          }
           setState(() {
             currentIndex = index;
           });
