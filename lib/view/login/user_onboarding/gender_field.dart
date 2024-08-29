@@ -9,7 +9,7 @@ class GenderField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,62 +59,89 @@ class GenderField extends StatelessWidget {
               );
             },
           ),
-          Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
-                    userOnboardingControlle.nextPage();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(250, 60),
-                    backgroundColor: ColorGroup.selectBtnFGC,
-                    foregroundColor: ColorGroup.selectBtnBGC,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    "건너뛰기",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    userOnboardingControlle.nextPage();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(250, 60),
-                    foregroundColor: ColorGroup.selectBtnFGC,
-                    backgroundColor: ColorGroup.selectBtnBGC,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+          Obx(
+            () {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        userOnboardingControlle.selectedGender.value = '';
+                        userOnboardingControlle.nextPage();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(250, 60),
+                        backgroundColor: ColorGroup.selectBtnFGC,
+                        foregroundColor: const Color.fromRGBO(83, 83, 83, 1),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text(
+                        "건너뛰기",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    "다음",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: userOnboardingControlle.genderEmpty.value
+                        ? ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(250, 60),
+                              foregroundColor: ColorGroup.selectBtnFGC,
+                              backgroundColor: Color.fromRGBO(213, 213, 213, 1),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              "다음",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : ElevatedButton(
+                            onPressed: () {
+                              userOnboardingControlle.nextPage();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(250, 60),
+                              foregroundColor: ColorGroup.selectBtnFGC,
+                              backgroundColor: ColorGroup.selectBtnBGC,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              "다음",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ],
       ),

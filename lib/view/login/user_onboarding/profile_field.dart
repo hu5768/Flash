@@ -10,7 +10,7 @@ class ProfileField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,12 +85,18 @@ class ProfileField extends StatelessWidget {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
-                    //서버에 데이터 전송하는 버튼
+                    //프로필 이미지 초기화
+                    userOnboardingControlle.updateOnboardInfo();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(250, 60),
                     backgroundColor: ColorGroup.selectBtnFGC,
-                    foregroundColor: ColorGroup.selectBtnBGC,
+                    foregroundColor: const Color.fromRGBO(83, 83, 83, 1),
                     padding: const EdgeInsets.symmetric(
                       vertical: 5,
                     ),

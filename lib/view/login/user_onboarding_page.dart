@@ -30,7 +30,7 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
           children: [
             IconButton(
               onPressed: () {
-                userOnboardingControlle.backPage();
+                userOnboardingControlle.backPage(context);
               },
               icon: Icon(Icons.arrow_back_ios),
             ),

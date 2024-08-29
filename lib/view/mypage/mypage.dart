@@ -19,7 +19,6 @@ class _MypageState extends State<Mypage> {
 
   @override
   Widget build(BuildContext context) {
-    mypageController.fetchMemberData();
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       body: SingleChildScrollView(
@@ -48,7 +47,7 @@ class _MypageState extends State<Mypage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            mypageController.userModel.nickName!,
+                            mypageController.userModel.nickName ?? " ",
                             style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w900,

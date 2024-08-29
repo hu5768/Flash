@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -28,7 +29,7 @@ class _MainPageState extends State<MainPage> {
   final problemTitleController = Get.put(ProblemSortController());
   final centerTitleController = Get.put(CenterTitleController());
   final problemFilterController = Get.put(ProblemFilterController());
-
+  final mypageController = Get.put(MypageController());
   static List<PreferredSizeWidget> _appBars = [
     ProblemAppBar(),
     MyPageAppBar(),
@@ -67,10 +68,12 @@ class _MainPageState extends State<MainPage> {
         selectedItemColor: ColorGroup.btnFGC,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        onTap: (int index) {
+        onTap: (int index) async {
           if (index == 1) {
             OpenForm();
             return;
+          } else if (index == 2) {
+            await mypageController.fetchMemberData();
           }
           setState(() {
             currentIndex = index;

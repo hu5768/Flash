@@ -19,6 +19,33 @@ class UserOnboardingControlle extends GetxController {
   var selectedGender = ''.obs;
   var selectedImage = Rxn<File>();
 
+  var nickEmpty = true.obs;
+  var instaEmpty = true.obs;
+  var heightEmpty = true.obs;
+  var reachEmpty = true.obs;
+  var genderEmpty = true.obs;
+  var profileEmpty = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    nicknameText.addListener(() {
+      nickEmpty.value = nicknameText.text.isEmpty;
+    });
+    instaridText.addListener(() {
+      instaEmpty.value = instaridText.text.isEmpty;
+    });
+    heightText.addListener(() {
+      heightEmpty.value = heightText.text.isEmpty;
+    });
+    reachText.addListener(() {
+      reachEmpty.value = reachText.text.isEmpty;
+    });
+    selectedGender.listen((value) {
+      genderEmpty.value = value.isEmpty;
+    });
+  }
+
   Future<void> pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
@@ -39,14 +66,14 @@ class UserOnboardingControlle extends GetxController {
     } else {}
   }
 
-  void backPage() {
+  void backPage(BuildContext context) {
     if (onboardIndex.value > 0) {
       pageController.previousPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     } else {
-      Get.back();
+      Navigator.pop(context);
     }
   }
 
@@ -58,8 +85,8 @@ class UserOnboardingControlle extends GetxController {
     mypageController.updateMemberInfo(
       nicknameText.text,
       instaridText.text,
-      double.tryParse(heightText.text)!,
-      double.tryParse(reachText.text)!,
+      double.tryParse(heightText.text) ?? 0,
+      double.tryParse(reachText.text) ?? 0,
       selectedGender.value,
       "https://example.com/profile.jpg",
     );
