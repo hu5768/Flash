@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class HeightField extends StatelessWidget {
@@ -15,18 +16,22 @@ class HeightField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
-            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}\.?\d{0,1}')),
+            ],
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             controller: userOnboardingControlle.heightText,
             style: TextStyle(fontSize: 24),
             maxLines: null,
             decoration: InputDecoration(
+              suffixText: 'cm',
+              suffixStyle: TextStyle(
+                  fontSize: 24, color: Color.fromRGBO(153, 153, 153, 1)),
               hintText: '키를 입력해주세요',
               hintStyle: TextStyle(fontSize: 24),
               border: InputBorder.none,
             ),
-            onChanged: (value) {
-              userOnboardingControlle.nextPage();
-            },
+            onChanged: (value) {},
           ),
           Obx(
             () {

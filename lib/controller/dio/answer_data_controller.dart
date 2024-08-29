@@ -65,6 +65,7 @@ class AnswerDataController extends GetxController {
             review: entry.value.review!,
             instagramId: entry.value.instagramId!,
             videoUrl: entry.value.videoUrl!,
+            solutionId: entry.value.id!,
           );
         },
       ).toList();

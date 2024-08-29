@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class InstaridField extends StatelessWidget {
@@ -16,6 +17,12 @@ class InstaridField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[a-z0-9가-힣._]'),
+              ), // 영어 대소문자, 숫자, 한글만 허용
+              LengthLimitingTextInputFormatter(30),
+            ],
             controller: userOnboardingControlle.instaridText,
             style: TextStyle(fontSize: 24),
             maxLines: null,

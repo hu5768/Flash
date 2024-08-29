@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ModifyInstargramid extends StatelessWidget {
@@ -46,12 +47,21 @@ class ModifyInstargramid extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'[a-z0-9가-힣._]'),
+                ), // 영어 대소문자, 숫자, 한글만 허용
+                LengthLimitingTextInputFormatter(30),
+              ],
               controller: mypageModifyController.modifyText,
               style: TextStyle(fontSize: 24),
               maxLines: null,
               decoration: InputDecoration(
                 hintText: mypageModifyController.rxUserModel.instagramId.value,
-                hintStyle: TextStyle(fontSize: 24),
+                hintStyle: TextStyle(
+                  fontSize: 24,
+                  color: Color.fromRGBO(153, 153, 153, 1),
+                ),
                 border: InputBorder.none,
               ),
               onChanged: (value) {},

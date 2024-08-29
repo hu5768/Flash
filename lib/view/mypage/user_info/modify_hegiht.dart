@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ModifyHegiht extends StatelessWidget {
@@ -46,14 +47,27 @@ class ModifyHegiht extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextField(
-              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^\d{0,3}\.?\d{0,1}'),
+                ),
+              ],
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
               controller: mypageModifyController.modifyText,
               style: TextStyle(fontSize: 24),
               maxLines: null,
               decoration: InputDecoration(
+                suffixText: 'cm',
+                suffixStyle: TextStyle(
+                  fontSize: 24,
+                  color: Color.fromRGBO(153, 153, 153, 1),
+                ),
                 hintText:
                     mypageModifyController.rxUserModel.height.value.toString(),
-                hintStyle: TextStyle(fontSize: 24),
+                hintStyle: TextStyle(
+                  fontSize: 24,
+                  color: Color.fromRGBO(153, 153, 153, 1),
+                ),
                 border: InputBorder.none,
               ),
               onChanged: (value) {},

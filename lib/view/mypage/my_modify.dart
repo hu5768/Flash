@@ -157,6 +157,32 @@ class MyModify extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(245, 245, 245, 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        ModifyMemberCard(
+                          info: '로그아웃',
+                          textColor: Color.fromRGBO(33, 33, 33, 1),
+                          clikFunction: () {},
+                        ),
+                        Divider(
+                          height: 0,
+                          color: Color.fromRGBO(233, 233, 233, 20),
+                        ),
+                        ModifyMemberCard(
+                          info: '계정탈퇴',
+                          textColor: Color.fromRGBO(255, 0, 0, 1),
+                          clikFunction: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               );
             },
@@ -218,6 +244,45 @@ class ModifyInfoCard extends StatelessWidget {
                   size: 16,
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ModifyMemberCard extends StatelessWidget {
+  ModifyMemberCard({
+    super.key,
+    required this.info,
+    required this.textColor,
+    required this.clikFunction,
+  });
+  final String info;
+  final Color textColor;
+  final Function clikFunction;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        clikFunction();
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              info,
+              style: TextStyle(
+                fontSize: 17,
+                color: textColor,
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class NicknameField extends StatelessWidget {
@@ -15,6 +16,12 @@ class NicknameField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[a-zA-Z0-9가-힣]'),
+              ), // 영어 대소문자, 숫자, 한글만 허용
+              LengthLimitingTextInputFormatter(20),
+            ],
             controller: userOnboardingControlle.nicknameText,
             style: TextStyle(fontSize: 24),
             maxLines: null,
