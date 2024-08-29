@@ -55,10 +55,10 @@ class MypageController extends GetxController {
   ) async {
     final data = {
       "nickName": nickName,
-      "instagramId": instagramId,
-      "height": height,
-      "gender": gender,
-      "reach": reach,
+      "instagramId": instagramId == '' ? null : instagramId,
+      "height": height == 0 ? null : height,
+      "gender": gender == '' ? null : gender,
+      "reach": reach == 0 ? null : reach,
       "profileImageUrl": "https://example.com/profile.jpg",
     };
 

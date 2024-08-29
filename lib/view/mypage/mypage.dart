@@ -102,7 +102,9 @@ class _MypageState extends State<Mypage> {
                       Expanded(
                         child: InfoCard(
                           label: '키',
-                          value: mypageController.userModel.height.toString(),
+                          value: mypageController.userModel.height == 0
+                              ? '--'
+                              : mypageController.userModel.height.toString(),
                           cm: true,
                         ),
                       ),
@@ -110,7 +112,9 @@ class _MypageState extends State<Mypage> {
                       Expanded(
                         child: InfoCard(
                           label: '리치',
-                          value: mypageController.userModel.reach.toString(),
+                          value: mypageController.userModel.reach == 0
+                              ? '--'
+                              : mypageController.userModel.reach.toString(),
                           cm: true,
                         ),
                       ),

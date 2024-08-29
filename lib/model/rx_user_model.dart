@@ -17,8 +17,8 @@ class RXUserModel {
     String? gender,
   })  : nickName = RxString(nickName ?? ''),
         instagramId = RxString(instagramId ?? ''),
-        height = RxDouble(height ?? 1.0),
-        reach = RxDouble(reach ?? 1.0),
+        height = RxDouble(height ?? 0.0),
+        reach = RxDouble(reach ?? 0.0),
         profileImageUrl = RxString(profileImageUrl ?? ''),
         gender = RxString(gender ?? '');
 }

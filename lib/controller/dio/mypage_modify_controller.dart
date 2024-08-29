@@ -45,10 +45,13 @@ class MypageModifyController extends GetxController {
   Future<void> updateMemberInfo() async {
     final data = {
       "nickName": rxUserModel.nickName.value,
-      "instagramId": rxUserModel.instagramId.value,
-      "height": rxUserModel.height.value,
-      "gender": rxUserModel.gender.value,
-      "reach": rxUserModel.reach.value,
+      "instagramId": rxUserModel.instagramId.value == ''
+          ? null
+          : rxUserModel.instagramId.value,
+      "height": rxUserModel.height.value == 0 ? null : rxUserModel.height.value,
+      "gender":
+          rxUserModel.gender.value == '' ? null : rxUserModel.gender.value,
+      "reach": rxUserModel.reach.value == 0 ? null : rxUserModel.reach.value,
       "profileImageUrl": "https://example.com/profile.jpg",
     };
 

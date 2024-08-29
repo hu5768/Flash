@@ -17,11 +17,11 @@ class UserModel {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     nickName = json['nickName'];
-    instagramId = json['instagramId'];
-    height = json['height'];
-    reach = json['reach'];
-    profileImageUrl = json['profileImageUrl'];
-    gender = json['gender'];
+    instagramId = json['instagramId'] ?? '';
+    height = json['height'] ?? 0;
+    reach = json['reach'] ?? 0;
+    profileImageUrl = json['profileImageUrl'] ?? '';
+    gender = json['gender'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
