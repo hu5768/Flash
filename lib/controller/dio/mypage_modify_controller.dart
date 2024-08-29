@@ -21,9 +21,14 @@ class MypageModifyController extends GetxController {
     profileImageUrl: 'https://example.com/profile.jpg',
     gender: 'MALE',
   );
+  var isEmpty = true.obs;
   @override
   void onInit() {
     super.onInit();
+    modifyText.addListener(() {
+      // 텍스트가 비어 있으면 true, 아니면 false
+      isEmpty.value = modifyText.text.isEmpty;
+    });
   }
 
   void fetchMemberData() {

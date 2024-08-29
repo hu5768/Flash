@@ -42,7 +42,7 @@ class ModifyGender extends StatelessWidget {
         backgroundColor: ColorGroup.appbarBGC,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

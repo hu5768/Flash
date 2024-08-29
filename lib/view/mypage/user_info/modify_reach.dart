@@ -40,7 +40,7 @@ class ModifyReach extends StatelessWidget {
         backgroundColor: ColorGroup.appbarBGC,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,40 +58,67 @@ class ModifyReach extends StatelessWidget {
               ),
               onChanged: (value) {},
             ),
-            Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      mypageModifyController.rxUserModel.reach.value =
-                          double.tryParse(
-                        mypageModifyController.modifyText.text,
-                      )!;
+            Obx(
+              () {
+                return Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: mypageModifyController.isEmpty.value
+                          ? ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(250, 60),
+                                foregroundColor: ColorGroup.selectBtnFGC,
+                                backgroundColor:
+                                    Color.fromRGBO(213, 213, 213, 1),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: const Text(
+                                "변경하기",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                mypageModifyController.rxUserModel.reach.value =
+                                    double.tryParse(
+                                  mypageModifyController.modifyText.text,
+                                )!;
 
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(250, 60),
-                      foregroundColor: ColorGroup.selectBtnFGC,
-                      backgroundColor: ColorGroup.selectBtnBGC,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 5,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(250, 60),
+                                foregroundColor: ColorGroup.selectBtnFGC,
+                                backgroundColor: ColorGroup.selectBtnBGC,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: const Text(
+                                "변경하기",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                     ),
-                    child: const Text(
-                      "변경하기",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ],
         ),
