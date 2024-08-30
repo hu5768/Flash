@@ -127,9 +127,13 @@ class MyModify extends StatelessWidget {
                           info: '성별',
                           infoValue:
                               mypageModifyController.rxUserModel.gender.value ==
-                                      'MALE'
-                                  ? '남성'
-                                  : '여성',
+                                      ''
+                                  ? '--'
+                                  : mypageModifyController
+                                              .rxUserModel.gender.value ==
+                                          'MALE'
+                                      ? '남성'
+                                      : '여성',
                           child: ModifyGender(),
                         ),
                         Divider(
@@ -139,8 +143,11 @@ class MyModify extends StatelessWidget {
                         ModifyInfoCard(
                           info: '키',
                           infoValue: mypageModifyController
-                              .rxUserModel.height.value
-                              .toString(),
+                                      .rxUserModel.height.value ==
+                                  0
+                              ? '--'
+                              : mypageModifyController.rxUserModel.height.value
+                                  .toString(),
                           child: ModifyHegiht(),
                         ),
                         Divider(
@@ -150,8 +157,11 @@ class MyModify extends StatelessWidget {
                         ModifyInfoCard(
                           info: '리치',
                           infoValue: mypageModifyController
-                              .rxUserModel.reach.value
-                              .toString(),
+                                      .rxUserModel.reach.value ==
+                                  0
+                              ? '--'
+                              : mypageModifyController.rxUserModel.reach.value
+                                  .toString(),
                           child: ModifyReach(),
                         ),
                       ],

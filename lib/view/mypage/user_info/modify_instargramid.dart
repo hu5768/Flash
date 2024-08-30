@@ -49,7 +49,7 @@ class ModifyInstargramid extends StatelessWidget {
             TextField(
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
-                  RegExp(r'[a-z0-9가-힣._]'),
+                  RegExp(r'[a-z0-9._]'),
                 ), // 영어 대소문자, 숫자, 한글만 허용
                 LengthLimitingTextInputFormatter(30),
               ],

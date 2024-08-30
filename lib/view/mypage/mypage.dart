@@ -92,9 +92,11 @@ class _MypageState extends State<Mypage> {
                       Expanded(
                         child: InfoCard(
                           label: '성별',
-                          value: mypageController.userModel.gender == 'MALE'
-                              ? '남성'
-                              : '여성',
+                          value: mypageController.userModel.gender == ''
+                              ? '--'
+                              : mypageController.userModel.gender == 'MALE'
+                                  ? '남성'
+                                  : '여성',
                           cm: false,
                         ),
                       ),

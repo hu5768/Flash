@@ -106,23 +106,19 @@ class LoginController {
   static Future<void> appleLogin(context) async {
     //애플 로그인
     try {
+      /*
       final AppleAuthProvider provider = AppleAuthProvider()..addScope('email');
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithProvider(provider);
-/*
+*/
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      final idToken = credential.identityToken;*/
-      final idToken;
-      if (Platform.isAndroid) {
-        idToken = await userCredential.user?.getIdToken();
-      } else {
-        idToken = userCredential.credential?.accessToken;
-      }
+      final idToken = credential.identityToken;
+
       final response = await DioClient().dio.post(
         "/auth/login",
         data: {

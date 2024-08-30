@@ -18,7 +18,7 @@ class NicknameField extends StatelessWidget {
           TextField(
             inputFormatters: [
               FilteringTextInputFormatter.allow(
-                RegExp(r'[a-zA-Z0-9가-힣]'),
+                RegExp(r'[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]'),
               ), // 영어 대소문자, 숫자, 한글만 허용
               LengthLimitingTextInputFormatter(20),
             ],

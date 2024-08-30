@@ -62,7 +62,7 @@ class ProblemCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    'assets/images/problem.jpeg',
+                    'assets/images/problem.png',
                     fit: BoxFit.cover,
                   );
                 },

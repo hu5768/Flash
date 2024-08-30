@@ -63,13 +63,13 @@ class AnswerCard extends StatelessWidget {
                         children: [
                           ClipOval(
                             child: Image.asset(
-                              'assets/images/problem.jpeg',
+                              'assets/images/problem.png',
                               height: 45,
                               width: 45,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
-                                  'assets/images/problem.jpeg',
+                                  'assets/images/problem.png',
                                   height: 45,
                                   width: 45,
                                   fit: BoxFit.cover,

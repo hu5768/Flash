@@ -1,5 +1,6 @@
 import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -48,15 +49,17 @@ class LoginPage extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 16),
-                  LoginButton(
-                    logoImgUrl: 'assets/images/apple_logo.png',
-                    btnText: 'Apple로 시작하기',
-                    bgnColor: Colors.white,
-                    fgnColor: Colors.black,
-                    onPressed: () {
-                      LoginController.appleLogin(context);
-                    },
-                  ),
+                  isAndroid()
+                      ? SizedBox()
+                      : LoginButton(
+                          logoImgUrl: 'assets/images/apple_logo.png',
+                          btnText: 'Apple로 시작하기',
+                          bgnColor: Colors.white,
+                          fgnColor: Colors.black,
+                          onPressed: () {
+                            LoginController.appleLogin(context);
+                          },
+                        ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
                     child: Row(

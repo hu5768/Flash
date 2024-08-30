@@ -1,3 +1,4 @@
+import 'package:flash/view/mypage/my_video_card.dart';
 import 'package:flutter/material.dart';
 
 class MyGridView extends StatelessWidget {
@@ -18,9 +19,7 @@ class MyGridView extends StatelessWidget {
       ),
       itemCount: 5,
       itemBuilder: (context, index) {
-        return Container(
-          color: Colors.black26,
-        );
+        return MyVideoCard(index: index);
       },
     );
   }
