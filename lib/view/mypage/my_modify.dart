@@ -1,5 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
+import 'package:flash/controller/dio/user_delete_controller.dart';
+import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/mypage/user_info/modify_gender.dart';
 import 'package:flash/view/mypage/user_info/modify_hegiht.dart';
 import 'package:flash/view/mypage/user_info/modify_instargramid.dart';
@@ -14,6 +16,7 @@ class MyModify extends StatelessWidget {
   MyModify({super.key});
   final mypageModifyController = Get.put(MypageModifyController());
   final mypageController = Get.put(MypageController());
+  final userDeleteController = Get.put(UserDeleteController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +182,15 @@ class MyModify extends StatelessWidget {
                         ModifyMemberCard(
                           info: '로그아웃',
                           textColor: Color.fromRGBO(33, 33, 33, 1),
-                          clikFunction: () {},
+                          clikFunction: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                              (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                            );
+                          },
                         ),
                         Divider(
                           height: 0,
@@ -188,7 +199,16 @@ class MyModify extends StatelessWidget {
                         ModifyMemberCard(
                           info: '계정탈퇴',
                           textColor: Color.fromRGBO(255, 0, 0, 1),
-                          clikFunction: () {},
+                          clikFunction: () {
+                            userDeleteController.DeleteMember();
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                              (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                            );
+                          },
                         ),
                       ],
                     ),
