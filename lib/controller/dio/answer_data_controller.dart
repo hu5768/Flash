@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/model/problem_detail_model.dart';
 import 'package:flash/model/solution_model.dart';
 import 'package:flash/view/answers/answer_card.dart';
@@ -17,6 +19,9 @@ class AnswerDataController extends GetxController {
     dios.Response response;
     answerList.clear();
     try {
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
+
       //문제 디테일 페이지 정보 요청
       response = await DioClient().dio.get(
             "/problems/$problemId",
@@ -43,6 +48,8 @@ class AnswerDataController extends GetxController {
       print('디테일 문제 로딩 실패$e');
     }
     try {
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get(
             "/problems/$problemId/solutions",
           );
@@ -66,12 +73,20 @@ class AnswerDataController extends GetxController {
             instagramId: entry.value.instagramId!,
             videoUrl: entry.value.videoUrl!,
             solutionId: entry.value.id!,
+            problemId: problemId,
           );
         },
       ).toList();
       answerList.addAll(solutionVideoList);
     } catch (e) {
-      print('해설 영상 로딩 실패$e');
+      if (e is DioException) {
+        if (e.response != null) {
+          print('해설 데이터 로딩 실패DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+        } else {
+          print('Error: ${e.message}');
+        }
+      }
     }
   }
 

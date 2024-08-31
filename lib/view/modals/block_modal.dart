@@ -65,7 +65,6 @@ class BlockModal extends StatelessWidget {
                 Divider(height: 1),
                 GestureDetector(
                   onTap: () {
-                    print('??');
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {

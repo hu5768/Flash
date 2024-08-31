@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AnswerCard extends StatelessWidget {
-  final String uploader, review, instagramId, videoUrl;
+  final String uploader, review, instagramId, videoUrl, problemId;
   final int solutionId;
   final VideoPlayerController videoController;
 
@@ -18,6 +18,7 @@ class AnswerCard extends StatelessWidget {
     required this.videoUrl,
     required this.videoController,
     required this.solutionId,
+    required this.problemId,
   });
 
   @override
@@ -117,7 +118,8 @@ class AnswerCard extends StatelessWidget {
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
                               builder: (BuildContext context) {
-                                return BlockModal(
+                                return ManageModal(
+                                  problemId: problemId,
                                   solutionId: solutionId,
                                 );
                               },
