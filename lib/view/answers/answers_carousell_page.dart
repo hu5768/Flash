@@ -17,6 +17,7 @@ class AnswersCarousell extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('SolutionPage');
     answerDataController.fetchData(id);
     answerCarouselController.cIndex.value = 0;
 

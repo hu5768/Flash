@@ -47,6 +47,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('MainPage');
     centerTitleController.getContext(context);
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
@@ -69,6 +70,12 @@ class _MainPageState extends State<MainPage> {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         onTap: (int index) async {
+          AnalyticsService.buttonClick(
+            'MainPage',
+            'bottomNavigator_$index',
+            centerTitleController.centerTitle.value,
+            '',
+          );
           if (index == 1) {
             OpenForm();
             return;
@@ -155,6 +162,12 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
               MapButton(centerTitleController: centerTitleController),
               GestureDetector(
                 onTap: () {
+                  AnalyticsService.buttonClick(
+                    'MainPage',
+                    '센터 선택 버튼',
+                    centerTitleController.centerTitle.value,
+                    '',
+                  );
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -228,6 +241,12 @@ class FilterButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () {
+          AnalyticsService.buttonClick(
+            'MainPage',
+            '필터 선택 버튼',
+            '',
+            '',
+          );
           problemFilterController.inToTemp();
           showModalBottomSheet(
             backgroundColor: ColorGroup.modalBGC,
@@ -259,7 +278,6 @@ class TitleButton extends StatelessWidget {
       children: [
         Obx(() {
           return Text(
-            //"${centerTitleController.centerTitle} (개발 서버)",
             centerTitleController.centerTitle.toString(),
             style: const TextStyle(
               fontSize: 17,
@@ -292,6 +310,12 @@ class MapButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () {
+          AnalyticsService.buttonClick(
+            'MainPage',
+            '지도 버튼',
+            centerTitleController.centerTitle.value,
+            '',
+          );
           showModalBottomSheet(
             backgroundColor: ColorGroup.modalBGC,
             isScrollControlled: true,

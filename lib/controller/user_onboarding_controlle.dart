@@ -26,6 +26,8 @@ class UserOnboardingControlle extends GetxController {
   var genderEmpty = true.obs;
   var profileEmpty = true.obs;
 
+  var nickSafe = true.obs;
+  var nickSafetyCode = ''.obs;
   @override
   void onInit() {
     super.onInit();
@@ -57,8 +59,19 @@ class UserOnboardingControlle extends GetxController {
     }
   }
 
-  void nextPage() {
-    if (onboardIndex.value < maxIndex) {
+  void nextPage() async {
+    if (onboardIndex.value == 0) {
+      bool isSafe = await mypageController.nickNameOverlap(nicknameText.text);
+      nickSafe.value = isSafe;
+      if (isSafe) {
+        pageController.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+      } else {
+        nickSafetyCode.value = mypageController.nickSafetyCode;
+      }
+    } else if (onboardIndex.value < maxIndex) {
       pageController.nextPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,

@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,6 +86,12 @@ class ProfileField extends StatelessWidget {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
+                    AnalyticsService.buttonClick(
+                      'UserOnboarding',
+                      '건너뛰기',
+                      '',
+                      userOnboardingControlle.onboardIndex.value.toString(),
+                    );
                     //프로필 이미지 초기화
                     userOnboardingControlle.updateOnboardInfo();
                     Navigator.pushAndRemoveUntil(
@@ -118,7 +125,14 @@ class ProfileField extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    AnalyticsService.buttonClick(
+                      'UserOnboarding',
+                      '다음버튼',
+                      '',
+                      userOnboardingControlle.onboardIndex.value.toString(),
+                    );
                     //서버에 데이터 전송하는 버튼
+
                     userOnboardingControlle.updateOnboardInfo();
                     Navigator.pushAndRemoveUntil(
                       context,

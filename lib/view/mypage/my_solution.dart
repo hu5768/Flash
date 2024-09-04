@@ -1,23 +1,20 @@
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/view/answers/answer_player.dart';
-import 'package:flash/view/modals/block_modal.dart';
-import 'package:flash/view/modals/manage_modal.dart';
-import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
-class AnswerCard extends StatelessWidget {
+import 'package:flash/view/modals/manage_modal.dart';
+import 'package:flash/view/mypage/my_solution_player.dart';
+import 'package:flutter/material.dart';
+
+class MySolution extends StatelessWidget {
   final String uploader, review, instagramId, videoUrl, problemId, uploaderId;
   final int solutionId;
   final bool isUploader;
-  final VideoPlayerController videoController;
 
-  AnswerCard({
+  MySolution({
     super.key,
     required this.uploader,
     required this.review,
     required this.instagramId,
     required this.videoUrl,
-    required this.videoController,
     required this.solutionId,
     required this.problemId,
     required this.uploaderId,
@@ -36,9 +33,13 @@ class AnswerCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
-          AnswerPlayer(
-            videoController: videoController,
+          MySolutionPlayer(
             useUri: videoUrl,
+          ),
+          Positioned(
+            top: 60,
+            right: 15,
+            child: CloseButton(),
           ),
           Positioned(
             bottom: 0,
@@ -93,12 +94,25 @@ class AnswerCard extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
+                              Text(
+                                "???????",
+                                style: TextStyle(
+                                  color: const Color.fromARGB(
+                                    255,
+                                    168,
+                                    151,
+                                    151,
+                                  ),
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.red,
+                                ),
+                              ),
                               const SizedBox(
                                 width: 20,
                               ),
                               Text(
                                 "@$instagramId",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.white,
                                 ),
@@ -121,16 +135,10 @@ class AnswerCard extends StatelessWidget {
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
                               builder: (BuildContext context) {
-                                return isUploader
-                                    ? ManageModal(
-                                        problemId: problemId,
-                                        solutionId: solutionId,
-                                      )
-                                    : BlockModal(
-                                        solutionId: solutionId,
-                                        problemId: problemId,
-                                        uploaderId: uploaderId,
-                                      );
+                                return ManageModal(
+                                  problemId: problemId,
+                                  solutionId: solutionId,
+                                );
                               },
                             );
                           },
@@ -151,6 +159,33 @@ class AnswerCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CloseButton extends StatelessWidget {
+  const CloseButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7), // 배경색 설정
+        shape: BoxShape.circle, // 동그란 모양으로 설정
+      ),
+      child: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(
+          Icons.close,
+          color: Colors.white,
+        ),
       ),
     );
   }

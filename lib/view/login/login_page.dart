@@ -1,4 +1,5 @@
 import 'package:flash/controller/dio/login_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 
@@ -7,6 +8,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('LoginPage');
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
@@ -35,6 +37,12 @@ class LoginPage extends StatelessWidget {
                     bgnColor: Color.fromRGBO(250, 250, 250, 0.2),
                     fgnColor: Colors.white,
                     onPressed: () {
+                      AnalyticsService.buttonClick(
+                        'LoginPage',
+                        '구글 로그인',
+                        '',
+                        isAndroid() ? 'android' : 'ios',
+                      );
                       LoginController.googleSignIn(context);
                     },
                   ),
@@ -45,6 +53,12 @@ class LoginPage extends StatelessWidget {
                     bgnColor: Colors.yellow,
                     fgnColor: Colors.black,
                     onPressed: () {
+                      AnalyticsService.buttonClick(
+                        'LoginPage',
+                        '카카오 로그인',
+                        '',
+                        isAndroid() ? 'android' : 'ios',
+                      );
                       LoginController.kakaoLogin(context);
                     },
                   ),
@@ -57,6 +71,12 @@ class LoginPage extends StatelessWidget {
                           bgnColor: Colors.white,
                           fgnColor: Colors.black,
                           onPressed: () {
+                            AnalyticsService.buttonClick(
+                              'LoginPage',
+                              '애플 로그인',
+                              '',
+                              isAndroid() ? 'android' : 'ios',
+                            );
                             LoginController.appleLogin(context);
                           },
                         ),
@@ -69,7 +89,14 @@ class LoginPage extends StatelessWidget {
                           children: [
                             SizedBox(width: 12),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                AnalyticsService.buttonClick(
+                                  'LoginPage',
+                                  '이용약관',
+                                  '',
+                                  isAndroid() ? 'android' : 'ios',
+                                );
+                              },
                               style: ButtonStyle(
                                 padding: WidgetStateProperty.all<EdgeInsets>(
                                   EdgeInsets.zero,
@@ -94,7 +121,15 @@ class LoginPage extends StatelessWidget {
                               ),
                             ),
                             TextButton(
-                              onPressed: LoginController.OpenPI,
+                              onPressed: () {
+                                AnalyticsService.buttonClick(
+                                  'LoginPage',
+                                  '개인정보처리방침',
+                                  '',
+                                  isAndroid() ? 'android' : 'ios',
+                                );
+                                LoginController.OpenPI();
+                              },
                               style: ButtonStyle(
                                 padding: WidgetStateProperty.all<EdgeInsets>(
                                   EdgeInsets.zero,
@@ -114,7 +149,15 @@ class LoginPage extends StatelessWidget {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            AnalyticsService.buttonClick(
+                              'LoginPage',
+                              '문의하기',
+                              '',
+                              isAndroid() ? 'android' : 'ios',
+                            );
+                            LoginController.OpenForm();
+                          },
                           style: ButtonStyle(
                             padding: WidgetStateProperty.all<EdgeInsets>(
                               EdgeInsets.zero,

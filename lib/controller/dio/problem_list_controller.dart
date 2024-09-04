@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dios;
+import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
@@ -56,13 +57,20 @@ class ProblemListController extends GetxController {
       if (um.isNotEmpty) {
         morePage = response.data["meta"]["hasNext"];
         if (morePage) {
-          problemList.addAll(um);
+          problemList.addAll(um); //?
           nextCursor = response.data["meta"]["cursor"];
         }
-
         problemList.assignAll(um);
       }
     } catch (e) {
+      if (e is DioException) {
+        if (e.response != null) {
+          print('DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+        } else {
+          print('Error: ${e.message}');
+        }
+      }
       print("시작 페이지 로딩 오류$e");
     }
     loadRunning = false;

@@ -1,25 +1,29 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-/*
+
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static var version = 'test'; //출시 전 test
 
-  static Future<void> screenView(String screenName, String gymId) async {
-    //제보페이지 버튼
+  static Future<void> screenView(String screenName) async {
+    //제보페이지
     await analytics.logScreenView(
-      screenName: '$screenName(1.0)',
-      parameters: <String, Object>{
-        'gymId': gymId,
-      },
+      screenName: 'FlashApp_{$version}_screenView_$screenName',
+      parameters: <String, Object>{},
     );
   }
 
-  static Future<void> buttonClick(String buttonName, pageName, gymName) async {
+  static Future<void> buttonClick(
+    String pageName,
+    String buttonName,
+    String gymName,
+    String buttoninfo,
+  ) async {
     //버튼클릭 이벤트
     await analytics.logEvent(
-      name: '$buttonName(1.0)',
+      name: 'FlashApp_${version}_button_$pageName',
       parameters: <String, Object>{
+        'buttoninfo': buttoninfo,
         'buttonName': buttonName,
-        'pageName': pageName,
         'gymName': gymName,
       },
     );
@@ -33,7 +37,7 @@ class AnalyticsService {
     String hasSolution,
   ) async {
     await analytics.logEvent(
-      name: '문제 선택(1.0)',
+      name: 'FlashApp_${version}_ClickProblem',
       parameters: <String, Object>{
         'id': id,
         'difficulty': difficulty,
@@ -49,7 +53,7 @@ class AnalyticsService {
     String useuri,
   ) async {
     await analytics.logEvent(
-      name: 'video(1.0)',
+      name: 'FlashApp_{$version}_video',
       parameters: <String, Object>{
         'type': type,
         'videoUrl': useuri,
@@ -66,7 +70,7 @@ class AnalyticsService {
   ) async {
     //필터 모달 버튼
     await analytics.logEvent(
-      name: '모달클릭 $buttonName(1.0)',
+      name: 'FlashApp_{$version}_modal_$buttonName',
       parameters: <String, Object>{
         'gymName': diffOption,
         'diffOption': diffOption,
@@ -84,7 +88,7 @@ class AnalyticsService {
     String sector,
   ) async {
     await analytics.logEvent(
-      name: '풀이 슬라이드(1.0)',
+      name: 'FlashApp_{$version}_slider',
       parameters: <String, Object>{
         'index': index,
         'id': id,
@@ -94,4 +98,3 @@ class AnalyticsService {
     );
   }
 }
-*/

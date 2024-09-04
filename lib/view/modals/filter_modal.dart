@@ -92,6 +92,12 @@ class FilterModal extends StatelessWidget {
                               value:
                                   problemFilterController.nobodySolTemp.value,
                               onChanged: (bool value) {
+                                AnalyticsService.buttonClick(
+                                  'FilterModal',
+                                  '아무도못푼문제보기',
+                                  '',
+                                  '',
+                                );
                                 problemFilterController.nobodySolTemp.value =
                                     value;
                               },
@@ -105,6 +111,16 @@ class FilterModal extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
+                              AnalyticsService.buttonClick(
+                                'FilterModal_apply',
+                                problemFilterController.allTempSelection[1]
+                                    .toString(),
+                                '아무도 못푼문제' +
+                                    problemFilterController.nobodySolTemp
+                                        .toString(),
+                                problemFilterController.allTempSelection[0]
+                                    .toString(),
+                              );
                               problemFilterController.tempToSel();
                               problemListController.newFetch();
                               Navigator.of(context).pop();
@@ -194,6 +210,12 @@ class FilterTab extends StatelessWidget {
                     ),
                     selected: isSelected,
                     onSelected: (bool selected) {
+                      AnalyticsService.buttonClick(
+                        'FilterModal',
+                        option,
+                        '',
+                        '',
+                      );
                       problemFilterController.toggleSelection(
                         option,
                         index,

@@ -6,6 +6,7 @@ import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
@@ -140,6 +141,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('UploadPage');
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(

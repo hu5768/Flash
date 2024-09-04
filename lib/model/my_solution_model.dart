@@ -1,4 +1,4 @@
-class SolutionModel {
+class MySolutionModel {
   int? id;
   String? uploader;
   String? review;
@@ -7,7 +7,7 @@ class SolutionModel {
   String? uploaderId;
   bool? isUploader;
 
-  SolutionModel({
+  MySolutionModel({
     this.id,
     this.uploader,
     this.review,
@@ -17,7 +17,7 @@ class SolutionModel {
     this.isUploader,
   });
 
-  SolutionModel.fromJson(Map<String, dynamic> json) {
+  MySolutionModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     uploader = json['uploader'];
     review = json['review'];

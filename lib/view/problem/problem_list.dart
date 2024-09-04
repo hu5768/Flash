@@ -31,107 +31,6 @@ class ProblemList extends StatelessWidget {
           ),
           child: Column(
             children: [
-              /*Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Obx(
-                    () => ElevatedButton(
-                      onPressed: () {
-                        AnalyticsService.buttonClick(
-                          '문제리스트 페이지',
-                          '정렬 버튼',
-                          centerTitleController.centerTitle.toString(),
-                        );
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const SortModal();
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(115, 40),
-                        side: BorderSide(
-                          color: problemTitleController.sortkey.toString() ==
-                                  'recommand'
-                              ? ColorGroup.modalBtnBGC
-                              : ColorGroup.selectBtnBGC,
-                        ),
-                        foregroundColor:
-                            problemTitleController.sortkey.toString() ==
-                                    'recommand'
-                                ? ColorGroup.btnFGC
-                                : ColorGroup.selectBtnBGC,
-                        backgroundColor:
-                            problemTitleController.sortkey.toString() ==
-                                    'recommand'
-                                ? ColorGroup.btnBGC
-                                : ColorGroup.modalSBtnBGC,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(problemTitleController.sorttitle.toString()),
-                          const Icon(Icons.keyboard_arrow_down),
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  Obx(
-                    () {
-                      return ElevatedButton(
-                        onPressed: () {
-                          AnalyticsService.buttonClick(
-                            '문제리스트 페이지',
-                            '필터 버튼',
-                            centerTitleController.centerTitle.toString(),
-                          );
-                          problemFilterController.inToTemp();
-                          showModalBottomSheet(
-                            backgroundColor: ColorGroup.modalBGC,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return FilterModal();
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(115, 40),
-                          side: BorderSide(
-                            color: problemFilterController.allEmpty()
-                                ? ColorGroup.modalBtnBGC
-                                : ColorGroup.selectBtnBGC,
-                          ),
-                          foregroundColor: problemFilterController.allEmpty()
-                              ? ColorGroup.btnFGC
-                              : ColorGroup.selectBtnBGC,
-                          backgroundColor: problemFilterController.allEmpty()
-                              ? ColorGroup.btnBGC
-                              : ColorGroup.modalSBtnBGC,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            problemFilterController.allEmpty()
-                                ? const Text('필터')
-                                : Text(
-                                    '필터${problemFilterController.countFilter()}',
-                                  ),
-                            const Icon(Icons.filter_alt_outlined),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                
-                ],
-              ),*/
               const SizedBox(height: 10),
               GetX<ProblemListController>(
                 builder: (controller) {
@@ -203,6 +102,12 @@ class SortedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(40.0),
         ),
         onPressed: () {
+          AnalyticsService.buttonClick(
+            'MyPage',
+            '정렬버튼',
+            '',
+            '',
+          );
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {

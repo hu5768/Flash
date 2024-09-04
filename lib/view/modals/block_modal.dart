@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 
 class BlockModal extends StatelessWidget {
   final int solutionId;
+  final String problemId;
+  final String uploaderId;
   final UserBlockController userBlockController = UserBlockController();
   BlockModal({
     super.key,
     required this.solutionId,
+    required this.problemId,
+    required this.uploaderId,
   });
 
   @override
@@ -42,7 +46,57 @@ class BlockModal extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+                          backgroundColor: ColorGroup.BGC,
+                          titleTextStyle: TextStyle(
+                            fontSize: 15,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          contentTextStyle: TextStyle(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          title: Text('사용자 차단'),
+                          content: Text('해당 사용자를 차단하시겠습니까?'),
+                          actions: [
+                            TextButton(
+                              child: Text(
+                                '취소',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorGroup.selectBtnBGC,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                '차단',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorGroup.selectBtnBGC,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              onPressed: () {
+                                userBlockController.block(uploaderId);
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),

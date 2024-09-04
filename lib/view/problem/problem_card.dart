@@ -31,6 +31,12 @@ class ProblemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        AnalyticsService.problemClick(
+          id,
+          difficulty,
+          sector,
+          hasSolution.toString(),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:flash/model/problem_detail_model.dart';
 import 'package:flash/model/solution_model.dart';
 import 'package:flash/view/answers/answer_card.dart';
@@ -15,7 +16,11 @@ class AnswerDataController extends GetxController {
   String difficulty = '';
   String sector = '';
   late List<VideoPlayerController?> videoControllerList;
+  final AnswerCarouselController answerCarouselController =
+      AnswerCarouselController();
+
   void fetchData(String problemId) async {
+    answerCarouselController.cIndex.value = 0;
     dios.Response response;
     answerList.clear();
     try {
@@ -74,6 +79,8 @@ class AnswerDataController extends GetxController {
             videoUrl: entry.value.videoUrl!,
             solutionId: entry.value.id!,
             problemId: problemId,
+            uploaderId: entry.value.uploaderId!,
+            isUploader: entry.value.isUploader!,
           );
         },
       ).toList();

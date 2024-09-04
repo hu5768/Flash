@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/login/user_onboarding/gender_field.dart';
 import 'package:flash/view/login/user_onboarding/height_field.dart';
 import 'package:flash/view/login/user_onboarding/instarid_field.dart';
@@ -20,6 +21,7 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
   final userOnboardingControlle = Get.put(UserOnboardingControlle());
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('UserOnboardingPage');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
@@ -30,6 +32,12 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
           children: [
             IconButton(
               onPressed: () {
+                AnalyticsService.buttonClick(
+                  'UserOnboarding',
+                  '뒤로가기',
+                  '',
+                  userOnboardingControlle.onboardIndex.value.toString(),
+                );
                 userOnboardingControlle.backPage(context);
               },
               icon: Icon(Icons.arrow_back_ios),

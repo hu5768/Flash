@@ -14,9 +14,44 @@ class MypageController extends GetxController {
     gender: '',
     profileImageUrl: '',
   );
+  String nickSafetyCode = '';
+
   @override
   void onInit() {
     super.onInit();
+  }
+
+  Future<bool> nickNameOverlap(String nickName) async {
+    dios.Response response;
+    final token = await storage.read(key: ACCESS_TOKEN_KEY);
+    DioClient().updateOptions(token: token.toString());
+    bool isAvailable = false;
+    try {
+      print('닉네임 중복확인 get');
+      response = await DioClient().dio.get(
+        "/members/nickname",
+        data: {
+          "nickName": nickName,
+        },
+      );
+
+      Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
+      isAvailable = resMap["isAvailable"];
+      nickSafetyCode = '이미 사용중인 닉네임입니다';
+    } catch (e) {
+      isAvailable = false;
+      if (e is DioException) {
+        if (e.response != null) {
+          print('DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+          nickSafetyCode = e.response?.data['nickName'];
+        } else {
+          print('Error: ${e.message}');
+        }
+      }
+      print('아이디 중복 실패$e');
+    }
+    return isAvailable;
   }
 
   Future<void> fetchMemberData() async {

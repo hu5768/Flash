@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/mypage/my_grid_view.dart';
 import 'package:flash/view/mypage/my_modify.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _MypageState extends State<Mypage> {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('MyPage');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       body: SingleChildScrollView(
@@ -66,6 +68,12 @@ class _MypageState extends State<Mypage> {
                       Spacer(),
                       TextButton(
                         onPressed: () async {
+                          AnalyticsService.buttonClick(
+                            'MyPage',
+                            '수정하기',
+                            '',
+                            '',
+                          );
                           mypageModifyController.fetchMemberData();
                           await Navigator.push(
                             context,

@@ -1,6 +1,8 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/controller/dio/user_delete_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/mypage/user_info/modify_gender.dart';
 import 'package:flash/view/mypage/user_info/modify_hegiht.dart';
@@ -19,6 +21,7 @@ class MyModify extends StatelessWidget {
   final userDeleteController = Get.put(UserDeleteController());
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('MyModifyPage');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
@@ -183,12 +186,64 @@ class MyModify extends StatelessWidget {
                           info: '로그아웃',
                           textColor: Color.fromRGBO(33, 33, 33, 1),
                           clikFunction: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                              (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  actionsPadding:
+                                      EdgeInsets.fromLTRB(0, 0, 30, 10),
+                                  backgroundColor: ColorGroup.BGC,
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  contentTextStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  title: Text('로그아웃'),
+                                  content: Text('로그아웃 하시겠습니까?'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text(
+                                        '취소',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorGroup.selectBtnBGC,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        '로그아웃',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorGroup.selectBtnBGC,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        await storage.delete(
+                                          key: ACCESS_TOKEN_KEY,
+                                        );
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => LoginPage(),
+                                          ),
+                                          (route) =>
+                                              false, // 스택에 있는 모든 이전 라우트를 제거
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
                             );
                           },
                         ),
@@ -200,13 +255,68 @@ class MyModify extends StatelessWidget {
                           info: '계정탈퇴',
                           textColor: Color.fromRGBO(255, 0, 0, 1),
                           clikFunction: () {
-                            userDeleteController.DeleteMember();
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                              (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  actionsPadding:
+                                      EdgeInsets.fromLTRB(0, 0, 30, 10),
+                                  backgroundColor: ColorGroup.BGC,
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  contentTextStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  title: Text('계정 삭제'),
+                                  content: Text(
+                                    '업로드한 모든 영상이 사라집니다\n정말 계정을 삭제하시겠습니까?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: Text(
+                                        '취소',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorGroup.selectBtnBGC,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        '삭제',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorGroup.selectBtnBGC,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        userDeleteController.DeleteMember();
+                                        await storage.delete(
+                                          key: ACCESS_TOKEN_KEY,
+                                        );
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => LoginPage(),
+                                          ),
+                                          (route) =>
+                                              false, // 스택에 있는 모든 이전 라우트를 제거
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
                             );
                           },
                         ),
@@ -237,6 +347,12 @@ class ModifyInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        AnalyticsService.buttonClick(
+          'userModify',
+          info,
+          '',
+          '',
+        );
         mypageModifyController.modifyText.text = '';
         await Navigator.push(
           context,
@@ -296,6 +412,12 @@ class ModifyMemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        AnalyticsService.buttonClick(
+          'userModify',
+          info,
+          '',
+          '',
+        );
         clikFunction();
       },
       child: Padding(

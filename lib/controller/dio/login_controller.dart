@@ -21,6 +21,8 @@ class LoginController {
   static String personalInformation =
       'https://sites.google.com/view/flash-climbing/%ED%99%88'; //개인정보처리방침
 
+  static String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
+
   static Future<void> initAccount() async {
     KakaoSdk.init(nativeAppKey: '36977b0203b8efbc768e68615a8c9b70');
   }
@@ -211,10 +213,20 @@ class LoginController {
   }
 
   static Future<void> OpenPI() async {
+    //개인정보처리방침
     if (await canLaunchUrl(Uri.parse(personalInformation))) {
       await launchUrl(Uri.parse(personalInformation));
     } else {
       throw 'Could not launch $personalInformation';
+    }
+  }
+
+  static Future<void> OpenForm() async {
+    //문의하기
+    if (await canLaunchUrl(Uri.parse(inquiryForm))) {
+      await launchUrl(Uri.parse(inquiryForm));
+    } else {
+      throw 'Could not launch $inquiryForm';
     }
   }
 }

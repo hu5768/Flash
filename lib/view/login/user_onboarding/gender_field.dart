@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -67,6 +68,12 @@ class GenderField extends StatelessWidget {
                     width: double.infinity,
                     child: TextButton(
                       onPressed: () {
+                        AnalyticsService.buttonClick(
+                          'UserOnboarding',
+                          '건너뛰기',
+                          '',
+                          userOnboardingControlle.onboardIndex.value.toString(),
+                        );
                         userOnboardingControlle.selectedGender.value = '';
                         userOnboardingControlle.nextPage();
                       },
@@ -95,7 +102,15 @@ class GenderField extends StatelessWidget {
                     width: double.infinity,
                     child: userOnboardingControlle.genderEmpty.value
                         ? ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              AnalyticsService.buttonClick(
+                                'UserOnboarding',
+                                '회색 다음버튼',
+                                '',
+                                userOnboardingControlle.onboardIndex.value
+                                    .toString(),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               fixedSize: const Size(250, 60),
                               foregroundColor: ColorGroup.selectBtnFGC,
@@ -117,6 +132,13 @@ class GenderField extends StatelessWidget {
                           )
                         : ElevatedButton(
                             onPressed: () {
+                              AnalyticsService.buttonClick(
+                                'UserOnboarding',
+                                '다음버튼',
+                                '',
+                                userOnboardingControlle.onboardIndex.value
+                                    .toString(),
+                              );
                               userOnboardingControlle.nextPage();
                             },
                             style: ElevatedButton.styleFrom(

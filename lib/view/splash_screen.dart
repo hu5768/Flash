@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsService.screenView('SplashScreen');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Center(
