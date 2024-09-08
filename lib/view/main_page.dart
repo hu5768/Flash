@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../controller/dio/my_gridview_controller.dart';
+
 class MainPage extends StatefulWidget {
   MainPage({
     super.key,
@@ -30,6 +32,7 @@ class _MainPageState extends State<MainPage> {
   final centerTitleController = Get.put(CenterTitleController());
   final problemFilterController = Get.put(ProblemFilterController());
   final mypageController = Get.put(MypageController());
+  final myGridviewController = Get.put(MyGridviewController());
   static List<PreferredSizeWidget> _appBars = [
     ProblemAppBar(),
     MyPageAppBar(),
@@ -81,6 +84,7 @@ class _MainPageState extends State<MainPage> {
             return;
           } else if (index == 2) {
             await mypageController.fetchMemberData();
+            await myGridviewController.fetchData();
           }
           setState(() {
             currentIndex = index;

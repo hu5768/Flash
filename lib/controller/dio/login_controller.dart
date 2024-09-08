@@ -5,6 +5,7 @@ import 'package:flash/const/data.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -12,22 +13,36 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dio_singletone.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginController {
-  static final GoogleSignIn _googleSignIn = GoogleSignIn(
+class LoginController extends GetxController {
+  var requireConsent1 = false.obs;
+  var requireConsent2 = false.obs;
+  var requireConsent3 = false.obs;
+  var requiredAll = true.obs;
+  var emailConsent = false.obs;
+
+  void opneAgree() {
+    requireConsent1.value = false;
+    requireConsent2.value = false;
+    requireConsent3.value = false;
+    requiredAll.value = true;
+    emailConsent.value = false;
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
       /* scopes: [
       'email',
     ],*/
       );
-  static String personalInformation =
+  String personalInformation =
       'https://sites.google.com/view/flash-climbing/%ED%99%88'; //개인정보처리방침
 
-  static String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
+  String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
 
-  static Future<void> initAccount() async {
+  Future<void> initAccount() async {
     KakaoSdk.init(nativeAppKey: '36977b0203b8efbc768e68615a8c9b70');
   }
 
-  static Future<void> googleSignIn(context) async {
+  Future<void> googleSignIn(context) async {
     //구글 로그인
     try {
       print('login');
@@ -105,7 +120,7 @@ class LoginController {
     }
   }
 
-  static Future<void> appleLogin(context) async {
+  Future<void> appleLogin(context) async {
     //애플 로그인
     try {
       /*
@@ -161,7 +176,7 @@ class LoginController {
     }
   }
 
-  static Future<void> kakaoLogin(context) async {
+  Future<void> kakaoLogin(context) async {
     try {
       bool isInstalled = await isKakaoTalkInstalled();
       print(isInstalled);
@@ -212,7 +227,7 @@ class LoginController {
     }
   }
 
-  static Future<void> OpenPI() async {
+  Future<void> OpenPI() async {
     //개인정보처리방침
     if (await canLaunchUrl(Uri.parse(personalInformation))) {
       await launchUrl(Uri.parse(personalInformation));
@@ -221,7 +236,7 @@ class LoginController {
     }
   }
 
-  static Future<void> OpenForm() async {
+  Future<void> OpenForm() async {
     //문의하기
     if (await canLaunchUrl(Uri.parse(inquiryForm))) {
       await launchUrl(Uri.parse(inquiryForm));

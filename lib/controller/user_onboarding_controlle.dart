@@ -103,5 +103,6 @@ class UserOnboardingControlle extends GetxController {
       selectedGender.value,
       "https://example.com/profile.jpg",
     );
+    onboardIndex.value = 0;
   }
 }

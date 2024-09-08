@@ -33,6 +33,12 @@ class MyModify extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
+                    AnalyticsService.buttonClick(
+                      'userModify',
+                      '뒤로가기',
+                      '',
+                      '',
+                    );
                     Navigator.pop(context);
                   },
                   icon: Icon(Icons.arrow_back_ios),
@@ -47,6 +53,12 @@ class MyModify extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
+                    AnalyticsService.buttonClick(
+                      'userModify',
+                      '완료',
+                      '',
+                      '',
+                    );
                     await mypageModifyController.updateMemberInfo();
                     await mypageController.fetchMemberData();
                     Navigator.pop(context);
@@ -78,7 +90,14 @@ class MyModify extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AnalyticsService.buttonClick(
+                        'userModify',
+                        '프로필변경',
+                        '',
+                        '',
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       foregroundColor: Color.fromRGBO(83, 83, 83, 1),

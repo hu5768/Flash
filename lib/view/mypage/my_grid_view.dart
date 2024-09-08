@@ -1,5 +1,5 @@
 import 'package:flash/controller/dio/my_gridview_controller.dart';
-import 'package:flash/view/mypage/my_video_card.dart';
+import 'package:flash/view/mypage/my_grid_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,16 +25,19 @@ class MyGridView extends StatelessWidget {
           itemCount: myGridviewController.solutionList.length,
           itemBuilder: (context, index) {
             return MyVideoCard(
-              index: myGridviewController.solutionList[index].instagramId
+              solutionId: myGridviewController.solutionList[index].solutionId!,
+              gymName:
+                  myGridviewController.solutionList[index].gymName.toString(),
+              sectorName: myGridviewController.solutionList[index].sectorName
                   .toString(),
-              videoUrl:
-                  myGridviewController.solutionList[index].videoUrl.toString(),
-              uploader:
-                  myGridviewController.solutionList[index].uploader.toString(),
-              instagramId: myGridviewController.solutionList[index].instagramId
+              difficultyName: myGridviewController
+                  .solutionList[index].difficultyName
                   .toString(),
-              review:
-                  myGridviewController.solutionList[index].review.toString(),
+              problemImageUrl: myGridviewController
+                  .solutionList[index].problemImageUrl
+                  .toString(),
+              uploadedAt: myGridviewController.solutionList[index].uploadedAt
+                  .toString(),
             );
           },
         );

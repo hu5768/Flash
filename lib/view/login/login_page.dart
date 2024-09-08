@@ -1,11 +1,14 @@
 import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/login/agree_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
+import 'package:flash/const/enum/sort_satate.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-
+  final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('LoginPage');
@@ -37,13 +40,23 @@ class LoginPage extends StatelessWidget {
                     bgnColor: Color.fromRGBO(250, 250, 250, 0.2),
                     fgnColor: Colors.white,
                     onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: AgreePage(
+                              ouathLogin: OuathSite.GOOGLE,
+                            ),
+                          );
+                        },
+                      );
                       AnalyticsService.buttonClick(
                         'LoginPage',
                         '구글 로그인',
                         '',
                         isAndroid() ? 'android' : 'ios',
                       );
-                      LoginController.googleSignIn(context);
+                      //LoginController.googleSignIn(context);
                     },
                   ),
                   SizedBox(height: 16),
@@ -59,7 +72,16 @@ class LoginPage extends StatelessWidget {
                         '',
                         isAndroid() ? 'android' : 'ios',
                       );
-                      LoginController.kakaoLogin(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: AgreePage(
+                              ouathLogin: OuathSite.KAKAO,
+                            ),
+                          );
+                        },
+                      );
                     },
                   ),
                   SizedBox(height: 16),
@@ -77,7 +99,16 @@ class LoginPage extends StatelessWidget {
                               '',
                               isAndroid() ? 'android' : 'ios',
                             );
-                            LoginController.appleLogin(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: AgreePage(
+                                    ouathLogin: OuathSite.APPLE,
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                   Padding(
@@ -128,7 +159,7 @@ class LoginPage extends StatelessWidget {
                                   '',
                                   isAndroid() ? 'android' : 'ios',
                                 );
-                                LoginController.OpenPI();
+                                loginController.OpenPI();
                               },
                               style: ButtonStyle(
                                 padding: WidgetStateProperty.all<EdgeInsets>(
@@ -156,7 +187,7 @@ class LoginPage extends StatelessWidget {
                               '',
                               isAndroid() ? 'android' : 'ios',
                             );
-                            LoginController.OpenForm();
+                            loginController.OpenForm();
                           },
                           style: ButtonStyle(
                             padding: WidgetStateProperty.all<EdgeInsets>(

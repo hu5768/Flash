@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answer_player.dart';
 import 'package:flash/view/modals/block_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
@@ -117,6 +118,12 @@ class AnswerCard extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {
+                            AnalyticsService.buttonClick(
+                              'answer',
+                              '더보기',
+                              '',
+                              '',
+                            );
                             showModalBottomSheet(
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
@@ -186,17 +193,21 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
         );
 
         textPainter.layout(maxWidth: constraints.maxWidth);
-
+        //print("constraints.maxWidth${constraints.maxWidth}");
+        //print("한줄 넘냐?${textPainter.didExceedMaxLines}");
         if (textPainter.didExceedMaxLines && moreText) {
           return Row(
             children: [
-              Text(
-                widget.text.split('\n').first,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  widget.text.split('\n').first,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.clip,
                 ),
-                overflow: TextOverflow.clip,
               ),
               TextButton(
                 onPressed: () {

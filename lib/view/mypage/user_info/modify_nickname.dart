@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 class ModifyNickname extends StatelessWidget {
   ModifyNickname({super.key});
   final mypageModifyController = Get.put(MypageModifyController());
+  final mypageController = Get.put(MypageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,26 +48,42 @@ class ModifyNickname extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp(r'[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]'),
-                ), // 영어 대소문자, 숫자, 한글만 허용
-                LengthLimitingTextInputFormatter(20),
-              ],
-              keyboardType: TextInputType.text,
-              controller: mypageModifyController.modifyText,
-              style: TextStyle(fontSize: 24),
-              maxLines: null,
-              decoration: InputDecoration(
-                hintText: mypageModifyController.rxUserModel.nickName.value,
-                hintStyle: TextStyle(
-                  fontSize: 24,
-                  color: Color.fromRGBO(153, 153, 153, 1),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]'),
+                    ), // 영어 대소문자, 숫자, 한글만 허용
+                    LengthLimitingTextInputFormatter(20),
+                  ],
+                  keyboardType: TextInputType.text,
+                  controller: mypageModifyController.modifyText,
+                  style: TextStyle(fontSize: 24),
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    hintText: mypageModifyController.rxUserModel.nickName.value,
+                    hintStyle: TextStyle(
+                      fontSize: 24,
+                      color: Color.fromRGBO(153, 153, 153, 1),
+                    ),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) {},
                 ),
-                border: InputBorder.none,
-              ),
-              onChanged: (value) {},
+                Obx(
+                  () {
+                    return mypageModifyController.nickSafe.value
+                        ? SizedBox()
+                        : Text(
+                            mypageModifyController.nickSafetyCode.value,
+                            style:
+                                TextStyle(color: Color.fromRGBO(255, 40, 0, 1)),
+                          );
+                  },
+                ),
+              ],
             ),
             Obx(
               () {
@@ -97,16 +115,20 @@ class ModifyNickname extends StatelessWidget {
                               ),
                             )
                           : ElevatedButton(
-                              onPressed: () {
-                                mypageModifyController
-                                        .rxUserModel.nickName.value =
-                                    mypageModifyController.modifyText.text;
-                                print(
-                                  mypageModifyController
-                                          .rxUserModel.nickName.value +
-                                      '변경',
+                              onPressed: () async {
+                                mypageModifyController.nickSafe.value =
+                                    await mypageController.nickNameOverlap(
+                                  mypageModifyController.modifyText.text,
                                 );
-                                Navigator.pop(context);
+                                if (mypageModifyController.nickSafe.value) {
+                                  mypageModifyController
+                                          .rxUserModel.nickName.value =
+                                      mypageModifyController.modifyText.text;
+                                  Navigator.pop(context);
+                                } else {
+                                  mypageModifyController.nickSafetyCode.value =
+                                      mypageController.nickSafetyCode;
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size(250, 60),

@@ -22,6 +22,11 @@ class MypageModifyController extends GetxController {
     gender: 'MALE',
   );
   var isEmpty = true.obs;
+
+  //nickname safety
+  var nickSafe = true.obs;
+  var nickSafetyCode = ''.obs;
+
   @override
   void onInit() {
     super.onInit();

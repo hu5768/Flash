@@ -44,6 +44,12 @@ class AnswersCarousell extends StatelessWidget {
                             height: double.infinity,
                             viewportFraction: 1.0,
                             onPageChanged: (index, reason) {
+                              AnalyticsService.buttonClick(
+                                'AnswerCarouselSlide',
+                                answerDataController.sector,
+                                gymName,
+                                answerDataController.difficulty,
+                              );
                               answerCarouselController.cIndex.value = index;
                               if (0 <= index - 1 &&
                                   index - 1 <

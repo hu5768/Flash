@@ -9,14 +9,17 @@ import 'package:flash/view/main_page.dart';
 import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LoginController.initAccount();
+  final loginController = Get.put(LoginController());
+  await loginController.initAccount();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     const App(),
   );

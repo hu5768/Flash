@@ -1,0 +1,48 @@
+class MySolutionDetailModel {
+  int? solutionId;
+  String? videoUrl;
+  String? gymName;
+  String? sectorName;
+  String? review;
+  String? difficultyName;
+  String? removalDate;
+  String? settingDate;
+  String? uploadedAt;
+
+  MySolutionDetailModel(
+      {this.solutionId,
+      this.videoUrl,
+      this.gymName,
+      this.sectorName,
+      this.review,
+      this.difficultyName,
+      this.removalDate,
+      this.settingDate,
+      this.uploadedAt});
+
+  MySolutionDetailModel.fromJson(Map<String, dynamic> json) {
+    solutionId = json['solutionId'];
+    videoUrl = json['videoUrl'];
+    gymName = json['gymName'];
+    sectorName = json['sectorName'];
+    review = json['review'];
+    difficultyName = json['difficultyName'];
+    removalDate = json['removalDate'];
+    settingDate = json['settingDate'];
+    uploadedAt = json['uploadedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['solutionId'] = this.solutionId;
+    data['videoUrl'] = this.videoUrl;
+    data['gymName'] = this.gymName;
+    data['sectorName'] = this.sectorName;
+    data['review'] = this.review;
+    data['difficultyName'] = this.difficultyName;
+    data['removalDate'] = this.removalDate;
+    data['settingDate'] = this.settingDate;
+    data['uploadedAt'] = this.uploadedAt;
+    return data;
+  }
+}

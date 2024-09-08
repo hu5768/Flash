@@ -1,41 +1,37 @@
 class MySolutionModel {
-  int? id;
-  String? uploader;
-  String? review;
-  String? instagramId;
-  String? videoUrl;
-  String? uploaderId;
-  bool? isUploader;
+  int? solutionId;
+  String? gymName;
+  String? sectorName;
+  String? difficultyName;
+  String? problemImageUrl;
+  String? uploadedAt;
 
   MySolutionModel({
-    this.id,
-    this.uploader,
-    this.review,
-    this.instagramId,
-    this.videoUrl,
-    this.uploaderId,
-    this.isUploader,
+    this.solutionId,
+    this.gymName,
+    this.sectorName,
+    this.difficultyName,
+    this.problemImageUrl,
+    this.uploadedAt,
   });
 
   MySolutionModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    uploader = json['uploader'];
-    review = json['review'];
-    instagramId = json['instagramId'];
-    videoUrl = json['videoUrl'];
-    uploaderId = json['uploaderId'];
-    isUploader = json['isUploader'];
+    solutionId = json['solutionId'];
+    gymName = json['gymName'];
+    sectorName = json['sectorName'];
+    difficultyName = json['difficultyName'];
+    problemImageUrl = json['problemImageUrl'];
+    uploadedAt = json['uploadedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['uploader'] = uploader;
-    data['review'] = review;
-    data['instagramId'] = instagramId;
-    data['videoUrl'] = videoUrl;
-    data['uploaderId'] = uploaderId;
-    data['isUploader'] = isUploader;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['solutionId'] = this.solutionId;
+    data['gymName'] = this.gymName;
+    data['sectorName'] = this.sectorName;
+    data['difficultyName'] = this.difficultyName;
+    data['problemImageUrl'] = this.problemImageUrl;
+    data['uploadedAt'] = this.uploadedAt;
     return data;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
+import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/solution_delete_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class ManageModal extends StatelessWidget {
   });
   final String problemId;
   final int solutionId;
-
+  final myGridviewController = Get.put(MyGridviewController());
   final SolutionDeleteController solutionDeleteController =
       SolutionDeleteController();
   final answerDataController = Get.put(AnswerDataController());
@@ -48,6 +49,12 @@ class ManageModal extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
+                    AnalyticsService.buttonClick(
+                      'solutionMore',
+                      '수정',
+                      '',
+                      '',
+                    );
                     Navigator.pop(context);
                   },
                   child: Padding(
@@ -74,6 +81,12 @@ class ManageModal extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () async {
+                    AnalyticsService.buttonClick(
+                      'solutionMore',
+                      '삭제',
+                      '',
+                      '',
+                    );
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -102,6 +115,12 @@ class ManageModal extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
+                                AnalyticsService.buttonClick(
+                                  'delete',
+                                  '취소',
+                                  '',
+                                  '',
+                                );
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },
@@ -115,13 +134,24 @@ class ManageModal extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                AnalyticsService.buttonClick(
+                                  'delete',
+                                  '진짜삭제',
+                                  '',
+                                  '',
+                                );
                                 solutionDeleteController.DeleteSolution(
-                                  problemId,
                                   solutionId,
                                 );
                                 answerDataController.disposeVideo();
-                                answerDataController.fetchData(problemId);
+                                if (problemId != '') //문제 캐러샐에서 본 경우
+                                  answerDataController.fetchData(problemId);
+                                else {
+                                  // 마이페이지에서 본 경우
+                                  //await myGridviewController.fetchData(); 잘 안되는듯
+                                  Navigator.of(context).pop();
+                                }
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },

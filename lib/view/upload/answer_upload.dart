@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/controller/dio/answer_data_controller.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+//import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class AnswerUpload extends StatefulWidget {
@@ -139,6 +139,83 @@ class _AnswerUploadState extends State<AnswerUpload> {
     }
   }
 
+  Future<void> _uploadVideo2() async {
+    if (_video == null) return;
+    print('업로드 시작');
+    final token = await storage.read(key: ACCESS_TOKEN_KEY);
+    DioClient().updateOptions(token: token.toString());
+
+    List<int> videoBytes = await _video!.readAsBytes();
+
+    try {
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(
+          _video!.path,
+          filename: 'test.mp4', // 파일 이름 설정
+        ),
+        'problemId': widget.problemId,
+        'review': userOpinionController.text,
+      });
+
+      final apiResponse = await DioClient().dio.post(
+            'https://upload.climbing-answer.com/upload/',
+            data: formData,
+            options: Options(
+              contentType: 'multipart/form-data',
+            ),
+          );
+      if (apiResponse.statusCode == 200) {
+        print("최종 업로드 완료!");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+              backgroundColor: ColorGroup.BGC,
+              titleTextStyle: TextStyle(
+                fontSize: 15,
+                color: const Color.fromARGB(255, 0, 0, 0),
+                fontWeight: FontWeight.w700,
+              ),
+              contentTextStyle: TextStyle(
+                fontSize: 13,
+                color: const Color.fromARGB(255, 0, 0, 0),
+              ),
+              title: Text('업로드 완료'),
+              content: Text('영상이 업로드 되었습니다'),
+              actions: [
+                TextButton(
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } on DioException catch (e) {
+      print('영상 업로드 오류$e');
+      if (e.response != null) {
+        print('DioError: ${e.response?.statusCode}');
+        print('Error Response Data: ${e.response?.data}');
+      } else {
+        print('Error: ${e.message}');
+      }
+      print('오류 헤더${e.response?.headers}');
+      print('오류 바디${e.response?.data}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('UploadPage');
@@ -167,7 +244,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _uploadVideo();
+                    _uploadVideo2();
                   },
                   child: Text('업로드', style: TextStyle(fontSize: 16)),
                 ),

@@ -1,164 +1,159 @@
+import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/date_form.dart';
+import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flash/view/mypage/my_solution_player.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MySolution extends StatelessWidget {
-  final String uploader, review, instagramId, videoUrl, problemId, uploaderId;
   final int solutionId;
-  final bool isUploader;
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
 
   MySolution({
     super.key,
-    required this.uploader,
-    required this.review,
-    required this.instagramId,
-    required this.videoUrl,
     required this.solutionId,
-    required this.problemId,
-    required this.uploaderId,
-    required this.isUploader,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
         ),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Stack(
-        children: [
-          MySolutionPlayer(
-            useUri: videoUrl,
-          ),
-          Positioned(
-            top: 60,
-            right: 15,
-            child: CloseButton(),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.9),
-                    Colors.black.withOpacity(0.6),
-                    Colors.transparent,
-                  ],
+        clipBehavior: Clip.hardEdge,
+        child: Stack(
+          children: [
+            MySolutionPlayer(
+              useUri: mySolutionDetailController.sdm.videoUrl!,
+            ),
+            Positioned(
+              top: 60,
+              right: 15,
+              child: CloseButton(),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.9),
+                      Colors.black.withOpacity(0.6),
+                      Colors.transparent,
+                    ],
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'assets/images/problem.png',
-                              height: 45,
-                              width: 45,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/problem.png',
-                                  height: 45,
-                                  width: 45,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      formatDateString(
+                            mySolutionDetailController.sdm.uploadedAt!,
+                          ) +
+                          ' 업로드',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                    Text(
+                      "${mySolutionDetailController.sdm.gymName} ${mySolutionDetailController.sdm.sectorName}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 2.0),
+                    Text(
+                      formatDateString(
+                            mySolutionDetailController.sdm.removalDate!,
+                          ) +
+                          ' 탈거ㆍ' +
+                          formatDateString(
+                            mySolutionDetailController.sdm.settingDate!,
+                          ) +
+                          ' 세팅',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                    OverflowTextWithMore(
+                      text: mySolutionDetailController.sdm.review!,
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                '$uploader',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "???????",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    168,
-                                    151,
-                                    151,
+                              Container(
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: CenterColor.TheClimbColorList[
+                                      mySolutionDetailController
+                                          .sdm.difficultyName],
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white, // 테두리 색상
+                                    width: 1,
                                   ),
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.red,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              SizedBox(width: 4),
                               Text(
-                                "@$instagramId",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
+                                mySolutionDetailController.sdm.difficultyName!,
+                                style: TextStyle(color: ColorGroup.btnBGC),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color:
-                              Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
-                          shape: BoxShape.circle,
                         ),
-                        child: IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              backgroundColor: ColorGroup.modalBGC,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ManageModal(
-                                  problemId: problemId,
-                                  solutionId: solutionId,
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.more_horiz,
+                        SizedBox(width: 8.0),
+                        Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(
+                            Icons.play_circle_fill,
                             color: Colors.white,
+                            size: 24.0,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  OverflowTextWithMore(text: review),
-                ],
+                      ],
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -225,15 +220,25 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
         if (textPainter.didExceedMaxLines && moreText) {
           return Row(
             children: [
-              Text(
-                widget.text.split('\n').first,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  widget.text.split('\n').first,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.clip,
                 ),
-                overflow: TextOverflow.clip,
               ),
               TextButton(
+                style: ButtonStyle(
+                  padding: WidgetStateProperty.all<EdgeInsets>(
+                    EdgeInsets.zero,
+                  ),
+                  minimumSize: WidgetStateProperty.all(Size.zero), // 최소 크기 제거
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap, // 패딩 제거
+                ),
                 onPressed: () {
                   setState(() {
                     moreText = !moreText;
@@ -251,17 +256,27 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
             ],
           );
         } else {
-          return TextButton(
-            onPressed: () {
-              setState(() {
-                moreText = !moreText;
-              });
-            },
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
+          return SizedBox(
+            height: 30,
+            child: TextButton(
+              style: ButtonStyle(
+                padding: WidgetStateProperty.all<EdgeInsets>(
+                  EdgeInsets.zero,
+                ), // 패딩 제거
+                minimumSize: WidgetStateProperty.all(Size.zero), // 최소 크기 제거
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              onPressed: () {
+                setState(() {
+                  moreText = !moreText;
+                });
+              },
+              child: Text(
+                widget.text,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             ),
           );

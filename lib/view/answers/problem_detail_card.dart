@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/upload/answer_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -151,6 +152,12 @@ class ProblemDetailCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
+                          AnalyticsService.buttonClick(
+                            'upload',
+                            hasSolution.toString(),
+                            gymName,
+                            difficulty,
+                          );
                           await Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -3,3 +3,5 @@ enum SortState {
   difficulty,
   recommand,
 }
+
+enum OuathSite { GOOGLE, KAKAO, APPLE }

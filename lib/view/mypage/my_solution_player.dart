@@ -46,13 +46,12 @@ class _MySolutionPlayerState extends State<MySolutionPlayer> {
       iscomplet = true;
 
       _videoController.seekTo(Duration.zero);
-      //widget.videoController.play();
+      _videoController.play();
       // print('영상 실행 ');
       _videoController.addListener(() {
         if (_videoController.value.position ==
             _videoController.value.duration) {
           // 비디오가 끝났을 때 다시 재생
-
           _videoController.seekTo(Duration.zero);
           _videoController.play();
         }
