@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/view/login/agree_page.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
@@ -98,9 +99,13 @@ class LoginController extends GetxController {
             (route) => false, // 스택에 있는 모든 이전 라우트를 제거
           );
         } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserOnboardingPage()),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: AgreePage(),
+              );
+            },
           );
         }
       } else {
@@ -162,9 +167,13 @@ class LoginController extends GetxController {
             (route) => false, // 스택에 있는 모든 이전 라우트를 제거
           );
         } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserOnboardingPage()),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: AgreePage(),
+              );
+            },
           );
         }
       } else {
@@ -213,9 +222,13 @@ class LoginController extends GetxController {
             (route) => false, // 스택에 있는 모든 이전 라우트를 제거
           );
         } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserOnboardingPage()),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: AgreePage(),
+              );
+            },
           );
         }
       } else {

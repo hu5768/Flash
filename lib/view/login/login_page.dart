@@ -40,23 +40,13 @@ class LoginPage extends StatelessWidget {
                     bgnColor: Color.fromRGBO(250, 250, 250, 0.2),
                     fgnColor: Colors.white,
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: AgreePage(
-                              ouathLogin: OuathSite.GOOGLE,
-                            ),
-                          );
-                        },
-                      );
                       AnalyticsService.buttonClick(
                         'LoginPage',
                         '구글 로그인',
                         '',
                         isAndroid() ? 'android' : 'ios',
                       );
-                      //LoginController.googleSignIn(context);
+                      loginController.googleSignIn(context);
                     },
                   ),
                   SizedBox(height: 16),
@@ -72,16 +62,7 @@ class LoginPage extends StatelessWidget {
                         '',
                         isAndroid() ? 'android' : 'ios',
                       );
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: AgreePage(
-                              ouathLogin: OuathSite.KAKAO,
-                            ),
-                          );
-                        },
-                      );
+                      loginController.kakaoLogin(context);
                     },
                   ),
                   SizedBox(height: 16),
@@ -99,16 +80,7 @@ class LoginPage extends StatelessWidget {
                               '',
                               isAndroid() ? 'android' : 'ios',
                             );
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: AgreePage(
-                                    ouathLogin: OuathSite.APPLE,
-                                  ),
-                                );
-                              },
-                            );
+                            loginController.appleLogin(context);
                           },
                         ),
                   Padding(

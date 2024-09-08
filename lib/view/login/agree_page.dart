@@ -1,13 +1,14 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/enum/sort_satate.dart';
 import 'package:flash/controller/dio/login_controller.dart';
+import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AgreePage extends StatelessWidget {
   final loginController = Get.put(LoginController());
-  final OuathSite ouathLogin;
-  AgreePage({super.key, required this.ouathLogin});
+
+  AgreePage({super.key});
   bool ischeck = false;
   @override
   Widget build(BuildContext context) {
@@ -164,13 +165,13 @@ class AgreePage extends StatelessWidget {
                   if (loginController.requireConsent1.value &&
                       loginController.requireConsent2.value &&
                       loginController.requireConsent3.value) {
-                    if (ouathLogin == OuathSite.GOOGLE) {
-                      loginController.googleSignIn(context);
-                    } else if (ouathLogin == OuathSite.KAKAO) {
-                      loginController.kakaoLogin(context);
-                    } else if (ouathLogin == OuathSite.APPLE) {
-                      loginController.appleLogin(context);
-                    }
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserOnboardingPage(),
+                      ),
+                    );
                   } else {
                     loginController.requiredAll.value = false;
                   }
