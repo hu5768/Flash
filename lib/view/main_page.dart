@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
@@ -27,7 +28,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
-
+  final answerDataController = Get.put(AnswerDataController());
   final problemTitleController = Get.put(ProblemSortController());
   final centerTitleController = Get.put(CenterTitleController());
   final problemFilterController = Get.put(ProblemFilterController());

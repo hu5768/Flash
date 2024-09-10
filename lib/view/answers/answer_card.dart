@@ -7,7 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AnswerCard extends StatelessWidget {
-  final String uploader, review, instagramId, videoUrl, problemId, uploaderId;
+  final String uploader,
+      review,
+      instagramId,
+      videoUrl,
+      problemId,
+      uploaderId,
+      profileUrl;
   final int solutionId;
   final bool isUploader;
   final VideoPlayerController videoController;
@@ -23,6 +29,7 @@ class AnswerCard extends StatelessWidget {
     required this.problemId,
     required this.uploaderId,
     required this.isUploader,
+    required this.profileUrl,
   });
 
   @override
@@ -67,20 +74,19 @@ class AnswerCard extends StatelessWidget {
                       Row(
                         children: [
                           ClipOval(
-                            child: Image.asset(
-                              'assets/images/problem.png',
-                              height: 45,
-                              width: 45,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/problem.png',
-                                  height: 45,
-                                  width: 45,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                            child: profileUrl == ''
+                                ? Image.asset(
+                                    'assets/images/problem.png',
+                                    height: 45,
+                                    width: 45,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    profileUrl,
+                                    height: 45,
+                                    width: 45,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           SizedBox(width: 10),
                           Column(
@@ -130,6 +136,7 @@ class AnswerCard extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return isUploader
                                     ? ManageModal(
+                                        videoUrl: videoUrl,
                                         problemId: problemId,
                                         solutionId: solutionId,
                                       )

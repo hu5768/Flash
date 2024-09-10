@@ -94,7 +94,7 @@ class MypageController extends GetxController {
       "height": height == 0 ? null : height,
       "gender": gender == '' ? null : gender,
       "reach": reach == 0 ? null : reach,
-      "profileImageUrl": "https://example.com/profile.jpg",
+      "profileImageUrl": null,
     };
 
     try {

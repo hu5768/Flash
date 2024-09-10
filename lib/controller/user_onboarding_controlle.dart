@@ -1,13 +1,15 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
-import 'package:flash/view/login/user_onboarding/profile_field.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as gets;
 
-class UserOnboardingControlle extends GetxController {
-  final mypageController = Get.put(MypageController());
+class UserOnboardingControlle extends gets.GetxController {
+  final mypageController = gets.Get.put(MypageController());
   var onboardIndex = 0.obs;
   int maxIndex = 6;
   final pageController = PageController();
@@ -17,7 +19,7 @@ class UserOnboardingControlle extends GetxController {
   final TextEditingController heightText = TextEditingController();
   final TextEditingController reachText = TextEditingController();
   var selectedGender = ''.obs;
-  var selectedImage = Rxn<File>();
+  var selectedImage = gets.Rxn<File>();
 
   var nickEmpty = true.obs;
   var instaEmpty = true.obs;
@@ -45,6 +47,9 @@ class UserOnboardingControlle extends GetxController {
     });
     selectedGender.listen((value) {
       genderEmpty.value = value.isEmpty;
+    });
+    selectedImage.listen((image) {
+      profileEmpty.value = image == null;
     });
   }
 
@@ -101,8 +106,55 @@ class UserOnboardingControlle extends GetxController {
       double.tryParse(heightText.text) ?? 0,
       double.tryParse(reachText.text) ?? 0,
       selectedGender.value,
-      "https://example.com/profile.jpg",
+      "",
     );
+    onboardIndex.value = 0;
+  }
+
+  Future<void> updateOnboardInfoProfile() async {
+    String fileName = basename(selectedImage.value!.path);
+    FormData data = FormData.fromMap({
+      "nickName": nicknameText.text,
+      "instagramId": instaridText.text == '' ? null : instaridText.text,
+      "height": double.tryParse(heightText.text) == 0
+          ? null
+          : double.tryParse(heightText.text),
+      "gender": selectedGender.value == '' ? null : selectedGender.value,
+      "reach": double.tryParse(reachText.text) == 0
+          ? null
+          : double.tryParse(reachText.text),
+      "file": await MultipartFile.fromFile(
+        selectedImage.value!.path,
+        filename: fileName,
+      ),
+    });
+
+    try {
+      // PATCH 요청
+      print('유저 정보 Patch');
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
+      final response = await DioClient()
+          .dio
+          .patch('https://upload.dev.climbing-answer.com/members/', data: data);
+
+      if (response.statusCode == 200) {
+        // 요청이 성공적으로 처리된 경우
+        print('Member information updated successfully');
+      } else {
+        print('Failed to update member information: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null) {
+          print('DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+        } else {
+          print('Error: ${e.error}');
+          print('Error: ${e.response}');
+        }
+      }
+    }
     onboardIndex.value = 0;
   }
 }

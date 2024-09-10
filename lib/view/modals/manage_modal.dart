@@ -1,8 +1,10 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/solution_delete_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/upload/answer_modify.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,10 +13,13 @@ class ManageModal extends StatelessWidget {
     super.key,
     required this.problemId,
     required this.solutionId,
+    required this.videoUrl,
   });
-  final String problemId;
+  final String problemId, videoUrl;
   final int solutionId;
+  final answerCarouselController = Get.put(AnswerCarouselController());
   final myGridviewController = Get.put(MyGridviewController());
+
   final SolutionDeleteController solutionDeleteController =
       SolutionDeleteController();
   final answerDataController = Get.put(AnswerDataController());
@@ -48,14 +53,33 @@ class ManageModal extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     AnalyticsService.buttonClick(
                       'solutionMore',
                       '수정',
                       '',
                       '',
                     );
-                    Navigator.pop(context);
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AnswerModify(
+                          problemId: '',
+                          gymName: '',
+                          videoUrl: videoUrl,
+                          solutionId: solutionId,
+                        ),
+                      ),
+                    );
+                    answerCarouselController.cIndex.value = 0;
+                    if (problemId != '') //문제 캐러샐에서 본 경우
+                      answerDataController.fetchData(problemId);
+                    else {
+                      // 마이페이지에서 본 경우
+                      //await myGridviewController.fetchData(); 잘 안되는듯
+                      Navigator.of(context).pop();
+                    }
+                    Navigator.of(context).pop();
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
@@ -145,6 +169,7 @@ class ManageModal extends StatelessWidget {
                                   solutionId,
                                 );
                                 answerDataController.disposeVideo();
+                                answerCarouselController.cIndex.value = 0;
                                 if (problemId != '') //문제 캐러샐에서 본 경우
                                   answerDataController.fetchData(problemId);
                                 else {

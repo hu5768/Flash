@@ -39,9 +39,15 @@ class _MypageState extends State<Mypage> {
                         height: 68,
                         child: CircleAvatar(
                           radius: 40.0,
-                          backgroundImage: NetworkImage(
-                            'https://via.placeholder.com/150',
-                          ), // 사용자 이미지 URL 사용
+                          backgroundImage:
+                              mypageController.userModel.profileImageUrl != ''
+                                  ? NetworkImage(
+                                      mypageController
+                                          .userModel.profileImageUrl!,
+                                    )
+                                  : AssetImage(
+                                      'assets/images/profile.png',
+                                    ), // 사용자 이미지 URL 사용
                         ),
                       ),
                       SizedBox(width: 12.0),

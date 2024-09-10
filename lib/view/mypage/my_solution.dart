@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flash/view/mypage/my_solution_player.dart';
@@ -32,6 +33,43 @@ class MySolution extends StatelessWidget {
           children: [
             MySolutionPlayer(
               useUri: mySolutionDetailController.sdm.videoUrl!,
+            ),
+            Positioned(
+              top: 60,
+              left: 15,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    AnalyticsService.buttonClick(
+                      'answer',
+                      '더보기',
+                      '',
+                      '',
+                    );
+                    showModalBottomSheet(
+                      backgroundColor: ColorGroup.modalBGC,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ManageModal(
+                          videoUrl: mySolutionDetailController.sdm.videoUrl!,
+                          problemId: '',
+                          solutionId: solutionId,
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.more_horiz,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
             Positioned(
               top: 60,

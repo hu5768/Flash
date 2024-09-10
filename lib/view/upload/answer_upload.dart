@@ -28,6 +28,13 @@ class _AnswerUploadState extends State<AnswerUpload> {
   VideoPlayerController? videoController;
   File? _video;
   final TextEditingController userOpinionController = TextEditingController();
+
+  @override
+  void dispose() {
+    videoController?.dispose();
+    super.dispose();
+  }
+
   Future<void> PickVideo() async {
     print('파일 열기');
     try {
@@ -42,7 +49,6 @@ class _AnswerUploadState extends State<AnswerUpload> {
             ..initialize().then((_) {
               setState(() {});
               videoController!.setVolume(0);
-              //videoController!.play();
             });
         });
       }
@@ -51,6 +57,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
     }
   }
 
+/*
   Future<void> _uploadVideo() async {
     if (_video == null) return;
     print('업로드 시작');
@@ -138,7 +145,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
       print('오류 바디${e.response?.data}');
     }
   }
-
+*/
   Future<void> _uploadVideo2() async {
     if (_video == null) return;
     print('업로드 시작');
@@ -158,7 +165,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
       });
 
       final apiResponse = await DioClient().dio.post(
-            'https://upload.climbing-answer.com/upload/',
+            'https://upload.dev.climbing-answer.com/upload/',
             data: formData,
             options: Options(
               contentType: 'multipart/form-data',
@@ -182,7 +189,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 color: const Color.fromARGB(255, 0, 0, 0),
               ),
               title: Text('업로드 완료'),
-              content: Text('영상이 업로드 되었습니다'),
+              content: Text('영상이 업로드 되었습니다\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.'),
               actions: [
                 TextButton(
                   child: Text(
@@ -243,8 +250,8 @@ class _AnswerUploadState extends State<AnswerUpload> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    _uploadVideo2();
+                  onPressed: () async {
+                    await _uploadVideo2();
                   },
                   child: Text('업로드', style: TextStyle(fontSize: 16)),
                 ),

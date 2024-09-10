@@ -11,6 +11,7 @@ import 'package:flash/view/mypage/user_info/modify_nickname.dart';
 import 'package:flash/view/mypage/user_info/modify_reach.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 
 import '../../controller/dio/mypage_controller.dart';
 
@@ -59,8 +60,14 @@ class MyModify extends StatelessWidget {
                       '',
                       '',
                     );
-                    await mypageModifyController.updateMemberInfo();
-                    await mypageController.fetchMemberData();
+                    if (mypageModifyController.profileEmpty == true) {
+                      //프로필 변함 x
+                      await mypageModifyController.updateMemberInfoNoprofile(
+                          mypageController.userModel.profileImageUrl!);
+                    } else {
+                      await mypageModifyController.updateMemberInfo();
+                    }
+                    await mypageController.fetchMemberData(); //mypage 갱신
                     Navigator.pop(context);
                   },
                   child: Text('완료', style: TextStyle(fontSize: 16)),
@@ -76,6 +83,7 @@ class MyModify extends StatelessWidget {
         child: Center(
           child: Obx(
             () {
+              final imageFile = mypageModifyController.selectedImage.value;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -84,19 +92,30 @@ class MyModify extends StatelessWidget {
                     width: 160,
                     child: CircleAvatar(
                       radius: 60,
-                      backgroundImage:
-                          AssetImage('assets/images/flash.png'), // 기본 이미지
+                      backgroundImage: mypageModifyController.profileEmpty ==
+                              false
+                          ? FileImage(imageFile!) as ImageProvider<Object>
+                          : mypageModifyController
+                                      .rxUserModel.profileImageUrl.value !=
+                                  ''
+                              ? NetworkImage(
+                                  mypageController.userModel.profileImageUrl!,
+                                )
+                              : AssetImage(
+                                  'assets/images/profile.png',
+                                ), // 기본 이미지
                     ),
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       AnalyticsService.buttonClick(
                         'userModify',
                         '프로필변경',
                         '',
                         '',
                       );
+                      await mypageModifyController.pickImage();
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,

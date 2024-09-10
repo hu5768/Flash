@@ -15,7 +15,7 @@ class AnswerDataController extends GetxController {
   var answerList = <Widget>[].obs;
   String difficulty = '';
   String sector = '';
-  late List<VideoPlayerController?> videoControllerList;
+  List<VideoPlayerController?>? videoControllerList;
   final AnswerCarouselController answerCarouselController =
       AnswerCarouselController();
 
@@ -58,33 +58,38 @@ class AnswerDataController extends GetxController {
       response = await DioClient().dio.get(
             "/problems/$problemId/solutions",
           );
+      print("해설리스트 가져옴");
       List<Map<String, dynamic>> resMapList =
           List<Map<String, dynamic>>.from(response.data["solutions"]);
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
+      print(sm.length);
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
           //바꾸면 오류나서 추후 수정
 
-          videoControllerList[entry.key] = VideoPlayerController.networkUrl(
+          videoControllerList![entry.key] = VideoPlayerController.networkUrl(
             Uri.parse(entry.value.videoUrl!),
           );
 
           return AnswerCard(
-            videoController: videoControllerList[entry.key]!,
-            uploader: entry.value.uploader!,
-            review: entry.value.review!,
-            instagramId: entry.value.instagramId!,
+            videoController: videoControllerList![entry.key]!,
+            uploader: entry.value.uploader ?? '',
+            review: entry.value.review ?? '',
+            instagramId: entry.value.instagramId ?? '',
             videoUrl: entry.value.videoUrl!,
             solutionId: entry.value.id!,
             problemId: problemId,
             uploaderId: entry.value.uploaderId!,
             isUploader: entry.value.isUploader!,
+            profileUrl: '',
           );
         },
       ).toList();
+      print("캐러셀에 추가");
       answerList.addAll(solutionVideoList);
+      print(answerList.length);
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {
@@ -99,8 +104,9 @@ class AnswerDataController extends GetxController {
 
   void disposeVideo() {
     //비디오 컨트롤러에 저장된 영상 해제
-    for (var controller in videoControllerList) {
-      controller?.dispose();
-    }
+    if (videoControllerList != null)
+      for (var controller in videoControllerList!) {
+        controller?.dispose();
+      }
   }
 }

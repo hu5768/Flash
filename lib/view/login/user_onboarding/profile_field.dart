@@ -30,7 +30,7 @@ class ProfileField extends StatelessWidget {
                       radius: 60,
                       backgroundImage: imageFile != null
                           ? FileImage(imageFile) as ImageProvider<Object>
-                          : AssetImage('assets/images/flash.png'), // 기본 이미지
+                          : AssetImage('assets/images/profile.png'), // 기본 이미지
                     );
                   },
                 ),
@@ -121,44 +121,81 @@ class ProfileField extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    AnalyticsService.buttonClick(
-                      'UserOnboarding',
-                      '다음버튼',
-                      '',
-                      userOnboardingControlle.onboardIndex.value.toString(),
-                    );
-                    //서버에 데이터 전송하는 버튼
+              Obx(
+                () {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: userOnboardingControlle.profileEmpty.value
+                        ? ElevatedButton(
+                            onPressed: () {
+                              AnalyticsService.buttonClick(
+                                'UserOnboarding',
+                                '회색 다음버튼',
+                                '',
+                                userOnboardingControlle.onboardIndex.value
+                                    .toString(),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(250, 60),
+                              foregroundColor: ColorGroup.selectBtnFGC,
+                              backgroundColor: Color.fromRGBO(213, 213, 213, 1),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              "다음",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : ElevatedButton(
+                            onPressed: () async {
+                              AnalyticsService.buttonClick(
+                                'UserOnboarding',
+                                '다음버튼',
+                                '',
+                                userOnboardingControlle.onboardIndex.value
+                                    .toString(),
+                              );
+                              //서버에 데이터 전송하는 버튼
 
-                    userOnboardingControlle.updateOnboardInfo();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(250, 60),
-                    foregroundColor: ColorGroup.selectBtnFGC,
-                    backgroundColor: ColorGroup.selectBtnBGC,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    "다음",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                              await userOnboardingControlle
+                                  .updateOnboardInfoProfile();
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainPage()),
+                                (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(250, 60),
+                              foregroundColor: ColorGroup.selectBtnFGC,
+                              backgroundColor: ColorGroup.selectBtnBGC,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              "다음",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                  );
+                },
               ),
             ],
           ),
