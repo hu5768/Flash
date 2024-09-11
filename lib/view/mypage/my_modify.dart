@@ -63,7 +63,8 @@ class MyModify extends StatelessWidget {
                     if (mypageModifyController.profileEmpty == true) {
                       //프로필 변함 x
                       await mypageModifyController.updateMemberInfoNoprofile(
-                          mypageController.userModel.profileImageUrl!);
+                        mypageController.userModel.profileImageUrl!,
+                      );
                     } else {
                       await mypageModifyController.updateMemberInfo();
                     }
@@ -384,6 +385,7 @@ class ModifyInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () async {
         AnalyticsService.buttonClick(
           'userModify',
@@ -449,6 +451,7 @@ class ModifyMemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         AnalyticsService.buttonClick(
           'userModify',

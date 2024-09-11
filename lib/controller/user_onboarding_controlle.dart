@@ -21,6 +21,9 @@ class UserOnboardingControlle extends gets.GetxController {
   var selectedGender = ''.obs;
   var selectedImage = gets.Rxn<File>();
 
+  final FocusNode instaFocusNode = FocusNode();
+  final FocusNode heightFocusNode = FocusNode();
+  final FocusNode reachFocusNode = FocusNode();
   var nickEmpty = true.obs;
   var instaEmpty = true.obs;
   var heightEmpty = true.obs;
@@ -51,6 +54,25 @@ class UserOnboardingControlle extends gets.GetxController {
     selectedImage.listen((image) {
       profileEmpty.value = image == null;
     });
+  }
+
+  void controllerInit() {
+    onboardIndex.value = 0;
+
+    nickEmpty.value = true;
+    instaEmpty.value = true;
+    heightEmpty.value = true;
+    reachEmpty.value = true;
+    genderEmpty.value = true;
+    profileEmpty.value = true;
+    nickSafe.value = true;
+
+    nicknameText.clear();
+    instaridText.clear();
+    heightText.clear();
+    reachText.clear();
+    selectedGender.value = ''; // 성별 선택 초기화
+    selectedImage.value = null; //
   }
 
   Future<void> pickImage() async {
@@ -108,7 +130,6 @@ class UserOnboardingControlle extends gets.GetxController {
       selectedGender.value,
       "",
     );
-    onboardIndex.value = 0;
   }
 
   Future<void> updateOnboardInfoProfile() async {
@@ -155,6 +176,5 @@ class UserOnboardingControlle extends gets.GetxController {
         }
       }
     }
-    onboardIndex.value = 0;
   }
 }

@@ -11,9 +11,9 @@ import '../problem_filter_controller.dart';
 class CenterTitleController extends GetxController {
   var centerId = 1.obs;
   var centerTitle = ''.obs;
-  late String mapImgUrl;
-  late List<String> gradeDifficulties;
-  late List<String> secterList;
+  String mapImgUrl = '';
+  List<String> gradeDifficulties = [];
+  List<String> secterList = [];
   dynamic mainContext;
   @override
   void onInit() {

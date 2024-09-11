@@ -1,13 +1,14 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/enum/sort_satate.dart';
 import 'package:flash/controller/dio/login_controller.dart';
+import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AgreePage extends StatelessWidget {
   final loginController = Get.put(LoginController());
-
+  final userOnboardingControlle = Get.put(UserOnboardingControlle());
   AgreePage({super.key});
   bool ischeck = false;
   @override
@@ -165,6 +166,7 @@ class AgreePage extends StatelessWidget {
                   if (loginController.requireConsent1.value &&
                       loginController.requireConsent2.value &&
                       loginController.requireConsent3.value) {
+                    userOnboardingControlle.controllerInit();
                     Navigator.pop(context);
                     Navigator.push(
                       context,

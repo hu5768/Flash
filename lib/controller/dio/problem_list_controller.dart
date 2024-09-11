@@ -5,6 +5,7 @@ import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/model/problems_model.dart';
+import 'package:flash/view/login/login_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class ProblemListController extends GetxController {
   final CenterTitleController centerTitleController = Get.find();
   final ProblemSortController problemSortController = Get.find();
   final ProblemFilterController problemFilterController = Get.find();
+  dynamic mainContext;
 
   String nextCursor = "";
   bool loadRunning = false; //데이터 로딩중 여부
@@ -25,6 +27,10 @@ class ProblemListController extends GetxController {
     scrollController = ScrollController()..addListener(nextFetch);
     super.onInit();
     newFetch();
+  }
+
+  void getContext(context) {
+    mainContext = context;
   }
 
   Future<void> newFetch() async {
@@ -72,6 +78,11 @@ class ProblemListController extends GetxController {
         }
       }
       print("시작 페이지 로딩 오류$e");
+      Navigator.pushAndRemoveUntil(
+        mainContext,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+      );
     }
     loadRunning = false;
     scrollController.animateTo(

@@ -20,6 +20,7 @@ class NicknameField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
+                autofocus: true,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
                     RegExp(r'[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]'),
@@ -94,6 +95,7 @@ class NicknameField extends StatelessWidget {
                                 userOnboardingControlle.onboardIndex.value
                                     .toString(),
                               );
+
                               userOnboardingControlle.nextPage();
                             },
                             style: ElevatedButton.styleFrom(

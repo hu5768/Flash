@@ -11,6 +11,9 @@ class InstaridField extends StatelessWidget {
   final userOnboardingControlle = Get.put(UserOnboardingControlle());
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(
+      userOnboardingControlle.instaFocusNode,
+    );
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
       child: Column(
@@ -18,6 +21,7 @@ class InstaridField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            focusNode: userOnboardingControlle.instaFocusNode,
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'[a-z0-9._]'),

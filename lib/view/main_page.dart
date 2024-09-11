@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -32,6 +33,7 @@ class _MainPageState extends State<MainPage> {
   final problemTitleController = Get.put(ProblemSortController());
   final centerTitleController = Get.put(CenterTitleController());
   final problemFilterController = Get.put(ProblemFilterController());
+  final problemListController = Get.put(ProblemListController());
   final mypageController = Get.put(MypageController());
   final myGridviewController = Get.put(MyGridviewController());
   static List<PreferredSizeWidget> _appBars = [
@@ -42,17 +44,78 @@ class _MainPageState extends State<MainPage> {
 
   String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
   Future<void> OpenForm() async {
-    if (await canLaunchUrl(Uri.parse(inquiryForm))) {
-      await launchUrl(Uri.parse(inquiryForm));
-    } else {
-      throw 'Could not launch $inquiryForm';
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+          backgroundColor: ColorGroup.BGC,
+          titleTextStyle: TextStyle(
+            fontSize: 15,
+            color: const Color.fromARGB(255, 0, 0, 0),
+            fontWeight: FontWeight.w700,
+          ),
+          contentTextStyle: TextStyle(
+            fontSize: 13,
+            color: const Color.fromARGB(255, 0, 0, 0),
+          ),
+          title: Text('문의하기'),
+          content: Text('문의 페이지로 이동하시겠습니까?'),
+          actions: [
+            TextButton(
+              child: Text(
+                '취소',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ColorGroup.selectBtnBGC,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              onPressed: () {
+                AnalyticsService.buttonClick(
+                  'Inquiry',
+                  '취소',
+                  '',
+                  '',
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ColorGroup.selectBtnBGC,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              onPressed: () async {
+                AnalyticsService.buttonClick(
+                  'Inquiry',
+                  '진짜문의',
+                  '',
+                  '',
+                );
+                if (await canLaunchUrl(Uri.parse(inquiryForm))) {
+                  await launchUrl(Uri.parse(inquiryForm));
+                } else {
+                  throw 'Could not launch $inquiryForm';
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('MainPage');
     centerTitleController.getContext(context);
+    problemListController.getContext(context);
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: _appBars[currentIndex],

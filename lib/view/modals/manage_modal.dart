@@ -54,6 +54,7 @@ class ManageModal extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () async {
                     AnalyticsService.buttonClick(
                       'solutionMore',
@@ -105,6 +106,7 @@ class ManageModal extends StatelessWidget {
                   color: Color.fromRGBO(246, 246, 246, 1),
                 ),
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () async {
                     AnalyticsService.buttonClick(
                       'solutionMore',

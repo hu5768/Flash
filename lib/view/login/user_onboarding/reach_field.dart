@@ -10,6 +10,9 @@ class ReachField extends StatelessWidget {
   final userOnboardingControlle = Get.put(UserOnboardingControlle());
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(
+      userOnboardingControlle.reachFocusNode,
+    );
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 50),
       child: Column(
@@ -17,6 +20,7 @@ class ReachField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextField(
+            focusNode: userOnboardingControlle.reachFocusNode,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}\.?\d{0,1}')),
             ],

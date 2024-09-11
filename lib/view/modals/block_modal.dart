@@ -48,6 +48,7 @@ class BlockModal extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     AnalyticsService.buttonClick(
                       'solutionMore',
@@ -140,6 +141,7 @@ class BlockModal extends StatelessWidget {
                 ),
                 Divider(height: 1),
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     AnalyticsService.buttonClick(
                       'solutionMore',

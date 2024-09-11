@@ -128,9 +128,13 @@ class SortedButton extends StatelessWidget {
                 Icons.keyboard_arrow_down_rounded,
                 size: 25,
               ),
-              Text(
-                problemTitleController.sorttitle.toString(),
-                style: TextStyle(fontSize: 17),
+              Obx(
+                () {
+                  return Text(
+                    problemTitleController.sorttitle.toString(),
+                    style: TextStyle(fontSize: 17),
+                  );
+                },
               ),
             ],
           ),
