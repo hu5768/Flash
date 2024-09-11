@@ -95,8 +95,8 @@ class _AnswerModifyState extends State<AnswerModify> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    userReviewFetch();
+                  onPressed: () async {
+                    await userReviewFetch();
                     Navigator.pop(context);
                   },
                   child: Text('수정', style: TextStyle(fontSize: 16)),

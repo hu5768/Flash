@@ -83,7 +83,7 @@ class AnswerDataController extends GetxController {
             problemId: problemId,
             uploaderId: entry.value.uploaderId!,
             isUploader: entry.value.isUploader!,
-            profileUrl: '',
+            profileUrl: entry.value.profileImageUrl ?? '',
           );
         },
       ).toList();
@@ -102,7 +102,7 @@ class AnswerDataController extends GetxController {
     }
   }
 
-  void disposeVideo() {
+  Future<void> disposeVideo() async {
     //비디오 컨트롤러에 저장된 영상 해제
     if (videoControllerList != null)
       for (var controller in videoControllerList!) {

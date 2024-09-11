@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/my_gridview_controller.dart';
+import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/controller/dio/solution_delete_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/upload/answer_modify.dart';
@@ -19,7 +20,7 @@ class ManageModal extends StatelessWidget {
   final int solutionId;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final myGridviewController = Get.put(MyGridviewController());
-
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
   final SolutionDeleteController solutionDeleteController =
       SolutionDeleteController();
   final answerDataController = Get.put(AnswerDataController());
@@ -76,8 +77,8 @@ class ManageModal extends StatelessWidget {
                       answerDataController.fetchData(problemId);
                     else {
                       // 마이페이지에서 본 경우
-                      //await myGridviewController.fetchData(); 잘 안되는듯
-                      Navigator.of(context).pop();
+                      mySolutionDetailController.fetchData(solutionId);
+                      //Navigator.of(context).pop();
                     }
                     Navigator.of(context).pop();
                   },
@@ -168,13 +169,14 @@ class ManageModal extends StatelessWidget {
                                 solutionDeleteController.DeleteSolution(
                                   solutionId,
                                 );
-                                answerDataController.disposeVideo();
+                                await answerDataController.disposeVideo();
                                 answerCarouselController.cIndex.value = 0;
                                 if (problemId != '') //문제 캐러샐에서 본 경우
                                   answerDataController.fetchData(problemId);
                                 else {
                                   // 마이페이지에서 본 경우
-                                  //await myGridviewController.fetchData(); 잘 안되는듯
+                                  await myGridviewController
+                                      .fetchData(); //잘 안되는듯
                                   Navigator.of(context).pop();
                                 }
                                 Navigator.of(context).pop();

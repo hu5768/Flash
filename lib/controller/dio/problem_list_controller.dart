@@ -27,7 +27,7 @@ class ProblemListController extends GetxController {
     newFetch();
   }
 
-  void newFetch() async {
+  Future<void> newFetch() async {
     dios.Response response;
     loadRunning = true;
     try {

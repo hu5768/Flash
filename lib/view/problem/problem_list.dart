@@ -15,7 +15,7 @@ class ProblemList extends StatelessWidget {
   final ProblemSortController problemTitleController = Get.find();
 
   final ProblemFilterController problemFilterController = Get.find();
-  final scrollController = Get.put(ProblemListController());
+  final problemListController = Get.put(ProblemListController());
   final CenterTitleController centerTitleController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -35,40 +35,45 @@ class ProblemList extends StatelessWidget {
               GetX<ProblemListController>(
                 builder: (controller) {
                   return Expanded(
-                    child: ListView.builder(
-                      controller: scrollController.scrollController,
-                      itemCount: scrollController.problemList.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ProblemCard(
-                              gymName: centerTitleController.centerTitle.value,
-                              id: scrollController.problemList[index].id
-                                  .toString(),
-                              sector: scrollController.problemList[index].sector
-                                  .toString(),
-                              difficulty: scrollController
-                                  .problemList[index].difficulty
-                                  .toString(),
-                              settingDate: scrollController
-                                  .problemList[index].settingDate
-                                  .toString(),
-                              removalDate: scrollController
-                                  .problemList[index].removalDate
-                                  .toString(),
-                              hasSolution: scrollController
-                                  .problemList[index].hasSolution!,
-                              imageUrl: scrollController
-                                  .problemList[index].imageUrl
-                                  .toString(),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                          ],
-                        );
-                      },
+                    child: RefreshIndicator(
+                      onRefresh: problemListController.newFetch,
+                      child: ListView.builder(
+                        controller: problemListController.scrollController,
+                        itemCount: problemListController.problemList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProblemCard(
+                                gymName:
+                                    centerTitleController.centerTitle.value,
+                                id: problemListController.problemList[index].id
+                                    .toString(),
+                                sector: problemListController
+                                    .problemList[index].sector
+                                    .toString(),
+                                difficulty: problemListController
+                                    .problemList[index].difficulty
+                                    .toString(),
+                                settingDate: problemListController
+                                    .problemList[index].settingDate
+                                    .toString(),
+                                removalDate: problemListController
+                                    .problemList[index].removalDate
+                                    .toString(),
+                                hasSolution: problemListController
+                                    .problemList[index].hasSolution!,
+                                imageUrl: problemListController
+                                    .problemList[index].imageUrl
+                                    .toString(),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   );
                 },

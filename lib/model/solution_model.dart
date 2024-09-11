@@ -5,6 +5,7 @@ class SolutionModel {
   String? instagramId;
   String? videoUrl;
   String? uploaderId;
+  String? profileImageUrl;
   bool? isUploader;
 
   SolutionModel({
@@ -15,6 +16,7 @@ class SolutionModel {
     this.videoUrl,
     this.uploaderId,
     this.isUploader,
+    this.profileImageUrl,
   });
 
   SolutionModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class SolutionModel {
     videoUrl = json['videoUrl'];
     uploaderId = json['uploaderId'];
     isUploader = json['isUploader'];
+    profileImageUrl = json['profileImageUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +39,7 @@ class SolutionModel {
     data['videoUrl'] = videoUrl;
     data['uploaderId'] = uploaderId;
     data['isUploader'] = isUploader;
+    data['profileImageUrl'] = profileImageUrl;
     return data;
   }
 }
