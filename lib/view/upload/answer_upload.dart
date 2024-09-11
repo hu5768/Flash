@@ -49,6 +49,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
             ..initialize().then((_) {
               setState(() {});
               videoController!.setVolume(0);
+              videoController!.play();
             });
         });
       }
@@ -173,7 +174,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
           );
       if (apiResponse.statusCode == 200) {
         print("최종 업로드 완료!");
-        showDialog(
+        /* showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -208,7 +209,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
               ],
             );
           },
-        );
+        );*/
       }
     } on DioException catch (e) {
       print('영상 업로드 오류$e');
@@ -251,7 +252,44 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await _uploadVideo2();
+                    _uploadVideo2();
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+                          backgroundColor: ColorGroup.BGC,
+                          titleTextStyle: TextStyle(
+                            fontSize: 15,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          contentTextStyle: TextStyle(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          title: Text('업로드 완료'),
+                          content:
+                              Text('영상이 업로드 되었습니다\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.'),
+                          actions: [
+                            TextButton(
+                              child: Text(
+                                '확인',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: const Color.fromARGB(255, 0, 0, 0),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    Navigator.of(context).pop();
                   },
                   child: Text('업로드', style: TextStyle(fontSize: 16)),
                 ),
