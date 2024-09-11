@@ -57,6 +57,7 @@ class MySolution extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return ManageModal(
+                          review: mySolutionDetailController.sdm.review!,
                           videoUrl: mySolutionDetailController.sdm.videoUrl!,
                           problemId: '',
                           solutionId: solutionId,

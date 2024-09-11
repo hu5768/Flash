@@ -15,8 +15,9 @@ class ManageModal extends StatelessWidget {
     required this.problemId,
     required this.solutionId,
     required this.videoUrl,
+    required this.review,
   });
-  final String problemId, videoUrl;
+  final String problemId, videoUrl, review;
   final int solutionId;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final myGridviewController = Get.put(MyGridviewController());
@@ -70,13 +71,24 @@ class ManageModal extends StatelessWidget {
                           gymName: '',
                           videoUrl: videoUrl,
                           solutionId: solutionId,
+                          review: review,
                         ),
                       ),
                     );
-                    answerCarouselController.cIndex.value = 0;
+                    //answerCarouselController.cIndex.value = 0;
                     if (problemId != '') //문제 캐러샐에서 본 경우
-                      answerDataController.fetchData(problemId);
-                    else {
+                    {
+                      print('index${answerCarouselController.cIndex.value}');
+                      await answerDataController.fetchData(problemId);
+                      print('index${answerCarouselController.cIndex.value}');
+                      answerCarouselController.carouselSliderController
+                          .jumpToPage(
+                        answerCarouselController.cIndex.value,
+                      );
+                      print('index${answerCarouselController.cIndex.value}');
+
+                      //,
+                    } else {
                       // 마이페이지에서 본 경우
                       mySolutionDetailController.fetchData(solutionId);
                       //Navigator.of(context).pop();

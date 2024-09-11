@@ -136,6 +136,7 @@ class AnswerCard extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return isUploader
                                     ? ManageModal(
+                                        review: review,
                                         videoUrl: videoUrl,
                                         problemId: problemId,
                                         solutionId: solutionId,

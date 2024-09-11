@@ -19,8 +19,7 @@ class AnswerDataController extends GetxController {
   final AnswerCarouselController answerCarouselController =
       AnswerCarouselController();
 
-  void fetchData(String problemId) async {
-    answerCarouselController.cIndex.value = 0;
+  Future<void> fetchData(String problemId) async {
     dios.Response response;
     answerList.clear();
     try {

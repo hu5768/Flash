@@ -10,6 +10,7 @@ class AnswersCarousell extends StatelessWidget {
   final String gymName, id;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final answerDataController = Get.put(AnswerDataController());
+
   AnswersCarousell({
     super.key,
     required this.gymName,
@@ -18,8 +19,8 @@ class AnswersCarousell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('SolutionPage');
-    answerDataController.fetchData(id);
     answerCarouselController.cIndex.value = 0;
+    answerDataController.fetchData(id);
 
     return PopScope(
       onPopInvoked: (bool a) async {
@@ -38,6 +39,8 @@ class AnswersCarousell extends StatelessWidget {
                     child: GetX<AnswerDataController>(
                       builder: (controller) {
                         return CarouselSlider(
+                          carouselController:
+                              answerCarouselController.carouselSliderController,
                           items: answerDataController.answerList,
                           options: CarouselOptions(
                             enableInfiniteScroll: false,
@@ -50,7 +53,9 @@ class AnswersCarousell extends StatelessWidget {
                                 gymName,
                                 answerDataController.difficulty,
                               );
-                              answerCarouselController.cIndex.value = index;
+                              if (reason == CarouselPageChangedReason.manual)
+                                answerCarouselController.cIndex.value = index;
+
                               if (0 <= index - 1 &&
                                   index - 1 <
                                       answerDataController

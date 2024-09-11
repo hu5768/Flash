@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class AnswerModify extends StatefulWidget {
-  final String problemId, gymName, videoUrl;
+  final String problemId, gymName, videoUrl, review;
   final int solutionId;
   const AnswerModify({
     super.key,
@@ -21,6 +21,7 @@ class AnswerModify extends StatefulWidget {
     required this.problemId,
     required this.gymName,
     required this.videoUrl,
+    required this.review,
   });
 
   @override
@@ -70,6 +71,7 @@ class _AnswerModifyState extends State<AnswerModify> {
 
   @override
   Widget build(BuildContext context) {
+    userOpinionController.text = widget.review;
     AnalyticsService.screenView('ModifyPage');
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
