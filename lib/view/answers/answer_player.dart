@@ -37,6 +37,7 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
         await widget.videoController.initialize();
         //print('영상 다운');
       }
+      widget.videoController.setVolume(0.0);
       iscomplet = true;
       AnalyticsService.sendVedioEvent('start', widget.useUri);
       widget.videoController.seekTo(Duration.zero);
