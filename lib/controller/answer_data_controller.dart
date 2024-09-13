@@ -1,3 +1,4 @@
+import 'package:flash/const/webtoken.dart';
 import 'package:flash/model/problem_detail_model.dart';
 import 'package:flash/model/solution_model.dart';
 import 'package:flash/view/answers/answer_card.dart';
@@ -18,6 +19,7 @@ class AnswerDataController extends GetxController {
     answerList.clear();
     try {
       //문제 디테일 페이지 정보 요청
+      DioClient().updateOptions(token: webtoken);
       response = await DioClient().dio.get(
             "/problems/$problemId",
           );

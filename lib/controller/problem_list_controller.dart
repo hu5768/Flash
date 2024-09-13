@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dios;
+import 'package:flash/const/webtoken.dart';
 import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
@@ -41,7 +42,7 @@ class ProblemListController extends GetxController {
       String secText = secList == "" ? "" : "&sector=$secList";
       bool hasSol = !problemFilterController.nobodySol.value; //아무도 안푼문제 필터
       String solText = hasSol ? "" : "&has-solution=$hasSol";
-
+      DioClient().updateOptions(token: webtoken);
       response = await DioClient()
           .dio
           .request("/gyms/$gymId/problems$sortText$diffText$secText$solText");

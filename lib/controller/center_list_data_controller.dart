@@ -1,3 +1,4 @@
+import 'package:flash/const/webtoken.dart';
 import 'package:flash/model/center_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
@@ -15,6 +16,7 @@ class CenterListController extends GetxController {
   void fetchData() async {
     dios.Response response;
     try {
+      DioClient().updateOptions(token: webtoken);
       response = await DioClient().dio.get(
             "/gyms",
           );

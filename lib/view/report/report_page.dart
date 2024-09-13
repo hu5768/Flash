@@ -125,6 +125,7 @@ class ReportPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
                 TextButton(
                   onPressed: OpenPI,
                   style: ButtonStyle(

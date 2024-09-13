@@ -1,3 +1,4 @@
+import 'package:flash/const/webtoken.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
 import 'dio_singletone.dart';
@@ -22,6 +23,7 @@ class CenterTitleController extends GetxController {
   void getTitle() async {
     dios.Response response;
     try {
+      DioClient().updateOptions(token: webtoken);
       response = await DioClient().dio.get(
             "/gyms/${centerId.value}",
           );
