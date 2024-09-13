@@ -220,9 +220,11 @@ class _AnswerUploadState extends State<AnswerUpload> {
           'problemId': widget.problemId,
           'review': userOpinionController.text,
         });
-
+        final uploadDevserver =
+            'https://upload.dev.climbing-answer.com/upload/';
+        final uploadserver = 'https://upload.climbing-answer.com/upload/';
         final apiResponse = await DioClient().dio.post(
-              'https://upload.dev.climbing-answer.com/upload/',
+              uploadserver,
               data: formData,
               options: Options(
                 contentType: 'multipart/form-data',
