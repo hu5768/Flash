@@ -92,10 +92,12 @@ class _MySolutionPlayerState extends State<MySolutionPlayer> {
                   FittedBox(
                     fit: BoxFit.contain,
                     child: SizedBox(
-                      width: _videoController.value.size.width,
-                      height: _videoController.value.size.height,
-                      child: VideoPlayer(
-                        _videoController,
+                      height: 720,
+                      child: AspectRatio(
+                        aspectRatio: _videoController.value.aspectRatio,
+                        child: VideoPlayer(
+                          _videoController,
+                        ),
                       ),
                     ),
                   ),

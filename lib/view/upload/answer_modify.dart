@@ -98,6 +98,12 @@ class _AnswerModifyState extends State<AnswerModify> {
                 ),
                 TextButton(
                   onPressed: () async {
+                    AnalyticsService.buttonClick(
+                      'AnswerModify',
+                      '수정',
+                      '',
+                      widget.solutionId.toString(),
+                    );
                     await userReviewFetch();
                     Navigator.pop(context);
                   },

@@ -48,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDQv5N6ybmcjyHZgCVNj3ksi_JB-_rA1uo',
-    appId: '1:723913284357:web:3e4488db09c512af9a756c',
+    appId: '1:723913284357:web:719b14a3714547cb9a756c',
     messagingSenderId: '723913284357',
     projectId: 'flash-43a2b',
     authDomain: 'flash-43a2b.firebaseapp.com',
     storageBucket: 'flash-43a2b.appspot.com',
-    measurementId: 'G-XDK7HQH4S6',
+    measurementId: 'G-NY9TJNVTVM',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA9dMNNPV2nsB-WoKjDy4KQ-B8TCM0BTLI',
-    appId: '1:723913284357:android:1a52b4cdb11aa8329a756c',
+    appId: '1:723913284357:android:67e49ad3cc8f522c9a756c',
     messagingSenderId: '723913284357',
     projectId: 'flash-43a2b',
     storageBucket: 'flash-43a2b.appspot.com',
@@ -66,11 +66,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCmdLuvB1cyHUJcRdE5yb5mxD_0wOk8E0o',
-    appId: '1:723913284357:ios:604ae04899ef8b889a756c',
+    appId: '1:723913284357:ios:7ac98f0f50dfdec39a756c',
     messagingSenderId: '723913284357',
     projectId: 'flash-43a2b',
     storageBucket: 'flash-43a2b.appspot.com',
-    iosBundleId: 'com.example.flash',
+    androidClientId: '723913284357-npkc8dkbg7a42e0od5uphd0he69b9j3v.apps.googleusercontent.com',
+    iosClientId: '723913284357-8sdicd0he3g2d8mangd9cnnkaq4vjkqv.apps.googleusercontent.com',
+    iosBundleId: 'com.climbing.flash',
   );
 
 }

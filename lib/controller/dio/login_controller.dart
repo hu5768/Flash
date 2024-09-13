@@ -46,12 +46,12 @@ class LoginController extends GetxController {
   Future<void> googleSignIn(context) async {
     //구글 로그인
     try {
-      print('login');
+      //print('login');
       GoogleSignInAccount? googleAccount = await _googleSignIn.signIn();
       if (googleAccount != null) {
-        print('User Name: ${googleAccount.displayName}');
-        print('User Email: ${googleAccount.email}');
-        print('User ID: ${googleAccount.id}');
+        //print('User Name: ${googleAccount.displayName}');
+        //print('User Email: ${googleAccount.email}');
+        //print('User ID: ${googleAccount.id}');
       }
       String idToken = '';
       if (googleAccount != null) {
@@ -60,7 +60,7 @@ class LoginController extends GetxController {
         idToken = auth.accessToken ?? '';
       }
 
-      print('로그인 성공: ${idToken}');
+      //print('로그인 성공: ${idToken}');
       /*int i = 0;
       print("id token");
       while (i < idToken.length) {
@@ -83,7 +83,7 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         // 요청 성공 시 처리
         print('Request successful');
-        print('Response data: ${response.data}');
+        // print('Response data: ${response.data}');
         final token = response.data["accessToken"];
         final isCompleteRegistration = response.data["isCompleteRegistration"];
         storage.write(
@@ -206,8 +206,8 @@ class LoginController extends GetxController {
       );
       if (response.statusCode == 200) {
         // 요청 성공 시 처리
-        print('Request successful');
-        print('Response data: ${response.data}');
+        //print('Request successful');
+        // print('Response data: ${response.data}');
         final token = response.data["accessToken"];
         final isCompleteRegistration = response.data["isCompleteRegistration"];
         storage.write(

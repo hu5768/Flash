@@ -58,26 +58,12 @@ class AnswerDataController extends GetxController {
       response = await DioClient().dio.get(
             "/problems/$problemId/solutions",
           );
-      print("해설리스트 가져옴");
+
       List<Map<String, dynamic>> resMapList =
           List<Map<String, dynamic>>.from(response.data["solutions"]);
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
-      print(sm.length);
-/*
-      if (sm.length > 0) {
-        //영상이 하나 이상 존재하는경우 가짜 영상 하나를 다운받아 대신 크기가 작아지게 한다.
-        videoControllerList[0] = VideoPlayerController.networkUrl(
-          Uri.parse(sm[0].videoUrl!),
-        );
-        print("다운 전 제물 높이 ${videoControllerList[0]!.value.size.height}");
-        if (!videoControllerList[0]!.value.isInitialized) {
-          await videoControllerList[0]!.initialize();
-          print('제물 다운');
-        }
-        print("다운 전 제물 높이 ${videoControllerList[0]!.value.size.height}");
-      }*/
 
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
@@ -101,9 +87,8 @@ class AnswerDataController extends GetxController {
           );
         },
       ).toList();
-      print("캐러셀에 추가");
+
       answerList.addAll(solutionVideoList);
-      print(answerList.length);
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {

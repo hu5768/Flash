@@ -8,7 +8,7 @@ class SolutionDeleteController {
     try {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
-      print("문제 id $solutionId");
+
       final response = await DioClient().dio.delete(
             "/solutions/${solutionId}",
             options: Options(
@@ -17,7 +17,6 @@ class SolutionDeleteController {
               },
             ),
           );
-      print(response.data);
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {

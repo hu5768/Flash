@@ -270,6 +270,43 @@ class _AnswerUploadState extends State<AnswerUpload> {
       }
     } on DioException catch (e) {
       print('영상 업로드 오류$e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+            backgroundColor: ColorGroup.BGC,
+            titleTextStyle: TextStyle(
+              fontSize: 15,
+              color: const Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.w700,
+            ),
+            contentTextStyle: TextStyle(
+              fontSize: 13,
+              color: const Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: Text('업로드 실패'),
+            content: Text(
+              '영상을 업로드하지 못했습니다',
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       if (e.response != null) {
         print('DioError: ${e.response?.statusCode}');
         print('Error Response Data: ${e.response?.data}');
@@ -309,6 +346,13 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 ),
                 TextButton(
                   onPressed: () async {
+                    if (_video == null) return;
+                    AnalyticsService.buttonClick(
+                      'SolutionUpload',
+                      '업로드',
+                      widget.gymName,
+                      widget.difficulty,
+                    );
                     _uploadVideo2();
                     await showDialog(
                       context: context,
@@ -325,9 +369,10 @@ class _AnswerUploadState extends State<AnswerUpload> {
                             fontSize: 13,
                             color: const Color.fromARGB(255, 0, 0, 0),
                           ),
-                          title: Text('업로드 완료'),
-                          content:
-                              Text('영상이 업로드 되었습니다\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.'),
+                          title: Text('업로드 시작'),
+                          content: Text(
+                            '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
+                          ),
                           actions: [
                             TextButton(
                               child: Text(
@@ -377,6 +422,12 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
+                    AnalyticsService.buttonClick(
+                      'SolutionUpload',
+                      '영상선택',
+                      widget.gymName,
+                      widget.difficulty,
+                    );
                     PickVideo();
                   },
                   style: ElevatedButton.styleFrom(

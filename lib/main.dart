@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flash/firebase_options.dart';
@@ -5,7 +7,7 @@ import 'package:flash/firebase_options.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
-
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,9 +21,16 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  runApp(
-    const App(),
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  runZonedGuarded(
+    () {
+      runApp(const App());
+    },
+    (error, stack) => FirebaseCrashlytics.instance.recordError(
+      error,
+      stack,
+      fatal: true,
+    ),
   );
 }
 
@@ -40,9 +49,9 @@ class App extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: analytics), //이름 같아도 되나
       ],
 
-      home: LoginPage(),
+      //home: LoginPage(),
       //home: UserOnboardingPage(),
-      //home: SplashScreen(),
+      home: SplashScreen(),
       // home: MainPage(),
     );
   }

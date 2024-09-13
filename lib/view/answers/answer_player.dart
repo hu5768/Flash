@@ -33,13 +33,13 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
 
       // 비디오 URL
     );*/
-    print("다운 전 영상 높이 ${widget.videoController.value.size.height}");
+    // print("다운 전 영상 높이 ${widget.videoController.value.size.height}");
     try {
       if (!widget.videoController.value.isInitialized) {
         await widget.videoController.initialize();
         //print('영상 다운');
       }
-      print("다운 후 영상 높이 ${widget.videoController.value.size.height}");
+      //  print("다운 후 영상 높이 ${widget.videoController.value.size.height}");
       iscomplet = true;
 
       widget.videoController.seekTo(Duration.zero);
@@ -102,8 +102,6 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
                     child: SizedBox(
                       height: 720,
                       child: AspectRatio(
-                        //얘 없이도 되는지 다시 확인 필요
-                        //?
                         aspectRatio: widget.videoController.value.aspectRatio,
                         child: VideoPlayer(
                           widget.videoController,

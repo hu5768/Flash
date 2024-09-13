@@ -18,6 +18,7 @@ class AnalyticsService {
     String gymName,
     String buttoninfo,
   ) async {
+    //print("fba 버튼클릭$pageName $buttonName");
     //버튼클릭 이벤트
     await analytics.logEvent(
       name: 'FlashApp_${version}_button_$pageName',
@@ -36,6 +37,7 @@ class AnalyticsService {
     String sector,
     String hasSolution,
   ) async {
+    //print("fba 문제선택");
     await analytics.logEvent(
       name: 'FlashApp_${version}_ClickProblem',
       parameters: <String, Object>{
@@ -69,6 +71,7 @@ class AnalyticsService {
     String nobodySol,
   ) async {
     //필터 모달 버튼
+    //print("fba 모달 $buttonName");
     await analytics.logEvent(
       name: 'FlashApp_{$version}_modal_$buttonName',
       parameters: <String, Object>{
@@ -82,11 +85,13 @@ class AnalyticsService {
 
   static Future<void> answerSlide(
     //비디오 플레이 이벤트
+
     String index,
     String id,
     String difficulty,
     String sector,
   ) async {
+    // print("fba video $index");
     await analytics.logEvent(
       name: 'FlashApp_{$version}_slider',
       parameters: <String, Object>{
