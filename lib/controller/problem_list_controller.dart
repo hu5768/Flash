@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dios;
+import 'package:dio/dio.dart';
 import 'package:flash/const/webtoken.dart';
 import 'package:flash/controller/center_title_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
@@ -60,8 +61,16 @@ class ProblemListController extends GetxController {
 
         problemList.assignAll(um);
       }
-    } catch (e) {
-      print("시작 페이지 로딩 오류$e");
+    } on DioException catch (e) {
+      // 에러가 발생했을 때 서버로부터의 응답 확인
+      if (e.response != null) {
+        print('서버 에러 응답 데이터: ${e.response!.data}');
+        print('서버 에러 상태 코드: ${e.response!.statusCode}');
+        print('서버 에러 헤더: ${e.response!.headers}');
+      } else {
+        // 서버로부터 응답을 받지 못한 경우
+        print('요청 실패: ${e.message}');
+      }
     }
     loadRunning = false;
     scrollController.animateTo(
