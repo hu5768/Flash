@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/controller/dio/user_delete_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -20,6 +21,7 @@ class MyModify extends StatelessWidget {
   final mypageModifyController = Get.put(MypageModifyController());
   final mypageController = Get.put(MypageController());
   final userDeleteController = Get.put(UserDeleteController());
+  final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('MyModifyPage');
@@ -213,6 +215,7 @@ class MyModify extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 24),
+                  SizedBox(height: 24),
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     decoration: BoxDecoration(
@@ -221,6 +224,24 @@ class MyModify extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
+                        ModifyMemberCard(
+                          clikFunction: loginController.OpenPI,
+                          info: '개인정보처리방침',
+                          textColor: Color.fromRGBO(33, 33, 33, 1),
+                        ),
+                        Divider(
+                          height: 0,
+                          color: Color.fromRGBO(233, 233, 233, 20),
+                        ),
+                        ModifyMemberCard(
+                          clikFunction: loginController.OpenTU,
+                          info: '이용약관',
+                          textColor: Color.fromRGBO(33, 33, 33, 1),
+                        ),
+                        Divider(
+                          height: 0,
+                          color: Color.fromRGBO(233, 233, 233, 20),
+                        ),
                         ModifyMemberCard(
                           info: '로그아웃',
                           textColor: Color.fromRGBO(33, 33, 33, 1),
@@ -362,6 +383,7 @@ class MyModify extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 40),
                 ],
               );
             },

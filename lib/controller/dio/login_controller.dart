@@ -36,7 +36,7 @@ class LoginController extends GetxController {
       );
   String personalInformation =
       'https://sites.google.com/view/flash-climbing/%ED%99%88'; //개인정보처리방침
-
+  String termsOfUse = 'https://sites.google.com/view/termuse/%ED%99%88'; //이용약관
   String inquiryForm = 'https://forms.gle/HfDBUTidK8kcxWdq8';
 
   Future<void> initAccount() async {
@@ -246,6 +246,15 @@ class LoginController extends GetxController {
       await launchUrl(Uri.parse(personalInformation));
     } else {
       throw 'Could not launch $personalInformation';
+    }
+  }
+
+  Future<void> OpenTU() async {
+    //이용약관
+    if (await canLaunchUrl(Uri.parse(termsOfUse))) {
+      await launchUrl(Uri.parse(termsOfUse));
+    } else {
+      throw 'Could not launch $termsOfUse';
     }
   }
 

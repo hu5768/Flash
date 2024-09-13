@@ -99,6 +99,7 @@ class LoginPage extends StatelessWidget {
                                   '',
                                   isAndroid() ? 'android' : 'ios',
                                 );
+                                loginController.OpenTU();
                               },
                               style: ButtonStyle(
                                 padding: WidgetStateProperty.all<EdgeInsets>(

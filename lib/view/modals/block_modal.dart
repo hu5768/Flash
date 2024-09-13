@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/user_block_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/modals/report_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -149,70 +150,13 @@ class BlockModal extends StatelessWidget {
                       '',
                       '',
                     );
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                          backgroundColor: ColorGroup.BGC,
-                          titleTextStyle: TextStyle(
-                            fontSize: 15,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          contentTextStyle: TextStyle(
-                            fontSize: 13,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          title: Text('게시물 신고'),
-                          content: Text('정말 게시물을 신고하시겠습니까?'),
-                          actions: [
-                            TextButton(
-                              child: Text(
-                                '취소',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorGroup.selectBtnBGC,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              onPressed: () {
-                                AnalyticsService.buttonClick(
-                                  'report',
-                                  '취소',
-                                  '',
-                                  '',
-                                );
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                '신고',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorGroup.selectBtnBGC,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              onPressed: () {
-                                AnalyticsService.buttonClick(
-                                  'report',
-                                  '진짜신고',
-                                  '',
-                                  '',
-                                );
-                                userBlockController.report(solutionId);
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
+                        return ReportList(solutionId: solutionId);
                       },
                     );
-                  },
+                  }, //userBlockController.report(solutionId);
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
                     child: Row(

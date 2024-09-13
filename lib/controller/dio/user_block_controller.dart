@@ -4,7 +4,7 @@ import 'package:flash/const/data.dart';
 import 'dio_singletone.dart';
 
 class UserBlockController {
-  void report(int solutionId) async {
+  void report(int solutionId, String reason) async {
     try {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
@@ -12,7 +12,7 @@ class UserBlockController {
       final response = await DioClient().dio.post(
             "/members/reports/${solutionId}",
             data: {
-              "reason": "신고함",
+              "reason": reason,
             },
             options: Options(
               headers: {
