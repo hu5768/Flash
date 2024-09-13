@@ -23,9 +23,9 @@ class AnswersCarousell extends StatelessWidget {
     answerDataController.fetchData(id);
 
     return PopScope(
-      onPopInvoked: (bool a) async {
+      onPopInvokedWithResult: (bool a, result) async {
         answerDataController.disposeVideo();
-        //print('비디오 컨트롤러 해제');
+        print('비디오 컨트롤러 해제');
       },
       child: Scaffold(
         backgroundColor: ColorGroup.BGC,
@@ -53,6 +53,18 @@ class AnswersCarousell extends StatelessWidget {
                                 gymName,
                                 answerDataController.difficulty,
                               );
+
+                              if (0 <=
+                                      answerCarouselController.cIndex.value -
+                                          1 &&
+                                  answerCarouselController.cIndex.value - 1 <
+                                      answerDataController
+                                          .videoControllerList!.length)
+                                answerDataController.videoControllerList![
+                                        answerCarouselController.cIndex.value -
+                                            1]!
+                                    .pause();
+
                               if (reason == CarouselPageChangedReason.manual)
                                 answerCarouselController.cIndex.value = index;
 

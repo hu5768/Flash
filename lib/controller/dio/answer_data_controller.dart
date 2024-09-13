@@ -15,7 +15,8 @@ class AnswerDataController extends GetxController {
   var answerList = <Widget>[].obs;
   String difficulty = '';
   String sector = '';
-  List<VideoPlayerController?>? videoControllerList;
+  List<VideoPlayerController?> videoControllerList = [];
+
   final AnswerCarouselController answerCarouselController =
       AnswerCarouselController();
 
@@ -64,16 +65,30 @@ class AnswerDataController extends GetxController {
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
       print(sm.length);
+/*
+      if (sm.length > 0) {
+        //영상이 하나 이상 존재하는경우 가짜 영상 하나를 다운받아 대신 크기가 작아지게 한다.
+        videoControllerList[0] = VideoPlayerController.networkUrl(
+          Uri.parse(sm[0].videoUrl!),
+        );
+        print("다운 전 제물 높이 ${videoControllerList[0]!.value.size.height}");
+        if (!videoControllerList[0]!.value.isInitialized) {
+          await videoControllerList[0]!.initialize();
+          print('제물 다운');
+        }
+        print("다운 전 제물 높이 ${videoControllerList[0]!.value.size.height}");
+      }*/
+
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
           //바꾸면 오류나서 추후 수정
 
-          videoControllerList![entry.key] = VideoPlayerController.networkUrl(
+          videoControllerList[entry.key] = VideoPlayerController.networkUrl(
             Uri.parse(entry.value.videoUrl!),
           );
 
           return AnswerCard(
-            videoController: videoControllerList![entry.key]!,
+            videoController: videoControllerList[entry.key]!,
             uploader: entry.value.uploader ?? '',
             review: entry.value.review ?? '',
             instagramId: entry.value.instagramId ?? '',
@@ -103,9 +118,8 @@ class AnswerDataController extends GetxController {
 
   Future<void> disposeVideo() async {
     //비디오 컨트롤러에 저장된 영상 해제
-    if (videoControllerList != null)
-      for (var controller in videoControllerList!) {
-        controller?.dispose();
-      }
+    for (var controller in videoControllerList) {
+      controller?.dispose();
+    }
   }
 }

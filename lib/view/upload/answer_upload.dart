@@ -8,8 +8,10 @@ import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_compress/video_compress.dart';
 
 class AnswerUpload extends StatefulWidget {
   final String problemId, gymName, difficulty;
@@ -37,21 +39,63 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   Future<void> PickVideo() async {
     print('파일 열기');
+    int sizeLimit = 200 * 1024 * 1024;
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.video,
       );
-      if (result != null) {
-        _video = File(result.files.single.path!);
 
-        setState(() {
-          videoController = VideoPlayerController.file(_video!)
-            ..initialize().then((_) {
-              setState(() {});
-              videoController!.setVolume(0);
-              videoController!.play();
-            });
-        });
+      if (result != null) {
+        PlatformFile fileCheck = result.files.first;
+        print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
+        if (fileCheck.size < sizeLimit) {
+          _video = File(result.files.single.path!);
+
+          setState(() {
+            videoController = VideoPlayerController.file(_video!)
+              ..initialize().then((_) {
+                setState(() {});
+                videoController!.setVolume(0);
+                videoController!.play();
+              });
+          });
+        } else {
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+                backgroundColor: ColorGroup.BGC,
+                titleTextStyle: TextStyle(
+                  fontSize: 15,
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  fontWeight: FontWeight.w700,
+                ),
+                contentTextStyle: TextStyle(
+                  fontSize: 13,
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                ),
+                title: Text('파일 용량 초과'),
+                content: Text('200mb이상의 영상은 업로드 할 수 없습니다!'),
+                actions: [
+                  TextButton(
+                    child: Text(
+                      '확인',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       }
     } catch (e) {
       print("비디오 선택 오류 $e");
@@ -153,28 +197,40 @@ class _AnswerUploadState extends State<AnswerUpload> {
     final token = await storage.read(key: ACCESS_TOKEN_KEY);
     DioClient().updateOptions(token: token.toString());
 
-    List<int> videoBytes = await _video!.readAsBytes();
+    //List<int> videoBytes = await _video!.readAsBytes();
+
+    final info = await VideoCompress.compressVideo(
+      _video!.path,
+      quality: VideoQuality
+          .MediumQuality, // 압축 품질 설정 (LowQuality, MediumQuality, HighQuality)
+      deleteOrigin: false, // 원본 파일 삭제 여부
+    );
+    print('압축 성공 압축된 비디오 파일 크기: ${info?.filesize} bytes');
 
     try {
-      FormData formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(
-          _video!.path,
-          filename: 'test.mp4', // 파일 이름 설정
-        ),
-        'problemId': widget.problemId,
-        'review': userOpinionController.text,
-      });
+      if (info == null) {
+        print('압축 실패');
+      } else {
+        FormData formData = FormData.fromMap({
+          'file': await MultipartFile.fromFile(
+            //_video!.path,
+            info.path!,
+            filename: 'test.mp4', // 파일 이름 설정
+          ),
+          'problemId': widget.problemId,
+          'review': userOpinionController.text,
+        });
 
-      final apiResponse = await DioClient().dio.post(
-            'https://upload.dev.climbing-answer.com/upload/',
-            data: formData,
-            options: Options(
-              contentType: 'multipart/form-data',
-            ),
-          );
-      if (apiResponse.statusCode == 200) {
-        print("최종 업로드 완료!");
-        /* showDialog(
+        final apiResponse = await DioClient().dio.post(
+              'https://upload.dev.climbing-answer.com/upload/',
+              data: formData,
+              options: Options(
+                contentType: 'multipart/form-data',
+              ),
+            );
+        if (apiResponse.statusCode == 200) {
+          print("최종 업로드 완료!");
+          /* showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -210,6 +266,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
             );
           },
         );*/
+        }
       }
     } on DioException catch (e) {
       print('영상 업로드 오류$e');

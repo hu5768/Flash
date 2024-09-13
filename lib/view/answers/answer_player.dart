@@ -19,11 +19,11 @@ class AnswerPlayer extends StatefulWidget {
 class _AnswerPlayerState extends State<AnswerPlayer> {
   bool iscomplet = false;
   bool pauseIcon = false;
-  //late VideoPlayerController _videoController;
 
   @override
   void initState() {
     super.initState();
+
     initvideo();
   }
 
@@ -33,11 +33,13 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
 
       // 비디오 URL
     );*/
+    print("다운 전 영상 높이 ${widget.videoController.value.size.height}");
     try {
       if (!widget.videoController.value.isInitialized) {
         await widget.videoController.initialize();
         //print('영상 다운');
       }
+      print("다운 후 영상 높이 ${widget.videoController.value.size.height}");
       iscomplet = true;
 
       widget.videoController.seekTo(Duration.zero);
@@ -85,13 +87,27 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  FittedBox(
+                  /*FittedBox(
                     fit: BoxFit.contain,
                     child: SizedBox(
                       width: widget.videoController.value.size.width,
                       height: widget.videoController.value.size.height,
                       child: VideoPlayer(
                         widget.videoController,
+                      ),
+                    ),
+                  ),*/
+                  FittedBox(
+                    fit: BoxFit.contain,
+                    child: SizedBox(
+                      height: 720,
+                      child: AspectRatio(
+                        //얘 없이도 되는지 다시 확인 필요
+                        //?
+                        aspectRatio: widget.videoController.value.aspectRatio,
+                        child: VideoPlayer(
+                          widget.videoController,
+                        ),
                       ),
                     ),
                   ),
