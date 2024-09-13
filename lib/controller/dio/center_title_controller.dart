@@ -60,7 +60,7 @@ class CenterTitleController extends GetxController {
         MaterialPageRoute(builder: (context) => LoginPage()),
         (route) => false, // 스택에 있는 모든 이전 라우트를 제거
       );
-      centerTitle.value = '암장을 불러오지 못했습니다.';
+      centerTitle.value = '--';
     }
   }
 }

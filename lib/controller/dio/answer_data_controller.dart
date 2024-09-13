@@ -64,30 +64,30 @@ class AnswerDataController extends GetxController {
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
-
+      print("답지 개수 ${sm.length}");
+      print("답지 개수 ${sm[0].uploaderId}");
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
-          //바꾸면 오류나서 추후 수정
-
+          print(entry.value.videoUrl!);
           videoControllerList[entry.key] = VideoPlayerController.networkUrl(
             Uri.parse(entry.value.videoUrl!),
           );
-
+          print("여기 출력 되나?");
           return AnswerCard(
             videoController: videoControllerList[entry.key]!,
             uploader: entry.value.uploader ?? '',
             review: entry.value.review ?? '',
             instagramId: entry.value.instagramId ?? '',
-            videoUrl: entry.value.videoUrl!,
-            solutionId: entry.value.id!,
+            videoUrl: entry.value.videoUrl ?? '',
+            solutionId: entry.value.id ?? 0,
             problemId: problemId,
-            uploaderId: entry.value.uploaderId!,
-            isUploader: entry.value.isUploader!,
+            uploaderId: entry.value.uploaderId ?? '',
+            isUploader: entry.value.isUploader ?? false,
             profileUrl: entry.value.profileImageUrl ?? '',
           );
         },
       ).toList();
-
+      print("답지 적용 개수 ${solutionVideoList.length}");
       answerList.addAll(solutionVideoList);
     } catch (e) {
       if (e is DioException) {

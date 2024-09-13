@@ -113,6 +113,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    mypageController.fetchMemberData();
     AnalyticsService.screenView('MainPage');
     centerTitleController.getContext(context);
     problemListController.getContext(context);

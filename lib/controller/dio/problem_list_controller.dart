@@ -78,17 +78,21 @@ class ProblemListController extends GetxController {
         }
       }
       print("시작 페이지 로딩 오류$e");
-      Navigator.pushAndRemoveUntil(
-        mainContext,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-        (route) => false, // 스택에 있는 모든 이전 라우트를 제거
-      );
+      goOut();
     }
     loadRunning = false;
     scrollController.animateTo(
       0.0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
+    );
+  }
+
+  void goOut() {
+    Navigator.pushAndRemoveUntil(
+      mainContext,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
     );
   }
 

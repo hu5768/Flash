@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/model/user_model.dart';
 import 'dio_singletone.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
 
 class MypageController extends GetxController {
+  final problemListController = Get.put(ProblemListController());
   var userModel = UserModel(
     nickName: '',
     instagramId: '',
@@ -67,6 +69,9 @@ class MypageController extends GetxController {
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       userModel = UserModel.fromJson(resMap);
       print(userModel.nickName);
+      if (userModel.nickName == null) {
+        problemListController.goOut();
+      }
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {
