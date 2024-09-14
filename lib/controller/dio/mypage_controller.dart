@@ -85,7 +85,7 @@ class MypageController extends GetxController {
     }
   }
 
-  void updateMemberInfo(
+  Future<void> updateMemberInfo(
     String nickName,
     String instagramId,
     double height,
@@ -99,7 +99,7 @@ class MypageController extends GetxController {
       "height": height == 0 ? null : height,
       "gender": gender == '' ? null : gender,
       "reach": reach == 0 ? null : reach,
-      "profileImageUrl": null,
+      "profileImageUrl": profileImg == '' ? null : profileImg,
     };
 
     try {

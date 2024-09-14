@@ -14,9 +14,9 @@ import 'dio_singletone.dart';
 class ProblemListController extends GetxController {
   var problemList = <ProblemModel>[].obs;
   late ScrollController scrollController;
-  final CenterTitleController centerTitleController = Get.find();
-  final ProblemSortController problemSortController = Get.find();
-  final ProblemFilterController problemFilterController = Get.find();
+  final centerTitleController = Get.put(CenterTitleController());
+  final problemSortController = Get.put(ProblemSortController());
+  final problemFilterController = Get.put(ProblemFilterController());
   dynamic mainContext;
 
   String nextCursor = "";

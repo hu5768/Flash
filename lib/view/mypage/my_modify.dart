@@ -22,6 +22,7 @@ class MyModify extends StatelessWidget {
   final mypageController = Get.put(MypageController());
   final userDeleteController = Get.put(UserDeleteController());
   final loginController = Get.put(LoginController());
+  bool buttonDisable = false;
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('MyModifyPage');
@@ -56,6 +57,8 @@ class MyModify extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
+                    if (buttonDisable) return;
+                    buttonDisable = true;
                     AnalyticsService.buttonClick(
                       'userModify',
                       '완료',

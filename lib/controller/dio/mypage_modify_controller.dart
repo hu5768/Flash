@@ -106,18 +106,10 @@ class MypageModifyController extends GetxController {
   }
 
   Future<void> updateMemberInfo() async {
-    String fileName = '?';
+    String fileName = '';
     if (selectedImage.value != null)
       fileName = basename(selectedImage.value!.path);
     dios.FormData data = dios.FormData.fromMap({
-      "nickName": rxUserModel.nickName.value,
-      "instagramId": rxUserModel.instagramId.value == ''
-          ? null
-          : rxUserModel.instagramId.value,
-      "height": rxUserModel.height.value == 0 ? null : rxUserModel.height.value,
-      "gender":
-          rxUserModel.gender.value == '' ? null : rxUserModel.gender.value,
-      "reach": rxUserModel.reach.value == 0 ? null : rxUserModel.reach.value,
       "file": selectedImage.value == null
           ? null
           : await dios.MultipartFile.fromFile(
@@ -132,11 +124,13 @@ class MypageModifyController extends GetxController {
       DioClient().updateOptions(token: token.toString());
       final response = await DioClient()
           .dio
-          .patch('https://upload.dev.climbing-answer.com/members/', data: data);
+          .post('https://upload.climbing-answer.com/images/', data: data);
 
       if (response.statusCode == 200) {
         // 요청이 성공적으로 처리된 경우
         print('Member information updated successfully');
+        final String profileImageUrl = response.data["profileImageUrl"];
+        await updateMemberInfoNoprofile(profileImageUrl);
       } else {
         print('Failed to update member information: ${response.statusCode}');
       }

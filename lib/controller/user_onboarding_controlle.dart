@@ -121,8 +121,8 @@ class UserOnboardingControlle extends gets.GetxController {
     onboardIndex.value = index;
   }
 
-  void updateOnboardInfo() {
-    mypageController.updateMemberInfo(
+  Future<void> updateOnboardInfo() async {
+    await mypageController.updateMemberInfo(
       nicknameText.text,
       instaridText.text,
       double.tryParse(heightText.text) ?? 0,
@@ -134,16 +134,8 @@ class UserOnboardingControlle extends gets.GetxController {
 
   Future<void> updateOnboardInfoProfile() async {
     String fileName = basename(selectedImage.value!.path);
+    String profileImageUrl = '';
     FormData data = FormData.fromMap({
-      "nickName": nicknameText.text,
-      "instagramId": instaridText.text == '' ? null : instaridText.text,
-      "height": double.tryParse(heightText.text) == 0
-          ? null
-          : double.tryParse(heightText.text),
-      "gender": selectedGender.value == '' ? null : selectedGender.value,
-      "reach": double.tryParse(reachText.text) == 0
-          ? null
-          : double.tryParse(reachText.text),
       "file": await MultipartFile.fromFile(
         selectedImage.value!.path,
         filename: fileName,
@@ -157,11 +149,11 @@ class UserOnboardingControlle extends gets.GetxController {
       DioClient().updateOptions(token: token.toString());
       final response = await DioClient()
           .dio
-          .patch('https://upload.dev.climbing-answer.com/members/', data: data);
+          .post('https://upload.climbing-answer.com/images/', data: data);
 
       if (response.statusCode == 200) {
         // 요청이 성공적으로 처리된 경우
-        print('Member information updated successfully');
+        profileImageUrl = response.data["profileImageUrl"];
       } else {
         print('Failed to update member information: ${response.statusCode}');
       }
@@ -176,5 +168,14 @@ class UserOnboardingControlle extends gets.GetxController {
         }
       }
     }
+
+    await mypageController.updateMemberInfo(
+      nicknameText.text,
+      instaridText.text,
+      double.tryParse(heightText.text) ?? 0,
+      double.tryParse(reachText.text) ?? 0,
+      selectedGender.value,
+      profileImageUrl,
+    );
   }
 }

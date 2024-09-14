@@ -85,7 +85,7 @@ class ProfileField extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     AnalyticsService.buttonClick(
                       'UserOnboarding',
                       '건너뛰기',
@@ -93,7 +93,7 @@ class ProfileField extends StatelessWidget {
                       userOnboardingControlle.onboardIndex.value.toString(),
                     );
                     //프로필 이미지 초기화
-                    userOnboardingControlle.updateOnboardInfo();
+                    await userOnboardingControlle.updateOnboardInfo();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
@@ -171,7 +171,8 @@ class ProfileField extends StatelessWidget {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()),
+                                  builder: (context) => MainPage(),
+                                ),
                                 (route) => false, // 스택에 있는 모든 이전 라우트를 제거
                               );
                             },

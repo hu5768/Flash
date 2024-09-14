@@ -46,7 +46,7 @@ class ProblemDetailCard extends StatelessWidget {
             height: double.infinity,
             child: Image.network(
               imgUrl,
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Image.asset(
                   'assets/images/problem.jpeg', //오류 이미지
