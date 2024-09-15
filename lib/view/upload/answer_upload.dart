@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
@@ -220,11 +221,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
           'problemId': widget.problemId,
           'review': userOpinionController.text,
         });
-        final uploadDevserver =
-            'https://upload.dev.climbing-answer.com/upload/';
-        final uploadserver = 'https://upload.climbing-answer.com/upload/';
+
         final apiResponse = await DioClient().dio.post(
-              uploadserver,
+              '${uploadServerUrl}/upload/',
               data: formData,
               options: Options(
                 contentType: 'multipart/form-data',

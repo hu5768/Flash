@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -122,9 +123,8 @@ class MypageModifyController extends GetxController {
       // PATCH 요청
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
-      final response = await DioClient()
-          .dio
-          .post('https://upload.climbing-answer.com/images/', data: data);
+      final response =
+          await DioClient().dio.post('${uploadServerUrl}images/', data: data);
 
       if (response.statusCode == 200) {
         // 요청이 성공적으로 처리된 경우
