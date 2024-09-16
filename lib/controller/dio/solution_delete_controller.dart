@@ -4,7 +4,7 @@ import 'package:flash/const/data.dart';
 import 'dio_singletone.dart';
 
 class SolutionDeleteController {
-  void DeleteSolution(int solutionId) async {
+  Future<void> DeleteSolution(int solutionId) async {
     try {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());

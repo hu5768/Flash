@@ -180,7 +180,7 @@ class ManageModal extends StatelessWidget {
                                   '',
                                   '',
                                 );
-                                solutionDeleteController.DeleteSolution(
+                                await solutionDeleteController.DeleteSolution(
                                   solutionId,
                                 );
                                 await answerDataController.disposeVideo();
