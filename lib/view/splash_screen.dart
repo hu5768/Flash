@@ -1,9 +1,12 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,6 +16,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final centerTitleController = Get.put(CenterTitleController());
+  final problemListController = Get.put(ProblemListController());
   @override
   void initState() {
     super.initState();
@@ -37,6 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     } else {
+      //최초 회원 가입시 안불러와지는 버그 수정
+      centerTitleController.getTitle();
+      problemListController.newFetch();
       Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
