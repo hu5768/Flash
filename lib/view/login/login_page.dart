@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
   final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('LoginPage');
+    AnalyticsService.screenView('LoginPage', '');
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(

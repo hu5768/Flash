@@ -46,7 +46,7 @@ class MypageController extends GetxController {
         if (e.response != null) {
           print('DioError: ${e.response?.statusCode}');
           print('Error Response Data: ${e.response?.data}');
-          nickSafetyCode = e.response?.data['nickName'];
+          nickSafetyCode = e.response?.data['nickName'] ?? '';
         } else {
           print('Error: ${e.message}');
         }

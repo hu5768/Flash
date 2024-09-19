@@ -113,10 +113,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    mypageController.fetchMemberData();
-    AnalyticsService.screenView('MainPage');
     centerTitleController.getContext(context);
     problemListController.getContext(context);
+    mypageController.fetchMemberData();
+    AnalyticsService.screenView(
+        'MainPage', mypageController.userModel.nickName ?? 'yet');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: _appBars[currentIndex],

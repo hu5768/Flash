@@ -25,7 +25,7 @@ class MyModify extends StatelessWidget {
   bool buttonDisable = false;
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('MyModifyPage');
+    AnalyticsService.screenView('MyModifyPage', '');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(

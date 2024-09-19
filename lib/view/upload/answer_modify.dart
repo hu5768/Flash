@@ -72,7 +72,7 @@ class _AnswerModifyState extends State<AnswerModify> {
   @override
   Widget build(BuildContext context) {
     userOpinionController.text = widget.review;
-    AnalyticsService.screenView('ModifyPage');
+    AnalyticsService.screenView('ModifyPage', '');
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(

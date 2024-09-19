@@ -223,7 +223,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
         });
 
         final apiResponse = await DioClient().dio.post(
-              '${uploadServerUrl}/upload/',
+              '${uploadServerUrl}upload/',
               data: formData,
               options: Options(
                 contentType: 'multipart/form-data',
@@ -321,7 +321,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('UploadPage');
+    AnalyticsService.screenView('UploadPage', '');
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(

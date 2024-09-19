@@ -18,7 +18,7 @@ class AnswersCarousell extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('SolutionPage');
+    AnalyticsService.screenView('SolutionPage', '');
     answerCarouselController.cIndex.value = 0;
     answerDataController.fetchData(id);
 
@@ -59,8 +59,8 @@ class AnswersCarousell extends StatelessWidget {
                                           1 &&
                                   answerCarouselController.cIndex.value - 1 <
                                       answerDataController
-                                          .videoControllerList!.length)
-                                answerDataController.videoControllerList![
+                                          .videoControllerList.length)
+                                answerDataController.videoControllerList[
                                         answerCarouselController.cIndex.value -
                                             1]!
                                     .pause();
@@ -71,9 +71,9 @@ class AnswersCarousell extends StatelessWidget {
                               if (0 <= index - 1 &&
                                   index - 1 <
                                       answerDataController
-                                          .videoControllerList!.length) {
+                                          .videoControllerList.length) {
                                 answerDataController
-                                    .videoControllerList![index - 1]!
+                                    .videoControllerList[index - 1]!
                                     .play();
                                 //print('영상 실행');
                               }

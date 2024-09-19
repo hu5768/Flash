@@ -20,7 +20,10 @@ class _MypageState extends State<Mypage> {
 
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('MyPage');
+    AnalyticsService.screenView(
+      'MyPage',
+      mypageController.userModel.nickName ?? 'yet',
+    );
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       body: SingleChildScrollView(

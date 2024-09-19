@@ -4,11 +4,13 @@ class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static var version = 'test'; //출시 전 test
 
-  static Future<void> screenView(String screenName) async {
+  static Future<void> screenView(String screenName, String nickName) async {
     //제보페이지
     await analytics.logScreenView(
       screenName: 'FlashApp_{$version}_screenView_$screenName',
-      parameters: <String, Object>{},
+      parameters: <String, Object>{
+        'nickName': nickName,
+      },
     );
   }
 

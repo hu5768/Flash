@@ -1,4 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/main_page.dart';
@@ -8,6 +10,8 @@ import 'package:get/get.dart';
 class ProfileField extends StatelessWidget {
   ProfileField({super.key});
   final userOnboardingControlle = Get.put(UserOnboardingControlle());
+  final centerTitleController = Get.put(CenterTitleController());
+  final problemListController = Get.put(ProblemListController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -94,6 +98,10 @@ class ProfileField extends StatelessWidget {
                     );
                     //프로필 이미지 초기화
                     await userOnboardingControlle.updateOnboardInfo();
+
+                    centerTitleController.getTitle();
+                    problemListController.newFetch();
+
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
@@ -168,6 +176,10 @@ class ProfileField extends StatelessWidget {
 
                               await userOnboardingControlle
                                   .updateOnboardInfoProfile();
+                              //최초 회원 가입시 안불러와지는 버그 수정
+                              centerTitleController.getTitle();
+                              problemListController.newFetch();
+
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(

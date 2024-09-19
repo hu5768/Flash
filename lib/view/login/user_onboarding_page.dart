@@ -21,7 +21,7 @@ class _UserOnboardingPageState extends State<UserOnboardingPage> {
   final userOnboardingControlle = Get.put(UserOnboardingControlle());
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('UserOnboardingPage');
+    AnalyticsService.screenView('UserOnboardingPage', '');
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(

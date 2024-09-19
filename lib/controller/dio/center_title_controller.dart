@@ -55,12 +55,12 @@ class CenterTitleController extends GetxController {
     } catch (e) {
       print('암장 리스트 실패$e');
       //await storage.delete(key: ACCESS_TOKEN_KEY);
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
         mainContext,
         MaterialPageRoute(builder: (context) => LoginPage()),
         (route) => false, // 스택에 있는 모든 이전 라우트를 제거
       );
-      centerTitle.value = '--';
+      centerTitle.value = '--';*/
     }
   }
 }

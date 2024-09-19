@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AnalyticsService.screenView('SplashScreen');
+    AnalyticsService.screenView('SplashScreen', '');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Center(
