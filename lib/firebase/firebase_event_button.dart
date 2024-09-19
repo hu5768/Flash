@@ -2,7 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static var version = 'test'; //출시 전 test
+  static var version = 'v1'; //출시 전 test
 
   static Future<void> screenView(String screenName, String nickName) async {
     //제보페이지
