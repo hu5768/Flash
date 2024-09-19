@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/view/login/agree_page.dart';
 import 'package:flash/view/login/user_onboarding_page.dart';
 import 'package:flash/view/main_page.dart';
@@ -15,6 +17,8 @@ import 'dio_singletone.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginController extends GetxController {
+  final centerTitleController = Get.put(CenterTitleController());
+  final problemListController = Get.put(ProblemListController());
   var requireConsent1 = false.obs;
   var requireConsent2 = false.obs;
   var requireConsent3 = false.obs;
@@ -93,6 +97,10 @@ class LoginController extends GetxController {
         DioClient().updateOptions(token: token);
 
         if (isCompleteRegistration) {
+          //최초 회원 가입시 안불러와지는 버그 수정
+          centerTitleController.getTitle();
+          problemListController.newFetch();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
@@ -161,6 +169,10 @@ class LoginController extends GetxController {
         DioClient().updateOptions(token: token);
 
         if (isCompleteRegistration) {
+          //최초 회원 가입시 안불러와지는 버그 수정
+          centerTitleController.getTitle();
+          problemListController.newFetch();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
@@ -216,6 +228,10 @@ class LoginController extends GetxController {
         );
         DioClient().updateOptions(token: token);
         if (isCompleteRegistration) {
+          //최초 회원 가입시 안불러와지는 버그 수정
+          centerTitleController.getTitle();
+          problemListController.newFetch();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
