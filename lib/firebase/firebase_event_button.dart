@@ -7,7 +7,7 @@ class AnalyticsService {
   static Future<void> screenView(String screenName, String nickName) async {
     //제보페이지
     await analytics.logScreenView(
-      screenName: 'FlashApp_{$version}_screenView_$screenName',
+      screenName: 'FlashApp_${version}_screenView_$screenName',
       parameters: <String, Object>{
         'nickName': nickName,
       },
