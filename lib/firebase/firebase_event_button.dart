@@ -2,12 +2,12 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static var version = 'test'; //출시 전 test
+  static var version = 'test'; //dev test
 
   static Future<void> screenView(String screenName, String nickName) async {
     //제보페이지
     await analytics.logScreenView(
-      screenName: 'FlashApp_{$version}_screenView_$screenName',
+      screenName: 'FlashApp_${version}_screenView_$screenName',
       parameters: <String, Object>{
         'nickName': nickName,
       },
