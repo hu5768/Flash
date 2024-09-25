@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answer_player.dart';
 import 'package:flash/view/modals/block_modal.dart';
@@ -17,7 +18,7 @@ class AnswerCard extends StatelessWidget {
   final int solutionId;
   final bool isUploader;
   final VideoPlayerController videoController;
-
+  final OpenWeb openWeb = OpenWeb();
   AnswerCard({
     super.key,
     required this.uploader,
@@ -73,43 +74,77 @@ class AnswerCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          ClipOval(
-                            child: profileUrl == ''
-                                ? Image.asset(
-                                    'assets/images/problem.png',
-                                    height: 45,
-                                    width: 45,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    profileUrl,
-                                    height: 45,
-                                    width: 45,
-                                    fit: BoxFit.cover,
-                                  ),
+                          GestureDetector(
+                            onTap: () {
+                              AnalyticsService.buttonClick(
+                                'profile',
+                                '프로필',
+                                '',
+                                '',
+                              );
+                            },
+                            child: ClipOval(
+                              child: profileUrl == ''
+                                  ? Image.asset(
+                                      'assets/images/problem.png',
+                                      height: 45,
+                                      width: 45,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      profileUrl,
+                                      height: 45,
+                                      width: 45,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                           ),
                           SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '$uploader',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                              GestureDetector(
+                                onTap: () {
+                                  AnalyticsService.buttonClick(
+                                    'profile',
+                                    '닉네임',
+                                    '',
+                                    '',
+                                  );
+                                },
+                                child: Text(
+                                  '$uploader',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
                                 width: 20,
                               ),
-                              Text(
-                                "@$instagramId",
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              instagramId == ''
+                                  ? SizedBox()
+                                  : GestureDetector(
+                                      onTap: () async {
+                                        AnalyticsService.buttonClick(
+                                          'profile',
+                                          '인스타',
+                                          '',
+                                          '',
+                                        );
+                                        await openWeb.OpenInstagram(
+                                            instagramId);
+                                      },
+                                      child: Text(
+                                        "@$instagramId",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                             ],
                           ),
                         ],

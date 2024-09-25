@@ -15,7 +15,8 @@ class ProblemDetailCard extends StatelessWidget {
       difficulty,
       settingDate,
       removalDate,
-      imgUrl;
+      imgUrl,
+      imageSource;
   final bool hasSolution;
   ProblemDetailCard({
     super.key,
@@ -27,6 +28,7 @@ class ProblemDetailCard extends StatelessWidget {
     required this.removalDate,
     required this.imgUrl,
     required this.hasSolution,
+    required this.imageSource,
   });
 
   @override
@@ -92,6 +94,14 @@ class ProblemDetailCard extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.0,
+                    ),
+                  ),
+                  SizedBox(height: 2.0),
+                  Text(
+                    '문제사진 제공: @$imageSource',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10.0,
                     ),
                   ),
                   SizedBox(height: 8.0),

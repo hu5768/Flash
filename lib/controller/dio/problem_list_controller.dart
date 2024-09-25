@@ -24,9 +24,12 @@ class ProblemListController extends GetxController {
   bool morePage = false; //다음 페이지가 있는지 여부
   @override
   void onInit() {
-    scrollController = ScrollController()..addListener(nextFetch);
     super.onInit();
-    newFetch();
+    scrollController = ScrollController()..addListener(nextFetch);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      newFetch();
+    });
   }
 
   void getContext(context) {
