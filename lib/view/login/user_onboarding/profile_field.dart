@@ -178,7 +178,8 @@ class ProfileField extends StatelessWidget {
                                   .updateOnboardInfoProfile();
                               //최초 회원 가입시 안불러와지는 버그 수정
                               centerTitleController.getTitle();
-                              problemListController.newFetch();
+                              await problemListController.newFetch();
+                              problemListController.ScrollUp();
 
                               Navigator.pushAndRemoveUntil(
                                 context,

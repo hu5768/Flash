@@ -110,7 +110,7 @@ class FilterModal extends StatelessWidget {
                         child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               AnalyticsService.buttonClick(
                                 'FilterModal_apply',
                                 problemFilterController.allTempSelection[1]
@@ -122,7 +122,8 @@ class FilterModal extends StatelessWidget {
                                     .toString(),
                               );
                               problemFilterController.tempToSel();
-                              problemListController.newFetch();
+                              await problemListController.newFetch();
+                              problemListController.ScrollUp();
                               Navigator.of(context).pop();
                             },
                             style: ElevatedButton.styleFrom(

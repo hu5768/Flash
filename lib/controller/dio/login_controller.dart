@@ -99,7 +99,7 @@ class LoginController extends GetxController {
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
           await centerTitleController.getTitle();
-
+          await problemListController.newFetch();
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
@@ -170,7 +170,7 @@ class LoginController extends GetxController {
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
           await centerTitleController.getTitle();
-          // problemListController.newFetch();
+          await problemListController.newFetch();
 
           Navigator.pushAndRemoveUntil(
             context,
@@ -229,7 +229,7 @@ class LoginController extends GetxController {
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
           await centerTitleController.getTitle();
-          //problemListController.newFetch();
+          await problemListController.newFetch();
 
           Navigator.pushAndRemoveUntil(
             context,

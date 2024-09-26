@@ -36,7 +36,10 @@ class ProblemList extends StatelessWidget {
                 builder: (controller) {
                   return Expanded(
                     child: RefreshIndicator(
-                      onRefresh: problemListController.newFetch,
+                      onRefresh: () async {
+                        await problemListController.newFetch();
+                        problemListController.ScrollUp();
+                      },
                       child: ListView.builder(
                         controller: problemListController.scrollController,
                         itemCount: problemListController.problemList.length,

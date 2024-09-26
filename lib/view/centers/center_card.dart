@@ -21,7 +21,7 @@ class CenterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         AnalyticsService.buttonClick(
           'CenterModal',
           '센터선택_$title',
@@ -30,9 +30,9 @@ class CenterCard extends StatelessWidget {
         );
         problemSortController.allInit();
         centerTitleController.changeId(id);
-        centerTitleController.getTitle();
-        problemListController.newFetch();
-
+        await centerTitleController.getTitle();
+        await problemListController.newFetch();
+        problemListController.ScrollUp();
         Navigator.pop(context);
       },
       child: Container(

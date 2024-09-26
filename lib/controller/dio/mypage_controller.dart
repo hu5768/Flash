@@ -68,20 +68,20 @@ class MypageController extends GetxController {
 
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       userModel = UserModel.fromJson(resMap);
-      print(userModel.nickName);
-      if (userModel.nickName == null) {
-        problemListController.goOut();
-      }
     } catch (e) {
+      print('유저 정보 받아오기 실패${e}');
+      print('일단 에러나면 나가게');
+      problemListController.goOut();
       if (e is DioException) {
         if (e.response != null) {
           print('DioError: ${e.response?.statusCode}');
-          print('Error Response Data: ${e.response?.data}');
-        } else {
-          print('Error: ${e.message}');
+          print('Error Response Data: ${e.response}');
+          if (e.response?.statusCode == 401) {
+            print('마이페이지 나가기');
+            problemListController.goOut();
+          }
         }
       }
-      print('유저 정보 받아오기 실패$e');
     }
   }
 

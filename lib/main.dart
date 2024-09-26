@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/login_controller.dart';
 import 'package:flash/firebase_options.dart';
 

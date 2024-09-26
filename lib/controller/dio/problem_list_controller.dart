@@ -27,9 +27,7 @@ class ProblemListController extends GetxController {
     super.onInit();
     scrollController = ScrollController()..addListener(nextFetch);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      newFetch();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   void getContext(context) {
@@ -81,17 +79,24 @@ class ProblemListController extends GetxController {
         }
       }
       print("시작 페이지 로딩 오류$e");
-      //goOut();
-      scrollController = null;
     }
     loadRunning = false;
-    if (scrollController != null) {
+    /*
+ 
       scrollController!.animateTo(
         0.0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    }
+    */
+  }
+
+  void ScrollUp() {
+    scrollController!.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   void goOut() {

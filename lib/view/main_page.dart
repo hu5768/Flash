@@ -116,7 +116,7 @@ class _MainPageState extends State<MainPage> {
     centerTitleController.getContext(context);
     problemListController.getContext(context);
     mypageController.fetchMemberData();
-    problemListController.newFetch();
+
     AnalyticsService.screenView(
       'MainPage',
       mypageController.userModel.nickName ?? 'yet',

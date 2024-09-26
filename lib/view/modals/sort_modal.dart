@@ -80,7 +80,7 @@ class SortOrder extends StatelessWidget {
                     ),
             ],
           ),
-          onTap: () {
+          onTap: () async {
             AnalyticsService.buttonClick(
               'SortModal',
               '정렬기준_$sortKey',
@@ -88,7 +88,8 @@ class SortOrder extends StatelessWidget {
               '',
             );
             problemTitleController.changeText(sortKey, title);
-            problemListController.newFetch();
+            await problemListController.newFetch();
+            problemListController.ScrollUp();
             Navigator.of(context).pop();
           },
         ),
