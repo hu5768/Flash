@@ -81,7 +81,7 @@ class ProblemListController extends GetxController {
         }
       }
       print("시작 페이지 로딩 오류$e");
-      goOut();
+      //goOut();
     }
     loadRunning = false;
     scrollController.animateTo(
