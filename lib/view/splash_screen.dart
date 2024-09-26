@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       //최초 회원 가입시 안불러와지는 버그 수정
       centerTitleController.getTitle();
-      problemListController.newFetch();
+      //problemListController.newFetch();
       Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => MainPage(),

@@ -9,6 +9,7 @@ import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
@@ -16,6 +17,7 @@ import 'package:video_compress/video_compress.dart';
 
 class AnswerUpload extends StatefulWidget {
   final String problemId, gymName, difficulty;
+
   const AnswerUpload({
     super.key,
     required this.problemId,
@@ -28,6 +30,7 @@ class AnswerUpload extends StatefulWidget {
 }
 
 class _AnswerUploadState extends State<AnswerUpload> {
+  //static const platform = MethodChannel('com.example.filepicker');
   VideoPlayerController? videoController;
   File? _video;
   final TextEditingController userOpinionController = TextEditingController();
@@ -42,6 +45,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
     print('파일 열기');
     int sizeLimit = 200 * 1024 * 1024;
     try {
+      //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.video,
       );
