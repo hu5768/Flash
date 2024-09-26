@@ -13,7 +13,7 @@ import 'dio_singletone.dart';
 
 class ProblemListController extends GetxController {
   var problemList = <ProblemModel>[].obs;
-  late ScrollController scrollController;
+  ScrollController? scrollController;
   final centerTitleController = Get.put(CenterTitleController());
   final problemSortController = Get.put(ProblemSortController());
   final problemFilterController = Get.put(ProblemFilterController());
@@ -24,9 +24,12 @@ class ProblemListController extends GetxController {
   bool morePage = false; //다음 페이지가 있는지 여부
   @override
   void onInit() {
-    scrollController = ScrollController()..addListener(nextFetch);
     super.onInit();
-    newFetch();
+    scrollController = ScrollController()..addListener(nextFetch);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      newFetch();
+    });
   }
 
   void getContext(context) {
@@ -78,14 +81,17 @@ class ProblemListController extends GetxController {
         }
       }
       print("시작 페이지 로딩 오류$e");
-      goOut();
+      //goOut();
+      scrollController = null;
     }
     loadRunning = false;
-    scrollController.animateTo(
-      0.0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    if (scrollController != null) {
+      scrollController!.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   void goOut() {
@@ -99,7 +105,7 @@ class ProblemListController extends GetxController {
   void nextFetch() async {
     if (morePage &&
         !loadRunning &&
-        scrollController.position.extentAfter < 200) {
+        scrollController!.position.extentAfter < 200) {
       String sortBy = problemSortController.sortkey.value;
       String sortText = "&sortBy=$sortBy";
       int gymId = centerTitleController.centerId.value;

@@ -116,8 +116,11 @@ class _MainPageState extends State<MainPage> {
     centerTitleController.getContext(context);
     problemListController.getContext(context);
     mypageController.fetchMemberData();
+    problemListController.newFetch();
     AnalyticsService.screenView(
-        'MainPage', mypageController.userModel.nickName ?? 'yet');
+      'MainPage',
+      mypageController.userModel.nickName ?? 'yet',
+    );
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: _appBars[currentIndex],

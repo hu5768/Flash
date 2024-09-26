@@ -46,6 +46,7 @@ class AnswerDataController extends GetxController {
           removalDate: detailInfo.removalDate!,
           imgUrl: detailInfo.imageUrl!,
           hasSolution: detailInfo.hasSolution!,
+          imageSource: detailInfo.imageSource ?? 'theclimb_life',
         ),
       );
       //answerList.add(const AnswerCard());

@@ -23,15 +23,14 @@ Future<void> main() async {
   );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   runZonedGuarded(
-    () {
-      runApp(const App());
-    },
+    () {},
     (error, stack) => FirebaseCrashlytics.instance.recordError(
       error,
       stack,
       fatal: true,
     ),
   );
+  runApp(const App());
 }
 
 class App extends StatelessWidget {

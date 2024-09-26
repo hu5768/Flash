@@ -30,7 +30,7 @@ class CenterTitleController extends GetxController {
     centerId.value = newId;
   }
 
-  void getTitle() async {
+  Future<void> getTitle() async {
     dios.Response response;
     try {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);

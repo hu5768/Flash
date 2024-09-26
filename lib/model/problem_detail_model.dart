@@ -8,6 +8,7 @@ class ProblemDetailModel {
   bool? isFakeRemovalDate;
   bool? hasSolution;
   String? imageUrl;
+  String? imageSource;
 
   ProblemDetailModel({
     this.id,
@@ -19,6 +20,7 @@ class ProblemDetailModel {
     this.isFakeRemovalDate,
     this.hasSolution,
     this.imageUrl,
+    this.imageSource,
   });
 
   ProblemDetailModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class ProblemDetailModel {
     isFakeRemovalDate = json['isFakeRemovalDate'];
     hasSolution = json['hasSolution'];
     imageUrl = json['imageUrl'];
+    imageSource = json['imageSource'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +47,7 @@ class ProblemDetailModel {
     data['isFakeRemovalDate'] = isFakeRemovalDate;
     data['hasSolution'] = hasSolution;
     data['imageUrl'] = imageUrl;
+    data['imageSource'] = imageSource;
     return data;
   }
 }
