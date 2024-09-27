@@ -54,6 +54,8 @@ class CenterTitleController extends GetxController {
       problemFilterController.allInit();
     } catch (e) {
       print('암장 타이틀 실패$e');
+      print(centerId.value);
+      print(centerTitle.value);
       //await storage.delete(key: ACCESS_TOKEN_KEY);
       /*Navigator.pushAndRemoveUntil(
         mainContext,

@@ -90,7 +90,7 @@ class LoginController extends GetxController {
         // print('Response data: ${response.data}');
         final token = response.data["accessToken"];
         final isCompleteRegistration = response.data["isCompleteRegistration"];
-        storage.write(
+        await storage.write(
           key: ACCESS_TOKEN_KEY,
           value: token,
         );
@@ -161,7 +161,7 @@ class LoginController extends GetxController {
         print('Response data: ${response.data}');
         final token = response.data["accessToken"];
         final isCompleteRegistration = response.data["isCompleteRegistration"];
-        storage.write(
+        await storage.write(
           key: ACCESS_TOKEN_KEY,
           value: token,
         );
@@ -221,7 +221,7 @@ class LoginController extends GetxController {
         // print('Response data: ${response.data}');
         final token = response.data["accessToken"];
         final isCompleteRegistration = response.data["isCompleteRegistration"];
-        storage.write(
+        await storage.write(
           key: ACCESS_TOKEN_KEY,
           value: token,
         );

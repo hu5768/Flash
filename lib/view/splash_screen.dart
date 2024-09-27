@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
       value: "aaaaaaaaaaa",
     );*/
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-    // accessToken = null;
+
     if (accessToken == null) {
       Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
