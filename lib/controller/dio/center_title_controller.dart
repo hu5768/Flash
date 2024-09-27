@@ -53,7 +53,7 @@ class CenterTitleController extends GetxController {
 
       problemFilterController.allInit();
     } catch (e) {
-      print('암장 리스트 실패$e');
+      print('암장 타이틀 실패$e');
       //await storage.delete(key: ACCESS_TOKEN_KEY);
       /*Navigator.pushAndRemoveUntil(
         mainContext,
