@@ -36,6 +36,7 @@ class AnswerDataController extends GetxController {
       //analytics용
       difficulty = detailInfo.difficulty!;
       sector = detailInfo.sector!;
+      final guide = await storage.read(key: GESTURE_GUIDE);
       answerList.add(
         ProblemDetailCard(
           problemId: problemId,
@@ -47,8 +48,10 @@ class AnswerDataController extends GetxController {
           imgUrl: detailInfo.imageUrl!,
           hasSolution: detailInfo.hasSolution!,
           imageSource: detailInfo.imageSource ?? 'theclimb_life',
+          guide: guide ?? 'NULL',
         ),
       );
+      print('문제 디테일 업로드 $guide');
       //answerList.add(const AnswerCard());
     } catch (e) {
       print('디테일 문제 로딩 실패$e');
@@ -65,15 +68,13 @@ class AnswerDataController extends GetxController {
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
-      print("답지 개수 ${sm.length}");
-      print("답지 개수 ${sm[0].uploaderId}");
+
       List<Widget> solutionVideoList = sm.asMap().entries.map(
         (entry) {
-          print(entry.value.videoUrl!);
           videoControllerList[entry.key] = VideoPlayerController.networkUrl(
             Uri.parse(entry.value.videoUrl!),
           );
-          print("여기 출력 되나?");
+
           return AnswerCard(
             videoController: videoControllerList[entry.key]!,
             uploader: entry.value.uploader ?? '',

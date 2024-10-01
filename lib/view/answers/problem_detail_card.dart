@@ -3,6 +3,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/animations/blink_animation.dart';
 import 'package:flash/view/upload/answer_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,8 @@ class ProblemDetailCard extends StatelessWidget {
       settingDate,
       removalDate,
       imgUrl,
-      imageSource;
+      imageSource,
+      guide;
   final bool hasSolution;
   ProblemDetailCard({
     super.key,
@@ -29,6 +31,7 @@ class ProblemDetailCard extends StatelessWidget {
     required this.imgUrl,
     required this.hasSolution,
     required this.imageSource,
+    required this.guide,
   });
 
   @override
@@ -199,6 +202,12 @@ class ProblemDetailCard extends StatelessWidget {
               ),
             ),
           ),
+          guide == 'NULL'
+              ? SizedBox()
+              : Align(
+                  alignment: Alignment.center,
+                  child: BlinkAnimation(),
+                ),
         ],
       ),
     );

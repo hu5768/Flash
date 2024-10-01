@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/user_onboarding_controlle.dart';
@@ -98,7 +99,10 @@ class ProfileField extends StatelessWidget {
                     );
                     //프로필 이미지 초기화
                     await userOnboardingControlle.updateOnboardInfo();
-
+                    await storage.write(
+                      key: GESTURE_GUIDE,
+                      value: 'true',
+                    );
                     centerTitleController.getTitle();
                     problemListController.newFetch();
 
@@ -180,6 +184,11 @@ class ProfileField extends StatelessWidget {
                               centerTitleController.getTitle();
                               await problemListController.newFetch();
                               problemListController.ScrollUp();
+
+                              await storage.write(
+                                key: GESTURE_GUIDE,
+                                value: 'true',
+                              );
 
                               Navigator.pushAndRemoveUntil(
                                 context,

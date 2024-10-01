@@ -43,7 +43,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
   Future<void> PickVideo() async {
     print('파일 열기');
-    int sizeLimit = 200 * 1024 * 1024;
+    int sizeLimit = 300 * 1024 * 1024;
     try {
       //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -81,7 +81,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                   color: const Color.fromARGB(255, 0, 0, 0),
                 ),
                 title: Text('파일 용량 초과'),
-                content: Text('200mb이상의 영상은 업로드 할 수 없습니다!'),
+                content: Text('300mb이상의 영상은 업로드 할 수 없습니다!'),
                 actions: [
                   TextButton(
                     child: Text(

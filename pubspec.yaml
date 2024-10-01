@@ -114,6 +114,7 @@ flutter:
     - assets/images/apple_logo.png
     - assets/images/background1.jpeg
     - assets/images/profile.png
+    - assets/images/gesture_guide.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
