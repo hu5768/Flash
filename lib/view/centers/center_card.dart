@@ -41,12 +41,6 @@ class CenterCard extends StatelessWidget {
                 thum,
                 width: 70,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/problem.jpeg',
-                    fit: BoxFit.cover,
-                  );
-                },
               ),
             ),
             Text(

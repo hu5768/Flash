@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
+import 'package:flash/view/problem/admin_upload_web.dart';
 
 import 'package:flash/view/problem/answer_upload.dart'
     if (dart.library.html) 'answer_upload_web.dart';
@@ -98,12 +99,15 @@ class ProblemCard extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) {
                               if (kIsWeb) {
-                                return AnswerUpload(
+                                return AdminUploadWeb(
                                   id: id,
                                   imageUrl: imageUrl,
                                 );
                               } else {
-                                return AnswerUpload(id: id, imageUrl: imageUrl);
+                                return AdminUploadWeb(
+                                  id: id,
+                                  imageUrl: imageUrl,
+                                );
                               }
                             },
                             allowSnapshotting: true,

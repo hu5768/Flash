@@ -1,3 +1,4 @@
+import 'package:flash/controller/login_controller.dart';
 import 'package:flash/model/problem_detail_model.dart';
 import 'package:flash/model/solution_model.dart';
 import 'package:flash/view/answers/answer_card.dart';
@@ -16,6 +17,7 @@ class AnswerDataController extends GetxController {
     answerList.clear();
     try {
       //문제 디테일 페이지 정보 요청
+      DioClient().updateOptions(token: LoginController.accessstoken);
       response = await DioClient().dio.get(
             "/problems/$problemId",
           );
@@ -57,6 +59,7 @@ class AnswerDataController extends GetxController {
             review: entry.value.review!,
             instagramId: entry.value.instagramId!,
             videoUrl: entry.value.videoUrl!,
+            solutionId: entry.value.id ?? 0,
           );
         },
       ).toList();

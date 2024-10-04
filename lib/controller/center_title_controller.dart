@@ -1,3 +1,4 @@
+import 'package:flash/controller/login_controller.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dios;
 import 'dio_singletone.dart';
@@ -22,6 +23,7 @@ class CenterTitleController extends GetxController {
   void getTitle() async {
     dios.Response response;
     try {
+      DioClient().updateOptions(token: LoginController.accessstoken);
       response = await DioClient().dio.get(
             "/gyms/${centerId.value}",
           );

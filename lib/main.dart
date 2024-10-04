@@ -1,3 +1,4 @@
+import 'package:flash/view/login.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
       title: 'Flash',
       debugShowCheckedModeBanner: false,
 
-      home: MainPage(),
+      home: LoginPage(),
       //home: MainPage(),
     );
   }
