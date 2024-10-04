@@ -1,8 +1,5 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flash/firebase_options.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   runApp(const App());
