@@ -1,8 +1,10 @@
 import 'dart:html' as html;
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/controller/dio_singletone.dart';
+import 'package:flash/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -21,7 +23,7 @@ class AdminUploadWeb extends StatefulWidget {
 
 class _AdminUploadWebState extends State<AdminUploadWeb> {
   VideoPlayerController? videoController;
-  Uint8List? _videoBytes;
+  Uint8List? videoFile;
   String nickName = 'Flash', instaId = 'insta', oneLinePyeong = '';
   final TextEditingController nicCon = TextEditingController();
   final TextEditingController inCon = TextEditingController();
@@ -59,7 +61,7 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
         type: FileType.video,
       );
       if (result != null) {
-        _videoBytes = result.files.single.bytes;
+        videoFile = result.files.first.bytes;
         final file = result.files.single;
         final blob = html.Blob([file.bytes!]);
         final url = html.Url.createObjectUrlFromBlob(blob);
@@ -78,21 +80,38 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
   }
 
   Future<void> _uploadVideo() async {
-    if (_videoBytes == null) return;
+    if (videoFile == null) return;
     setState(() {
       uplod200 = const Color.fromARGB(255, 255, 140, 0);
     });
     try {
+      DioClient().updateOptions(token: LoginController.accessstoken);
       final apiResponse = await DioClient().dio.post(
-        '${widget.uploadBaseUrl}admin/upload',
-        data: {
+            '${widget.uploadBaseUrl}admin/upload/',
+            /*    data: {
           'problem_id': widget.id,
           'file': Stream.fromIterable(_videoBytes!.map((e) => [e])),
           'nickName': instaId,
           'review': oneLinePyeong,
           'instagram_id': instaId,
-        },
-      );
+        },*/
+
+            data: FormData.fromMap({
+              'problemId': widget.id,
+              'file': MultipartFile.fromBytes(
+                videoFile!, // 바이트 배열을 직접 넘깁니다.
+                filename: 'video.mp4', // 파일 이름을 지정합니다.
+              ),
+              'nickName': instaId,
+              'review': oneLinePyeong,
+              'instagramId': instaId,
+            }),
+            options: Options(
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            ),
+          );
       if (apiResponse.statusCode == 200) {
         setState(() {
           uplod200 = const Color.fromARGB(255, 0, 255, 8);
@@ -102,7 +121,7 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
       print('영상 업로드 오류$e');
       if (e is DioException) {
         if (e.response != null) {
-          print('DioError로그인 오류: ${e.response?.statusCode}');
+          print('DioError업로드 오류: ${e.response?.statusCode}');
           print('Error Response Data: ${e.response?.data}');
         } else {
           print('Error: ${e.message}');

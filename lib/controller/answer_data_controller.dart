@@ -55,9 +55,9 @@ class AnswerDataController extends GetxController {
 
           return AnswerCard(
             videoController: videoControllerList[entry.key]!,
-            uploader: entry.value.uploader!,
-            review: entry.value.review!,
-            instagramId: entry.value.instagramId!,
+            uploader: entry.value.uploader ?? '',
+            review: entry.value.review ?? '',
+            instagramId: entry.value.instagramId ?? '',
             videoUrl: entry.value.videoUrl!,
             solutionId: entry.value.id ?? 0,
           );
