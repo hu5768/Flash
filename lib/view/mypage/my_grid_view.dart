@@ -10,7 +10,7 @@ class MyGridView extends StatelessWidget {
   MyGridviewController myGridviewController = Get.put(MyGridviewController());
   @override
   Widget build(BuildContext context) {
-    myGridviewController.fetchData();
+    myGridviewController.newFetch();
     return Obx(
       () {
         return GridView.builder(

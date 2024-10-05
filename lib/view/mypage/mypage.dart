@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -17,7 +18,7 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   final mypageModifyController = Get.put(MypageModifyController());
   final mypageController = Get.put(MypageController());
-
+  MyGridviewController myGridviewController = Get.put(MyGridviewController());
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView(
@@ -27,6 +28,7 @@ class _MypageState extends State<Mypage> {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       body: SingleChildScrollView(
+        controller: myGridviewController.scrollController,
         child: Column(
           children: [
             Container(

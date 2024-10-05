@@ -275,43 +275,6 @@ class _AnswerUploadState extends State<AnswerUpload> {
       }
     } on DioException catch (e) {
       print('영상 업로드 오류$e');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-            backgroundColor: ColorGroup.BGC,
-            titleTextStyle: TextStyle(
-              fontSize: 15,
-              color: const Color.fromARGB(255, 0, 0, 0),
-              fontWeight: FontWeight.w700,
-            ),
-            contentTextStyle: TextStyle(
-              fontSize: 13,
-              color: const Color.fromARGB(255, 0, 0, 0),
-            ),
-            title: Text('업로드 실패'),
-            content: Text(
-              '영상을 업로드하지 못했습니다',
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  '확인',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
       if (e.response != null) {
         print('DioError: ${e.response?.statusCode}');
         print('Error Response Data: ${e.response?.data}');

@@ -55,7 +55,7 @@ class ProblemListController extends GetxController {
       DioClient().updateOptions(token: token.toString());
       response = await DioClient()
           .dio
-          .request("/gyms/$gymId/problems$sortText$diffText$secText$solText");
+          .get("/gyms/$gymId/problems$sortText$diffText$secText$solText");
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data["problems"]);
       List<ProblemModel> um =
