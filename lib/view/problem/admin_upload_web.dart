@@ -10,7 +10,7 @@ import 'package:video_player/video_player.dart';
 
 class AdminUploadWeb extends StatefulWidget {
   final String id, imageUrl;
-  final uploadBaseUrl = "https://upload.dev.climbing-answer.com/";
+  final uploadBaseUrl = "https://upload.climbing-answer.com/";
   const AdminUploadWeb({
     super.key,
     required this.id,
