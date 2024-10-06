@@ -58,6 +58,7 @@ dependencies:
   retrofit: ^4.4.0
   logger: ^2.4.0  # for logging purpose
   json_annotation: ^4.9.0
+  app_links: ^6.3.2
 
 
 
