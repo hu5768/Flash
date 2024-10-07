@@ -35,7 +35,7 @@ class MyGridviewController extends GetxController {
             "/solutions",
           );
       List<Map<String, dynamic>> resMapList =
-          List<Map<String, dynamic>>.from(response.data["solutions"]);
+          List<Map<String, dynamic>>.from(response.data["mySolutions"]);
 
       print("$cursor and $morePage");
       List<MySolutionModel> sm =

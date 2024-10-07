@@ -3,6 +3,7 @@ import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/mypage/my_grid_view.dart';
 import 'package:flash/view/mypage/my_modify.dart';
 import 'package:flutter/material.dart';
@@ -85,15 +86,25 @@ class _MypageState extends State<Mypage> {
                             '',
                             '',
                           );
-                          mypageModifyController.fetchMemberData();
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyModify(),
-                            ),
-                          );
-                          //내 정보 다시 가져오기
-                          setState(() {});
+                          if (mypageController.userModel.nickName == null) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                              (route) => false, // 스택에 있는 모든 이전 라우트를 제거
+                            );
+                          } else {
+                            mypageModifyController.fetchMemberData();
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyModify(),
+                              ),
+                            );
+                            //내 정보 다시 가져오기
+                            setState(() {});
+                          }
                         },
                         child: Text(
                           '수정하기',
