@@ -7,9 +7,11 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
+import 'package:flash/controller/dio/upload_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
 
 //import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
@@ -33,7 +35,16 @@ class _AnswerUploadState extends State<AnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
   VideoPlayerController? videoController;
   File? _video;
+  String difficultyLabel = '보통';
   final TextEditingController userOpinionController = TextEditingController();
+  final uploadController = Get.put(UploadController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    uploadController.difficultyLabel.value = '보통';
+  }
 
   @override
   void dispose() {
@@ -422,7 +433,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      /*Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 0, 12),
                         child: Text(
                           '클라이밍장',
@@ -442,9 +453,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
                           widget.gymName,
                           style: TextStyle(fontSize: 16),
                         ),
-                      ),
+                      ),*/
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 12),
                         child: Text(
                           '난이도',
                           style: TextStyle(
@@ -474,6 +485,31 @@ class _AnswerUploadState extends State<AnswerUpload> {
                               widget.difficulty,
                               style: TextStyle(fontSize: 16),
                             ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
+                        child: Text(
+                          '체감 난이도',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(247, 247, 247, 1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DifficultyChip(difficulty: '쉬움'),
+                            DifficultyChip(difficulty: '보통'),
+                            DifficultyChip(difficulty: '어려움'),
                           ],
                         ),
                       ),
@@ -510,6 +546,57 @@ class _AnswerUploadState extends State<AnswerUpload> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DifficultyChip extends StatelessWidget {
+  final String difficulty;
+  final uploadController = Get.put(UploadController());
+  DifficultyChip({
+    super.key,
+    required this.difficulty,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        bool isSelected = uploadController.difficultyLabel.value == difficulty;
+        return ChoiceChip(
+          showCheckmark: false,
+          label: SizedBox(
+            width: 60,
+            child: Center(
+              child: Text(
+                difficulty,
+                style: TextStyle(
+                  fontSize: 17,
+                  color: isSelected
+                      ? const Color.fromARGB(255, 63, 63, 63)
+                      : const Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ),
+          ),
+          backgroundColor: ColorGroup.btnBGC,
+          selectedColor: const Color.fromARGB(255, 227, 227, 227),
+          side: BorderSide(
+            color: isSelected
+                ? const Color.fromARGB(255, 107, 107, 107)
+                : Colors.transparent,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              16,
+            ),
+          ),
+          selected: isSelected,
+          onSelected: (value) {
+            uploadController.difficultyLabel.value = difficulty;
+          },
+        );
+      },
     );
   }
 }

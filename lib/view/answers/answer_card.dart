@@ -1,10 +1,12 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answer_player.dart';
 import 'package:flash/view/modals/block_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class AnswerCard extends StatelessWidget {
@@ -18,6 +20,7 @@ class AnswerCard extends StatelessWidget {
   final int solutionId;
   final bool isUploader;
   final VideoPlayerController videoController;
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
   final OpenWeb openWeb = OpenWeb();
   AnswerCard({
     super.key,
@@ -135,7 +138,8 @@ class AnswerCard extends StatelessWidget {
                                           '',
                                         );
                                         await openWeb.OpenInstagram(
-                                            instagramId);
+                                          instagramId,
+                                        );
                                       },
                                       child: Text(
                                         "@$instagramId",
@@ -158,20 +162,23 @@ class AnswerCard extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             AnalyticsService.buttonClick(
                               'answer',
                               '더보기',
                               '',
                               '',
                             );
+                            await mySolutionDetailController
+                                .fetchData(solutionId);
                             showModalBottomSheet(
                               backgroundColor: ColorGroup.modalBGC,
                               context: context,
                               builder: (BuildContext context) {
                                 return isUploader
                                     ? ManageModal(
-                                        review: review,
+                                        review: mySolutionDetailController
+                                            .sdm.review!,
                                         videoUrl: videoUrl,
                                         problemId: problemId,
                                         solutionId: solutionId,

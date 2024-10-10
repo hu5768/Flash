@@ -161,6 +161,10 @@ class ProblemCard extends StatelessWidget {
                                 ),
                               )
                             : SizedBox(),
+                        Text(
+                          ' 🍯',
+                          style: TextStyle(fontSize: 30),
+                        ),
                         /*hasSolution
                             ? const Text(
                                 "영상 있음",
