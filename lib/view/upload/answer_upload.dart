@@ -390,6 +390,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
                 Container(
                   height: 240,
                   width: 169,
+                  clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(248, 0, 0, 0),
                     borderRadius: BorderRadius.circular(16),

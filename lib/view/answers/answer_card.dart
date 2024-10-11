@@ -4,6 +4,7 @@ import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answer_player.dart';
 import 'package:flash/view/modals/block_modal.dart';
+import 'package:flash/view/modals/comment_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -153,50 +154,6 @@ class AnswerCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color:
-                              Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () async {
-                            AnalyticsService.buttonClick(
-                              'answer',
-                              '더보기',
-                              '',
-                              '',
-                            );
-                            await mySolutionDetailController
-                                .fetchData(solutionId);
-                            showModalBottomSheet(
-                              backgroundColor: ColorGroup.modalBGC,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return isUploader
-                                    ? ManageModal(
-                                        review: mySolutionDetailController
-                                            .sdm.review!,
-                                        videoUrl: videoUrl,
-                                        problemId: problemId,
-                                        solutionId: solutionId,
-                                      )
-                                    : BlockModal(
-                                        solutionId: solutionId,
-                                        problemId: problemId,
-                                        uploaderId: uploaderId,
-                                      );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.more_horiz,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(
@@ -205,6 +162,80 @@ class AnswerCard extends StatelessWidget {
                   OverflowTextWithMore(text: review),
                 ],
               ),
+            ),
+          ), //오른쪽 col
+          Positioned(
+            right: 20,
+            bottom: 90,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  size: 40,
+                ),
+                SizedBox(height: 15),
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      backgroundColor: ColorGroup.modalBGC,
+                      context: context,
+                      //isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return CommentModal();
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.messenger_outline_sharp,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ),
+                SizedBox(height: 15),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      AnalyticsService.buttonClick(
+                        'answer',
+                        '더보기',
+                        '',
+                        '',
+                      );
+                      await mySolutionDetailController.fetchData(solutionId);
+                      showModalBottomSheet(
+                        backgroundColor: ColorGroup.modalBGC,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return isUploader
+                              ? ManageModal(
+                                  review:
+                                      mySolutionDetailController.sdm.review!,
+                                  videoUrl: videoUrl,
+                                  problemId: problemId,
+                                  solutionId: solutionId,
+                                )
+                              : BlockModal(
+                                  solutionId: solutionId,
+                                  problemId: problemId,
+                                  uploaderId: uploaderId,
+                                );
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.more_horiz,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -227,72 +258,78 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final textSpan = TextSpan(
-          text: widget.text,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.white,
-          ),
-        );
-        final textPainter = TextPainter(
-          text: textSpan,
-          maxLines: 1,
-          textDirection: TextDirection.ltr,
-        );
-
-        textPainter.layout(maxWidth: constraints.maxWidth);
-        //print("constraints.maxWidth${constraints.maxWidth}");
-        //print("한줄 넘냐?${textPainter.didExceedMaxLines}");
-        if (textPainter.didExceedMaxLines && moreText) {
-          return Row(
-            children: [
-              Expanded(
-                child: Text(
-                  widget.text.split('\n').first,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.clip,
-                ),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 80,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final textSpan = TextSpan(
+              text: widget.text,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
               ),
-              TextButton(
+            );
+            final textPainter = TextPainter(
+              text: textSpan,
+              maxLines: 1,
+              textDirection: TextDirection.ltr,
+            );
+
+            textPainter.layout(maxWidth: constraints.maxWidth);
+            //print("constraints.maxWidth${constraints.maxWidth}");
+            //print("한줄 넘냐?${textPainter.didExceedMaxLines}");
+            if (textPainter.didExceedMaxLines && moreText) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.text.split('\n').first,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        moreText = !moreText;
+                      });
+                    },
+                    child: Text(
+                      '...더보기',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return TextButton(
                 onPressed: () {
                   setState(() {
                     moreText = !moreText;
                   });
                 },
                 child: Text(
-                  '...더보기',
+                  widget.text,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return TextButton(
-            onPressed: () {
-              setState(() {
-                moreText = !moreText;
-              });
-            },
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-              ),
-            ),
-          );
-        }
-      },
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
