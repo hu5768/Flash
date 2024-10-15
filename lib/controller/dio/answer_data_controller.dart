@@ -87,6 +87,7 @@ class AnswerDataController extends GetxController {
             uploaderId: entry.value.uploaderId ?? '',
             isUploader: entry.value.isUploader ?? false,
             profileUrl: entry.value.profileImageUrl ?? '',
+            commentCount: entry.value.commentCount ?? 0,
           );
         },
       ).toList();

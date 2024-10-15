@@ -18,7 +18,7 @@ class AnswerCard extends StatelessWidget {
       problemId,
       uploaderId,
       profileUrl;
-  final int solutionId;
+  final int solutionId, commentCount;
   final bool isUploader;
   final VideoPlayerController videoController;
   final mySolutionDetailController = Get.put(MySolutionDetailController());
@@ -35,6 +35,7 @@ class AnswerCard extends StatelessWidget {
     required this.uploaderId,
     required this.isUploader,
     required this.profileUrl,
+    required this.commentCount,
   });
 
   @override
@@ -174,7 +175,13 @@ class AnswerCard extends StatelessWidget {
                   color: Colors.red,
                   size: 40,
                 ),
-                SizedBox(height: 15),
+                Text(
+                  '45',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     showModalBottomSheet(
@@ -187,9 +194,16 @@ class AnswerCard extends StatelessWidget {
                     );
                   },
                   icon: Icon(
-                    Icons.messenger_outline_sharp,
+                    Icons.comment,
                     color: Colors.white,
                     size: 40,
+                  ),
+                ),
+                Text(
+                  commentCount.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
                 SizedBox(height: 15),
