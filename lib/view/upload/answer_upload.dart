@@ -235,6 +235,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
           ),
           'problemId': widget.problemId,
           'review': userOpinionController.text,
+          'perceivedDifficulty': uploadController.difficultyLabel.value,
         });
 
         final apiResponse = await DioClient().dio.post(

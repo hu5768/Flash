@@ -14,6 +14,7 @@ class AnswerModifyController extends GetxController {
     final data = {
       "videoUrl": videoUrl,
       "review": review,
+      'perceivedDifficulty': difficultyLabel.value,
     };
 
     try {

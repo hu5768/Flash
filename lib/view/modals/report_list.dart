@@ -18,7 +18,7 @@ class ReportList extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '이 게시물을 신고하는 이유',
+              '이 컨텐츠를 신고하는 이유',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,

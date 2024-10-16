@@ -63,6 +63,9 @@ class MySolution extends StatelessWidget {
                           videoUrl: mySolutionDetailController.sdm.videoUrl!,
                           problemId: '',
                           solutionId: solutionId,
+                          perceivedDifficulty: mySolutionDetailController
+                                  .sdm.perceivedDifficulty ??
+                              '보통',
                         );
                       },
                     );
@@ -262,6 +265,9 @@ class MySolution extends StatelessWidget {
                                   mySolutionDetailController.sdm.videoUrl!,
                               problemId: '',
                               solutionId: solutionId,
+                              perceivedDifficulty: mySolutionDetailController
+                                      .sdm.perceivedDifficulty ??
+                                  "보통",
                             );
                           },
                         );

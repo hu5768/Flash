@@ -17,8 +17,9 @@ class ManageModal extends StatelessWidget {
     required this.solutionId,
     required this.videoUrl,
     required this.review,
+    required this.perceivedDifficulty,
   });
-  final String problemId, videoUrl, review;
+  final String problemId, videoUrl, review, perceivedDifficulty;
   final int solutionId;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final myGridviewController = Get.put(MyGridviewController());
@@ -26,6 +27,7 @@ class ManageModal extends StatelessWidget {
   final SolutionDeleteController solutionDeleteController =
       SolutionDeleteController();
   final answerDataController = Get.put(AnswerDataController());
+  final answerModifyController = Get.put(AnswerModifyController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,6 +66,8 @@ class ManageModal extends StatelessWidget {
                       '',
                       '',
                     );
+                    answerModifyController.difficultyLabel.value =
+                        perceivedDifficulty;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(

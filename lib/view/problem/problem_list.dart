@@ -69,6 +69,9 @@ class ProblemList extends StatelessWidget {
                                 imageUrl: problemListController
                                     .problemList[index].imageUrl
                                     .toString(),
+                                isHoney: problemListController
+                                        .problemList[index].isHoney ??
+                                    false,
                               ),
                               const SizedBox(
                                 height: 30,

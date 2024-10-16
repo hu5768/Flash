@@ -50,6 +50,7 @@ class AnswerDataController extends GetxController {
           hasSolution: detailInfo.hasSolution!,
           imageSource: detailInfo.imageSource ?? 'theclimb_life',
           guide: guide ?? 'NULL',
+          isHoney: detailInfo.isHoney ?? false,
         ),
       );
 

@@ -6,6 +6,7 @@ class ProblemModel {
   String? removalDate;
   bool? hasSolution;
   String? imageUrl;
+  bool? isHoney;
 
   ProblemModel({
     this.id,
@@ -15,6 +16,7 @@ class ProblemModel {
     this.removalDate,
     this.hasSolution,
     this.imageUrl,
+    this.isHoney,
   });
 
   ProblemModel.fromJson(Map<String, dynamic> json) {
@@ -25,17 +27,19 @@ class ProblemModel {
     removalDate = json['removalDate'];
     hasSolution = json['hasSolution'];
     imageUrl = json['imageUrl'];
+    isHoney = json['isHoney'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['sector'] = sector;
-    data['difficulty'] = difficulty;
-    data['settingDate'] = settingDate;
-    data['removalDate'] = removalDate;
-    data['hasSolution'] = hasSolution;
-    data['imageUrl'] = imageUrl;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['sector'] = this.sector;
+    data['difficulty'] = this.difficulty;
+    data['settingDate'] = this.settingDate;
+    data['removalDate'] = this.removalDate;
+    data['hasSolution'] = this.hasSolution;
+    data['imageUrl'] = this.imageUrl;
+    data['isHoney'] = this.isHoney;
     return data;
   }
 }

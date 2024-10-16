@@ -239,6 +239,10 @@ class AnswerCard extends StatelessWidget {
                                   videoUrl: videoUrl,
                                   problemId: problemId,
                                   solutionId: solutionId,
+                                  perceivedDifficulty:
+                                      mySolutionDetailController
+                                              .sdm.perceivedDifficulty ??
+                                          '보통',
                                 )
                               : BlockModal(
                                   solutionId: solutionId,

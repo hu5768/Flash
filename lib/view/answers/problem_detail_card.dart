@@ -19,7 +19,7 @@ class ProblemDetailCard extends StatelessWidget {
       imgUrl,
       imageSource,
       guide;
-  final bool hasSolution;
+  final bool hasSolution, isHoney;
   ProblemDetailCard({
     super.key,
     required this.problemId,
@@ -32,6 +32,7 @@ class ProblemDetailCard extends StatelessWidget {
     required this.hasSolution,
     required this.imageSource,
     required this.guide,
+    required this.isHoney,
   });
 
   @override
@@ -157,6 +158,11 @@ class ProblemDetailCard extends StatelessWidget {
                               ),
                             )
                           : SizedBox(),
+                      if (isHoney)
+                        Text(
+                          ' 🍯',
+                          style: TextStyle(fontSize: 30),
+                        ),
                     ],
                   ),
                   Padding(

@@ -1,5 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/comment_controller.dart';
+import 'package:flash/controller/dio/user_block_controller.dart';
+import 'package:flash/view/modals/report_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +15,7 @@ class CommentBlockModal extends StatelessWidget {
     required this.commenterId,
   });
   final commentController = Get.put(CommentController());
-
+  final UserBlockController userBlockController = UserBlockController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,7 +47,59 @@ class CommentBlockModal extends StatelessWidget {
               children: [
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () async {},
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+                          backgroundColor: ColorGroup.BGC,
+                          titleTextStyle: TextStyle(
+                            fontSize: 15,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          contentTextStyle: TextStyle(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          title: Text('사용자 차단'),
+                          content: Text('정말 이 사용자를 차단하시겠습니까?'),
+                          actions: [
+                            TextButton(
+                              child: Text(
+                                '취소',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorGroup.selectBtnBGC,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                '차단',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorGroup.selectBtnBGC,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              onPressed: () async {
+                                userBlockController.block(commenterId);
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
                     child: Row(
@@ -71,58 +125,10 @@ class CommentBlockModal extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                          backgroundColor: ColorGroup.BGC,
-                          titleTextStyle: TextStyle(
-                            fontSize: 15,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          contentTextStyle: TextStyle(
-                            fontSize: 13,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          title: Text('댓글 신고'),
-                          content: Text('정말 댓글을 신고하시겠습니까?'),
-                          actions: [
-                            TextButton(
-                              child: Text(
-                                '취소',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorGroup.selectBtnBGC,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                '신고',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorGroup.selectBtnBGC,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              onPressed: () async {
-                                await commentController.DeleteComment(
-                                  commentId,
-                                );
-                                await commentController.newFetch(solutionId);
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
+                        return ReportList(solutionId: commentId);
                       },
                     );
                   },
