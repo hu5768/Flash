@@ -1,8 +1,10 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
+import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/modals/comment_modal.dart';
 
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flash/view/mypage/my_solution_player.dart';
@@ -12,7 +14,7 @@ import 'package:get/get.dart';
 class MySolution extends StatelessWidget {
   final int solutionId;
   final mySolutionDetailController = Get.put(MySolutionDetailController());
-
+  final commentController = Get.put(CommentController());
   MySolution({
     super.key,
     required this.solutionId,
@@ -191,6 +193,88 @@ class MySolution extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              right: 20,
+              bottom: 90,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: const Color.fromARGB(255, 255, 157, 0),
+                    size: 40,
+                  ),
+                  Text(
+                    '45',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      commentController.commentText.clear();
+                      await commentController.newFetch(solutionId);
+                      showModalBottomSheet(
+                        backgroundColor: ColorGroup.modalBGC,
+                        context: context,
+                        //isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return CommentModal(solutionId: solutionId);
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.comment,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  ),
+                  Text(
+                    mySolutionDetailController.sdm.commentsCount.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: () async {
+                        AnalyticsService.buttonClick(
+                          'answer',
+                          '더보기',
+                          '',
+                          '',
+                        );
+                        showModalBottomSheet(
+                          backgroundColor: ColorGroup.modalBGC,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ManageModal(
+                              review: mySolutionDetailController.sdm.review!,
+                              videoUrl:
+                                  mySolutionDetailController.sdm.videoUrl!,
+                              problemId: '',
+                              solutionId: solutionId,
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -239,88 +323,95 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final textSpan = TextSpan(
-          text: widget.text,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.white,
-          ),
-        );
-        final textPainter = TextPainter(
-          text: textSpan,
-          maxLines: 1,
-          textDirection: TextDirection.ltr,
-        );
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 90,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final textSpan = TextSpan(
+              text: widget.text,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+            );
+            final textPainter = TextPainter(
+              text: textSpan,
+              maxLines: 1,
+              textDirection: TextDirection.ltr,
+            );
 
-        textPainter.layout(maxWidth: constraints.maxWidth);
+            textPainter.layout(maxWidth: constraints.maxWidth);
 
-        if (textPainter.didExceedMaxLines && moreText) {
-          return Row(
-            children: [
-              Expanded(
-                child: Text(
-                  widget.text.split('\n').first,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
+            if (textPainter.didExceedMaxLines && moreText) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.text.split('\n').first,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                    ),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.clip,
-                ),
-              ),
-              TextButton(
-                style: ButtonStyle(
-                  padding: WidgetStateProperty.all<EdgeInsets>(
-                    EdgeInsets.zero,
+                  TextButton(
+                    style: ButtonStyle(
+                      padding: WidgetStateProperty.all<EdgeInsets>(
+                        EdgeInsets.zero,
+                      ),
+                      minimumSize:
+                          WidgetStateProperty.all(Size.zero), // 최소 크기 제거
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap, // 패딩 제거
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        moreText = !moreText;
+                      });
+                    },
+                    child: Text(
+                      '...더보기',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  minimumSize: WidgetStateProperty.all(Size.zero), // 최소 크기 제거
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap, // 패딩 제거
-                ),
-                onPressed: () {
-                  setState(() {
-                    moreText = !moreText;
-                  });
-                },
-                child: Text(
-                  '...더보기',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                ],
+              );
+            } else {
+              return SizedBox(
+                height: 30,
+                child: TextButton(
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all<EdgeInsets>(
+                      EdgeInsets.zero,
+                    ), // 패딩 제거
+                    minimumSize: WidgetStateProperty.all(Size.zero), // 최소 크기 제거
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      moreText = !moreText;
+                    });
+                  },
+                  child: Text(
+                    widget.text,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return SizedBox(
-            height: 30,
-            child: TextButton(
-              style: ButtonStyle(
-                padding: WidgetStateProperty.all<EdgeInsets>(
-                  EdgeInsets.zero,
-                ), // 패딩 제거
-                minimumSize: WidgetStateProperty.all(Size.zero), // 최소 크기 제거
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              onPressed: () {
-                setState(() {
-                  moreText = !moreText;
-                });
-              },
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          );
-        }
-      },
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

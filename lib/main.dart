@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/login_controller.dart';
@@ -18,6 +19,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final loginController = Get.put(LoginController());
   await loginController.initAccount();
+
+  final appLinks = AppLinks(); // AppLinks is singleton
+
+// Subscribe to all events (initial link and further)
+  final sub = appLinks.uriLinkStream.listen((uri) {
+    // Do something (navigation, ...)
+
+    print("deep link : ${uri}");
+  });
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

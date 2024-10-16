@@ -1,14 +1,25 @@
+import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/comment_controller.dart';
+import 'package:flash/view/modals/comment_block_modal.dart';
+import 'package:flash/view/modals/comment_manage_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CommentCard extends StatelessWidget {
-  final String nickname, review, profileUrl;
-  const CommentCard({
+  final String nickname, review, profileUrl, commenterId;
+  final int commentId, solutionId;
+  bool isMine;
+  CommentCard({
     super.key,
     required this.nickname,
     required this.review,
     required this.profileUrl,
+    required this.commenterId,
+    required this.commentId,
+    required this.solutionId,
+    required this.isMine,
   });
-
+  final commentController = Get.put(CommentController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,7 +79,24 @@ class CommentCard extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                backgroundColor: ColorGroup.modalBGC,
+                context: context,
+                builder: (BuildContext context) {
+                  return isMine
+                      ? CommentManageModal(
+                          commentId: commentId,
+                          solutionId: solutionId,
+                        )
+                      : CommentBlockModal(
+                          commentId: commentId,
+                          solutionId: solutionId,
+                          commenterId: commenterId,
+                        );
+                },
+              );
+            },
             icon: const Icon(
               Icons.more_horiz,
               color: Colors.grey,

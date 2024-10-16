@@ -5,20 +5,23 @@ class MySolutionDetailModel {
   String? sectorName;
   String? review;
   String? difficultyName;
+  int? commentsCount;
   String? removalDate;
   String? settingDate;
   String? uploadedAt;
 
-  MySolutionDetailModel(
-      {this.solutionId,
-      this.videoUrl,
-      this.gymName,
-      this.sectorName,
-      this.review,
-      this.difficultyName,
-      this.removalDate,
-      this.settingDate,
-      this.uploadedAt});
+  MySolutionDetailModel({
+    this.solutionId,
+    this.videoUrl,
+    this.gymName,
+    this.sectorName,
+    this.review,
+    this.difficultyName,
+    this.commentsCount,
+    this.removalDate,
+    this.settingDate,
+    this.uploadedAt,
+  });
 
   MySolutionDetailModel.fromJson(Map<String, dynamic> json) {
     solutionId = json['solutionId'];
@@ -27,6 +30,7 @@ class MySolutionDetailModel {
     sectorName = json['sectorName'];
     review = json['review'];
     difficultyName = json['difficultyName'];
+    commentsCount = json['commentsCount'];
     removalDate = json['removalDate'];
     settingDate = json['settingDate'];
     uploadedAt = json['uploadedAt'];
@@ -40,6 +44,7 @@ class MySolutionDetailModel {
     data['sectorName'] = this.sectorName;
     data['review'] = this.review;
     data['difficultyName'] = this.difficultyName;
+    data['commentsCount'] = this.commentsCount;
     data['removalDate'] = this.removalDate;
     data['settingDate'] = this.settingDate;
     data['uploadedAt'] = this.uploadedAt;

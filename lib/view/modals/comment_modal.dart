@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommentModal extends StatelessWidget {
-  CommentModal({super.key});
+  final int solutionId;
+  CommentModal({super.key, required this.solutionId});
   final commentController = Get.put(CommentController());
   @override
   Widget build(BuildContext context) {
@@ -30,27 +31,37 @@ class CommentModal extends StatelessWidget {
             Divider(
               thickness: 0.8,
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      CommentCard(
-                        nickname: '서한유',
-                        review: 'hello world!',
-                        profileUrl: '',
-                      ),
-                      CommentCard(
-                        nickname: 'climbing_answer',
-                        review:
-                            'hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi',
-                        profileUrl: '',
-                      ),
-                    ],
-                  );
-                },
-              ),
+            Obx(
+              () {
+                return Expanded(
+                  child: ListView.builder(
+                    controller: commentController.scrollController,
+                    itemCount: commentController.commentList.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          CommentCard(
+                            nickname: commentController
+                                .commentList[index].nickName
+                                .toString(),
+                            review: commentController.commentList[index].content
+                                .toString(),
+                            profileUrl: '',
+                            commenterId: commentController
+                                .commentList[index].commenterId
+                                .toString(),
+                            commentId: commentController.commentList[index].id!,
+                            solutionId: solutionId,
+                            isMine:
+                                commentController.commentList[index].isMine ??
+                                    false,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -92,7 +103,11 @@ class CommentModal extends StatelessWidget {
             Obx(
               () {
                 return TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await commentController.sendComment(solutionId);
+                    commentController.commentText.clear();
+                    await commentController.newFetch(solutionId);
+                  },
                   child: Text(
                     '보내기',
                     style: commentController.textEmpty.value

@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -21,6 +22,7 @@ class AnswerCard extends StatelessWidget {
   final int solutionId, commentCount;
   final bool isUploader;
   final VideoPlayerController videoController;
+  final commentController = Get.put(CommentController());
   final mySolutionDetailController = Get.put(MySolutionDetailController());
   final OpenWeb openWeb = OpenWeb();
   AnswerCard({
@@ -171,8 +173,8 @@ class AnswerCard extends StatelessWidget {
             child: Column(
               children: [
                 Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+                  Icons.star,
+                  color: const Color.fromARGB(255, 255, 157, 0),
                   size: 40,
                 ),
                 Text(
@@ -183,13 +185,15 @@ class AnswerCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    commentController.commentText.clear();
+                    await commentController.newFetch(solutionId);
                     showModalBottomSheet(
                       backgroundColor: ColorGroup.modalBGC,
                       context: context,
                       //isScrollControlled: true,
                       builder: (BuildContext context) {
-                        return CommentModal();
+                        return CommentModal(solutionId: solutionId);
                       },
                     );
                   },
@@ -222,6 +226,7 @@ class AnswerCard extends StatelessWidget {
                         '',
                         '',
                       );
+
                       await mySolutionDetailController.fetchData(solutionId);
                       showModalBottomSheet(
                         backgroundColor: ColorGroup.modalBGC,
@@ -273,7 +278,7 @@ class _OverflowTextWithMoreState extends State<OverflowTextWithMore> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width - 80,
+      width: MediaQuery.of(context).size.width - 90,
       child: Align(
         alignment: Alignment.centerLeft,
         child: LayoutBuilder(
