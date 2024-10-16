@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class ReportList extends StatelessWidget {
   final int solutionId;
-  ReportList({super.key, required this.solutionId});
+  final String content;
+  ReportList({super.key, required this.solutionId, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -36,30 +37,37 @@ class ReportList extends StatelessWidget {
             ReportCard(
               reson: '마음에 들지 않습니다.',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '스팸',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '나체 이미지 또는 성적 행위',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '사기 또는 거짓',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '마음에 들지 않습니다.',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '혐오 발언 또는 상징',
               solutionId: solutionId,
+              content: content,
             ),
             ReportCard(
               reson: '다른 문제의 영상입니다',
               solutionId: solutionId,
+              content: content,
             ),
           ],
         ),
@@ -73,11 +81,12 @@ class ReportCard extends StatelessWidget {
     super.key,
     required this.solutionId,
     required this.reson,
+    required this.content,
   });
 
   final UserBlockController userBlockController = UserBlockController();
   final int solutionId;
-  final String reson;
+  final String reson, content;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +104,7 @@ class ReportCard extends StatelessWidget {
         Navigator.pop(context);
         Navigator.pop(context);
         // 신고 처리 로직
-        userBlockController.report(solutionId, reson);
+        userBlockController.report(solutionId, reson, content);
       },
       child: Align(
         alignment: Alignment.centerLeft,

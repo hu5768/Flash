@@ -153,7 +153,10 @@ class BlockModal extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return ReportList(solutionId: solutionId);
+                        return ReportList(
+                          solutionId: solutionId,
+                          content: 'SOLUTION',
+                        );
                       },
                     );
                   }, //userBlockController.report(solutionId);

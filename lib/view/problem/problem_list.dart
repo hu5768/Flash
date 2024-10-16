@@ -47,32 +47,146 @@ class ProblemList extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ProblemCard(
-                                gymName:
-                                    centerTitleController.centerTitle.value,
-                                id: problemListController.problemList[index].id
-                                    .toString(),
-                                sector: problemListController
-                                    .problemList[index].sector
-                                    .toString(),
-                                difficulty: problemListController
-                                    .problemList[index].difficulty
-                                    .toString(),
-                                settingDate: problemListController
-                                    .problemList[index].settingDate
-                                    .toString(),
-                                removalDate: problemListController
-                                    .problemList[index].removalDate
-                                    .toString(),
-                                hasSolution: problemListController
-                                    .problemList[index].hasSolution!,
-                                imageUrl: problemListController
-                                    .problemList[index].imageUrl
-                                    .toString(),
-                                isHoney: problemListController
-                                        .problemList[index].isHoney ??
-                                    false,
-                              ),
+                              problemListController.problemList[index].id ==
+                                      'no'
+                                  ? Center(
+                                      child: Column(
+                                        children: [
+                                          /*ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text('찾으시는 문제가 없으신가요?'),
+                                          ),*/
+                                          Text(
+                                            '더 이상 문제가 없습니다',
+                                            style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    actionsPadding:
+                                                        EdgeInsets.fromLTRB(
+                                                      0,
+                                                      0,
+                                                      30,
+                                                      10,
+                                                    ),
+                                                    backgroundColor:
+                                                        ColorGroup.BGC,
+                                                    titleTextStyle: TextStyle(
+                                                      fontSize: 15,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                        255,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                      ),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                    contentTextStyle: TextStyle(
+                                                      fontSize: 13,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                        255,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                      ),
+                                                    ),
+                                                    title: Text(''),
+                                                    content: Text('dm 혹은 '),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text(
+                                                          '닫기',
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: ColorGroup
+                                                                .selectBtnBGC,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop(); // 팝업 닫기
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: Text(
+                                                          '인스타그램으로 이동하기',
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: ColorGroup
+                                                                .selectBtnBGC,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop(); // 팝업 닫기
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Text(
+                                              '찾으시는 문제가 없으신가요?',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 70,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : ProblemCard(
+                                      gymName: centerTitleController
+                                          .centerTitle.value,
+                                      id: problemListController
+                                          .problemList[index].id
+                                          .toString(),
+                                      sector: problemListController
+                                          .problemList[index].sector
+                                          .toString(),
+                                      difficulty: problemListController
+                                          .problemList[index].difficulty
+                                          .toString(),
+                                      settingDate: problemListController
+                                          .problemList[index].settingDate
+                                          .toString(),
+                                      removalDate: problemListController
+                                          .problemList[index].removalDate
+                                          .toString(),
+                                      hasSolution: problemListController
+                                          .problemList[index].hasSolution!,
+                                      imageUrl: problemListController
+                                          .problemList[index].imageUrl
+                                          .toString(),
+                                      isHoney: problemListController
+                                              .problemList[index].isHoney ??
+                                          false,
+                                    ),
                               const SizedBox(
                                 height: 30,
                               ),
@@ -84,7 +198,6 @@ class ProblemList extends StatelessWidget {
                   );
                 },
               ),
-              //const ProblemCard(sector: 'Flat'),
             ],
           ),
         ),

@@ -69,11 +69,14 @@ class ProblemListController extends GetxController {
       problemList.clear();
       if (um.isNotEmpty) {
         morePage = response.data["meta"]["hasNext"];
-        if (morePage) {
-          problemList.addAll(um); //?
-          nextCursor = response.data["meta"]["cursor"];
-        }
         problemList.assignAll(um);
+        if (morePage) {
+          nextCursor = response.data["meta"]["cursor"];
+        } else {
+          problemList.add(ProblemModel(id: 'no'));
+        }
+      } else {
+        problemList.add(ProblemModel(id: 'no'));
       }
     } catch (e) {
       if (e is DioException) {
@@ -144,12 +147,15 @@ class ProblemListController extends GetxController {
       List<ProblemModel> um =
           resMap.map((e) => ProblemModel.fromJson(e)).toList();
       if (um.isEmpty) {
+        problemList.add(ProblemModel(id: 'no'));
         morePage = false;
       } else {
         problemList.addAll(um);
         morePage = response.data["meta"]["hasNext"];
         if (morePage) {
           nextCursor = response.data["meta"]["cursor"];
+        } else {
+          problemList.add(ProblemModel(id: 'no'));
         }
       }
       loadRunning = false;

@@ -128,7 +128,10 @@ class CommentBlockModal extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return ReportList(solutionId: commentId);
+                        return ReportList(
+                          solutionId: commentId,
+                          content: 'COMMENT',
+                        );
                       },
                     );
                   },

@@ -41,6 +41,7 @@ class CommentManageModal extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                /*
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {},
@@ -65,7 +66,7 @@ class CommentManageModal extends StatelessWidget {
                 Divider(
                   height: 1,
                   color: Color.fromRGBO(246, 246, 246, 1),
-                ),
+                ),*/
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
