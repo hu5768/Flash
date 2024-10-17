@@ -59,6 +59,7 @@ dependencies:
   logger: ^2.4.0  # for logging purpose
   json_annotation: ^4.9.0
   app_links: ^6.3.2
+  package_info_plus: ^8.0.3
 
 
 

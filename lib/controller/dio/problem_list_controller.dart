@@ -59,9 +59,6 @@ class ProblemListController extends GetxController {
             "/gyms/$gymId/problems$sortText$diffText$secText$solText$honeyText",
           );
 
-      print(
-        "/gyms/$gymId/problems$sortText$diffText$secText$solText$honeyText",
-      );
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data["problems"]);
       List<ProblemModel> um =
@@ -120,6 +117,7 @@ class ProblemListController extends GetxController {
     if (morePage &&
         !loadRunning &&
         scrollController!.position.extentAfter < 200) {
+      loadRunning = true;
       String sortBy = problemSortController.sortkey.value;
       String sortText = "&sortBy=$sortBy";
       int gymId = centerTitleController.centerId.value;
@@ -134,7 +132,6 @@ class ProblemListController extends GetxController {
       bool ishoney = problemFilterController.isHoney.value; //꿀문제 필터
       String honeyText = !ishoney ? "" : "&is-honey=$ishoney";
 
-      loadRunning = true;
       dios.Response response;
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
@@ -148,6 +145,7 @@ class ProblemListController extends GetxController {
           resMap.map((e) => ProblemModel.fromJson(e)).toList();
       if (um.isEmpty) {
         problemList.add(ProblemModel(id: 'no'));
+        print('no1');
         morePage = false;
       } else {
         problemList.addAll(um);
@@ -155,6 +153,7 @@ class ProblemListController extends GetxController {
         if (morePage) {
           nextCursor = response.data["meta"]["cursor"];
         } else {
+          print('no2');
           problemList.add(ProblemModel(id: 'no'));
         }
       }

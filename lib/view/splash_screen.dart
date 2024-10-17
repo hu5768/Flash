@@ -8,6 +8,7 @@ import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -50,6 +51,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _showUpdateDialog(BuildContext context) async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    print(packageInfo);
+    print("ver : ${packageInfo.version}");
+    print("bundle : ${packageInfo.buildNumber}");
     if (false) return;
     await showDialog(
       context: context,

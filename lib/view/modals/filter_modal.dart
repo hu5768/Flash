@@ -151,6 +151,7 @@ class FilterModal extends StatelessWidget {
                                     .toString(),
                               );
                               problemFilterController.tempToSel();
+                              problemListController.morePage = false;
                               await problemListController.newFetch();
                               problemListController.ScrollUp();
                               Navigator.of(context).pop();

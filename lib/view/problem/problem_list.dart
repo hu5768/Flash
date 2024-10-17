@@ -5,6 +5,7 @@ import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/filter_modal.dart';
+import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flutter/material.dart';
@@ -66,81 +67,13 @@ class ProblemList extends StatelessWidget {
                                           SizedBox(height: 5),
                                           GestureDetector(
                                             onTap: () {
-                                              showDialog(
+                                              showModalBottomSheet(
+                                                backgroundColor:
+                                                    ColorGroup.modalBGC,
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return AlertDialog(
-                                                    actionsPadding:
-                                                        EdgeInsets.fromLTRB(
-                                                      0,
-                                                      0,
-                                                      30,
-                                                      10,
-                                                    ),
-                                                    backgroundColor:
-                                                        ColorGroup.BGC,
-                                                    titleTextStyle: TextStyle(
-                                                      fontSize: 15,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                        255,
-                                                        0,
-                                                        0,
-                                                        0,
-                                                      ),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    contentTextStyle: TextStyle(
-                                                      fontSize: 13,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                        255,
-                                                        0,
-                                                        0,
-                                                        0,
-                                                      ),
-                                                    ),
-                                                    title: Text(''),
-                                                    content: Text('dm 혹은 '),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text(
-                                                          '닫기',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: ColorGroup
-                                                                .selectBtnBGC,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(
-                                                            context,
-                                                          ).pop(); // 팝업 닫기
-                                                        },
-                                                      ),
-                                                      TextButton(
-                                                        child: Text(
-                                                          '인스타그램으로 이동하기',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: ColorGroup
-                                                                .selectBtnBGC,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(
-                                                            context,
-                                                          ).pop(); // 팝업 닫기
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
+                                                  return MoreproblemModal();
                                                 },
                                               );
                                             },
