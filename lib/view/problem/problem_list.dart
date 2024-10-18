@@ -67,9 +67,7 @@ class ProblemList extends StatelessWidget {
                                           SizedBox(height: 5),
                                           GestureDetector(
                                             onTap: () {
-                                              showModalBottomSheet(
-                                                backgroundColor:
-                                                    ColorGroup.modalBGC,
+                                              showDialog(
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {

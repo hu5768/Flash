@@ -18,94 +18,167 @@ class MoreproblemModal extends StatelessWidget {
   });
   final OpenWeb openWeb = OpenWeb();
   final String inquiryForm = 'https://forms.gle/EocPBiWyHXJxY3Bj8';
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(28, 8, 24, 50),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(247, 247, 247, 1),
-        borderRadius: BorderRadius.circular(16),
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          12,
+        ),
       ),
-      child: Column(
+      backgroundColor: const Color.fromARGB(
+        255,
+        255,
+        255,
+        255,
+      ),
+      titlePadding: EdgeInsets.fromLTRB(
+        60,
+        36,
+        60,
+        0,
+      ),
+      titleTextStyle: TextStyle(
+        fontSize: 24,
+        color: const Color.fromARGB(
+          255,
+          0,
+          0,
+          0,
+        ),
+        fontWeight: FontWeight.w600,
+      ),
+      title: Center(
+        child: Text(
+          '문제를 제보해주세요!',
+        ),
+      ),
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 48,
-            height: 4,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Color.fromARGB(213, 213, 213, 255),
-            ),
-          ),
-          SizedBox(height: 16),
           Text(
-            '문의하기 또는 DM으로 찾으시는 문제 정보를 보내주세요!\n빠른 시일 내에 추가하도록 하겠습니다.\n* 사진을 보내주시면 더 빠르게 추가할 수 있습니다!',
+            textAlign: TextAlign.center,
+            '사진을 같이 보내주시면\n훨씬 더 수월한 제보가 가능합니다.',
+            style: TextStyle(
+              fontSize: 14,
+              color: const Color.fromARGB(
+                255,
+                0,
+                0,
+                0,
+              ),
+            ),
           ),
           SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255),
-              borderRadius: BorderRadius.circular(16),
+          // 익명제보 버튼
+          SizedBox(
+            width: 272,
+            height: 49,
+            child: OutlinedButton(
+              onPressed: () async {
+                if (await canLaunchUrl(Uri.parse(inquiryForm))) {
+                  await launchUrl(Uri.parse(inquiryForm));
+                } else {
+                  throw 'Could not launch $inquiryForm';
+                }
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(
+                  255,
+                  116,
+                  116,
+                  116,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    6,
+                  ),
+                ),
+                side: BorderSide(
+                  color: const Color.fromARGB(
+                    255,
+                    196,
+                    196,
+                    196,
+                  ),
+                ),
+              ),
+              child: Text(
+                "익명으로 제보",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () async {
-                    openWeb.OpenInstagram('climbing_answer');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.message, color: Colors.black),
-                        SizedBox(width: 16),
-                        Text(
-                          '인스타그램dm으로 문의하기',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
+          ),
+          SizedBox(height: 8),
+          SizedBox(
+            width: 272,
+            height: 49,
+            child: OutlinedButton(
+              onPressed: () {
+                openWeb.OpenInstagram('climbing_answer');
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(
+                  255,
+                  116,
+                  116,
+                  116,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    6,
                   ),
                 ),
-                Divider(
-                  height: 1,
-                  color: Color.fromRGBO(246, 246, 246, 1),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () async {
-                    if (await canLaunchUrl(Uri.parse(inquiryForm))) {
-                      await launchUrl(Uri.parse(inquiryForm));
-                    } else {
-                      throw 'Could not launch $inquiryForm';
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.notifications, color: Colors.black),
-                        SizedBox(width: 16),
-                        Text(
-                          '구글폼으로 문의하기',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
+                side: BorderSide(
+                  color: const Color.fromARGB(
+                    255,
+                    196,
+                    196,
+                    196,
                   ),
                 ),
-              ],
+              ),
+              child: Text(
+                "인스타그램 DM으로 제보",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 8),
+          SizedBox(
+            width: 272,
+            height: 49,
+            child: TextButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).pop();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(
+                  255,
+                  116,
+                  116,
+                  116,
+                ),
+              ),
+              child: Text(
+                "취소",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
         ],
