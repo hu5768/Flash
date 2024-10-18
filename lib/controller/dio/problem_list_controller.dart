@@ -50,12 +50,15 @@ class ProblemListController extends GetxController {
       String secText = secList == "" ? "" : "&sector=$secList";
       bool hasSol = !problemFilterController.nobodySol.value; //아무도 안푼문제 필터
       String solText = hasSol ? "" : "&has-solution=$hasSol";
+      bool ishoney = problemFilterController.isHoney.value; //꿀문제 필터
+      String honeyText = !ishoney ? "" : "&is-honey=$ishoney";
 
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
-      response = await DioClient()
-          .dio
-          .get("/gyms/$gymId/problems$sortText$diffText$secText$solText");
+      response = await DioClient().dio.get(
+            "/gyms/$gymId/problems$sortText$diffText$secText$solText$honeyText",
+          );
+
       List<Map<String, dynamic>> resMap =
           List<Map<String, dynamic>>.from(response.data["problems"]);
       List<ProblemModel> um =
@@ -63,11 +66,14 @@ class ProblemListController extends GetxController {
       problemList.clear();
       if (um.isNotEmpty) {
         morePage = response.data["meta"]["hasNext"];
-        if (morePage) {
-          problemList.addAll(um); //?
-          nextCursor = response.data["meta"]["cursor"];
-        }
         problemList.assignAll(um);
+        if (morePage) {
+          nextCursor = response.data["meta"]["cursor"];
+        } else {
+          problemList.add(ProblemModel(id: 'no'));
+        }
+      } else {
+        problemList.add(ProblemModel(id: 'no'));
       }
     } catch (e) {
       if (e is DioException) {
@@ -111,6 +117,7 @@ class ProblemListController extends GetxController {
     if (morePage &&
         !loadRunning &&
         scrollController!.position.extentAfter < 200) {
+      loadRunning = true;
       String sortBy = problemSortController.sortkey.value;
       String sortText = "&sortBy=$sortBy";
       int gymId = centerTitleController.centerId.value;
@@ -122,13 +129,14 @@ class ProblemListController extends GetxController {
       String secText = secList == "" ? "" : "&sector=$secList";
       bool hasSol = !problemFilterController.nobodySol.value;
       String solText = hasSol ? "" : "&has-solution=$hasSol";
+      bool ishoney = problemFilterController.isHoney.value; //꿀문제 필터
+      String honeyText = !ishoney ? "" : "&is-honey=$ishoney";
 
-      loadRunning = true;
       dios.Response response;
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get(
-            "/gyms/$gymId/problems?cursor=$nextCursor$sortText$diffText$secText$solText",
+            "/gyms/$gymId/problems?cursor=$nextCursor$sortText$diffText$secText$solText$honeyText",
           );
 
       List<Map<String, dynamic>> resMap =
@@ -136,12 +144,17 @@ class ProblemListController extends GetxController {
       List<ProblemModel> um =
           resMap.map((e) => ProblemModel.fromJson(e)).toList();
       if (um.isEmpty) {
+        problemList.add(ProblemModel(id: 'no'));
+        print('no1');
         morePage = false;
       } else {
         problemList.addAll(um);
         morePage = response.data["meta"]["hasNext"];
         if (morePage) {
           nextCursor = response.data["meta"]["cursor"];
+        } else {
+          print('no2');
+          problemList.add(ProblemModel(id: 'no'));
         }
       }
       loadRunning = false;

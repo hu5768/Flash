@@ -5,6 +5,8 @@ class MySolutionDetailModel {
   String? sectorName;
   String? review;
   String? difficultyName;
+  int? commentsCount;
+  String? perceivedDifficulty;
   String? removalDate;
   String? settingDate;
   String? uploadedAt;
@@ -16,6 +18,8 @@ class MySolutionDetailModel {
       this.sectorName,
       this.review,
       this.difficultyName,
+      this.commentsCount,
+      this.perceivedDifficulty,
       this.removalDate,
       this.settingDate,
       this.uploadedAt});
@@ -27,6 +31,8 @@ class MySolutionDetailModel {
     sectorName = json['sectorName'];
     review = json['review'];
     difficultyName = json['difficultyName'];
+    commentsCount = json['commentsCount'];
+    perceivedDifficulty = json['perceivedDifficulty'];
     removalDate = json['removalDate'];
     settingDate = json['settingDate'];
     uploadedAt = json['uploadedAt'];
@@ -40,6 +46,8 @@ class MySolutionDetailModel {
     data['sectorName'] = this.sectorName;
     data['review'] = this.review;
     data['difficultyName'] = this.difficultyName;
+    data['commentsCount'] = this.commentsCount;
+    data['perceivedDifficulty'] = this.perceivedDifficulty;
     data['removalDate'] = this.removalDate;
     data['settingDate'] = this.settingDate;
     data['uploadedAt'] = this.uploadedAt;

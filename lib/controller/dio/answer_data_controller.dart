@@ -33,6 +33,7 @@ class AnswerDataController extends GetxController {
           );
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       ProblemDetailModel detailInfo = ProblemDetailModel.fromJson(resMap);
+
       //analytics용
       difficulty = detailInfo.difficulty!;
       sector = detailInfo.sector!;
@@ -49,9 +50,10 @@ class AnswerDataController extends GetxController {
           hasSolution: detailInfo.hasSolution!,
           imageSource: detailInfo.imageSource ?? 'theclimb_life',
           guide: guide ?? 'NULL',
+          isHoney: detailInfo.isHoney ?? false,
         ),
       );
-      print('문제 디테일 업로드 $guide');
+
       //answerList.add(const AnswerCard());
     } catch (e) {
       print('디테일 문제 로딩 실패$e');
@@ -74,7 +76,7 @@ class AnswerDataController extends GetxController {
           videoControllerList[entry.key] = VideoPlayerController.networkUrl(
             Uri.parse(entry.value.videoUrl!),
           );
-
+          print(entry.value.profileImageUrl);
           return AnswerCard(
             videoController: videoControllerList[entry.key]!,
             uploader: entry.value.uploader ?? '',
@@ -86,6 +88,7 @@ class AnswerDataController extends GetxController {
             uploaderId: entry.value.uploaderId ?? '',
             isUploader: entry.value.isUploader ?? false,
             profileUrl: entry.value.profileImageUrl ?? '',
+            commentCount: entry.value.commentCount ?? 0,
           );
         },
       ).toList();

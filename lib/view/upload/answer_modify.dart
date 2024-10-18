@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/answer_modify_controller.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flutter/material.dart';
@@ -30,39 +31,7 @@ class AnswerModify extends StatefulWidget {
 
 class _AnswerModifyState extends State<AnswerModify> {
   final TextEditingController userOpinionController = TextEditingController();
-
-  Future<void> userReviewFetch() async {
-    final data = {
-      "videoUrl": widget.videoUrl,
-      "review": userOpinionController.text,
-    };
-
-    try {
-      // PATCH 요청
-      print('유저 정보 Patch');
-      final token = await storage.read(key: ACCESS_TOKEN_KEY);
-      DioClient().updateOptions(token: token.toString());
-      final response = await DioClient()
-          .dio
-          .patch('/solutions/${widget.solutionId}', data: data);
-
-      if (response.statusCode == 200) {
-        // 요청이 성공적으로 처리된 경우
-        print('Member information updated successfully');
-      } else {
-        print('Failed to update member information: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is DioException) {
-        if (e.response != null) {
-          print('DioError: ${e.response?.statusCode}');
-          print('Error Response Data: ${e.response?.data}');
-        } else {
-          print('Error: ${e.message}');
-        }
-      }
-    }
-  }
+  final answerModifyController = Get.put(AnswerModifyController());
 
   @override
   void dispose() {
@@ -104,7 +73,12 @@ class _AnswerModifyState extends State<AnswerModify> {
                       '',
                       widget.solutionId.toString(),
                     );
-                    await userReviewFetch();
+                    await answerModifyController.userReviewFetch(
+                      widget.videoUrl,
+                      userOpinionController.text,
+                      widget.solutionId,
+                    );
+
                     Navigator.pop(context);
                   },
                   child: Text('수정', style: TextStyle(fontSize: 16)),
@@ -128,6 +102,31 @@ class _AnswerModifyState extends State<AnswerModify> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
+                        child: Text(
+                          '체감 난이도',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(247, 247, 247, 1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DifficultyChip(difficulty: '쉬움'),
+                            DifficultyChip(difficulty: '보통'),
+                            DifficultyChip(difficulty: '어려움'),
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
                         child: Text(
@@ -161,6 +160,58 @@ class _AnswerModifyState extends State<AnswerModify> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DifficultyChip extends StatelessWidget {
+  final String difficulty;
+  final answerModifyController = Get.put(AnswerModifyController());
+  DifficultyChip({
+    super.key,
+    required this.difficulty,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        bool isSelected =
+            answerModifyController.difficultyLabel.value == difficulty;
+        return ChoiceChip(
+          showCheckmark: false,
+          label: SizedBox(
+            width: 60,
+            child: Center(
+              child: Text(
+                difficulty,
+                style: TextStyle(
+                  fontSize: 17,
+                  color: isSelected
+                      ? const Color.fromARGB(255, 63, 63, 63)
+                      : const Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ),
+          ),
+          backgroundColor: ColorGroup.btnBGC,
+          selectedColor: const Color.fromARGB(255, 211, 211, 211),
+          side: BorderSide(
+            color: isSelected
+                ? const Color.fromARGB(255, 107, 107, 107)
+                : Colors.transparent,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              16,
+            ),
+          ),
+          selected: isSelected,
+          onSelected: (value) {
+            answerModifyController.difficultyLabel.value = difficulty;
+          },
+        );
+      },
     );
   }
 }

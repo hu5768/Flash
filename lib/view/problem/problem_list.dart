@@ -5,6 +5,7 @@ import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/filter_modal.dart';
+import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flutter/material.dart';
@@ -47,29 +48,76 @@ class ProblemList extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ProblemCard(
-                                gymName:
-                                    centerTitleController.centerTitle.value,
-                                id: problemListController.problemList[index].id
-                                    .toString(),
-                                sector: problemListController
-                                    .problemList[index].sector
-                                    .toString(),
-                                difficulty: problemListController
-                                    .problemList[index].difficulty
-                                    .toString(),
-                                settingDate: problemListController
-                                    .problemList[index].settingDate
-                                    .toString(),
-                                removalDate: problemListController
-                                    .problemList[index].removalDate
-                                    .toString(),
-                                hasSolution: problemListController
-                                    .problemList[index].hasSolution!,
-                                imageUrl: problemListController
-                                    .problemList[index].imageUrl
-                                    .toString(),
-                              ),
+                              problemListController.problemList[index].id ==
+                                      'no'
+                                  ? Center(
+                                      child: Column(
+                                        children: [
+                                          /*ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text('찾으시는 문제가 없으신가요?'),
+                                          ),*/
+                                          Text(
+                                            '더 이상 문제가 없습니다',
+                                            style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return MoreproblemModal();
+                                                },
+                                              );
+                                            },
+                                            child: Text(
+                                              '찾으시는 문제가 없으신가요?',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 70,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : ProblemCard(
+                                      gymName: centerTitleController
+                                          .centerTitle.value,
+                                      id: problemListController
+                                          .problemList[index].id
+                                          .toString(),
+                                      sector: problemListController
+                                          .problemList[index].sector
+                                          .toString(),
+                                      difficulty: problemListController
+                                          .problemList[index].difficulty
+                                          .toString(),
+                                      settingDate: problemListController
+                                          .problemList[index].settingDate
+                                          .toString(),
+                                      removalDate: problemListController
+                                          .problemList[index].removalDate
+                                          .toString(),
+                                      hasSolution: problemListController
+                                          .problemList[index].hasSolution!,
+                                      imageUrl: problemListController
+                                          .problemList[index].imageUrl
+                                          .toString(),
+                                      isHoney: problemListController
+                                              .problemList[index].isHoney ??
+                                          false,
+                                    ),
                               const SizedBox(
                                 height: 30,
                               ),
@@ -81,7 +129,6 @@ class ProblemList extends StatelessWidget {
                   );
                 },
               ),
-              //const ProblemCard(sector: 'Flat'),
             ],
           ),
         ),

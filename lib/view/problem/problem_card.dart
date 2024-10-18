@@ -13,7 +13,7 @@ class ProblemCard extends StatelessWidget {
       settingDate,
       removalDate,
       imageUrl;
-  final bool hasSolution;
+  final bool hasSolution, isHoney;
 
   const ProblemCard({
     super.key,
@@ -25,6 +25,7 @@ class ProblemCard extends StatelessWidget {
     required this.removalDate,
     required this.hasSolution,
     required this.imageUrl,
+    required this.isHoney,
   });
 
   @override
@@ -161,6 +162,11 @@ class ProblemCard extends StatelessWidget {
                                 ),
                               )
                             : SizedBox(),
+                        if (isHoney)
+                          Text(
+                            ' 🍯',
+                            style: TextStyle(fontSize: 30),
+                          ),
                         /*hasSolution
                             ? const Text(
                                 "영상 있음",

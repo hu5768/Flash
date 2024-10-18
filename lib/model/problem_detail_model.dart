@@ -1,6 +1,5 @@
 class ProblemDetailModel {
   String? id;
-  String? gymName;
   String? sector;
   String? difficulty;
   String? settingDate;
@@ -8,11 +7,12 @@ class ProblemDetailModel {
   bool? isFakeRemovalDate;
   bool? hasSolution;
   String? imageUrl;
+  String? gymName;
   String? imageSource;
+  bool? isHoney;
 
   ProblemDetailModel({
     this.id,
-    this.gymName,
     this.sector,
     this.difficulty,
     this.settingDate,
@@ -20,12 +20,13 @@ class ProblemDetailModel {
     this.isFakeRemovalDate,
     this.hasSolution,
     this.imageUrl,
+    this.gymName,
     this.imageSource,
+    this.isHoney,
   });
 
   ProblemDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    gymName = json['gymName'];
     sector = json['sector'];
     difficulty = json['difficulty'];
     settingDate = json['settingDate'];
@@ -33,21 +34,24 @@ class ProblemDetailModel {
     isFakeRemovalDate = json['isFakeRemovalDate'];
     hasSolution = json['hasSolution'];
     imageUrl = json['imageUrl'];
+    gymName = json['gymName'];
     imageSource = json['imageSource'];
+    isHoney = json['isHoney'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['gymName'] = gymName;
-    data['sector'] = sector;
-    data['difficulty'] = difficulty;
-    data['settingDate'] = settingDate;
-    data['removalDate'] = removalDate;
-    data['isFakeRemovalDate'] = isFakeRemovalDate;
-    data['hasSolution'] = hasSolution;
-    data['imageUrl'] = imageUrl;
-    data['imageSource'] = imageSource;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['sector'] = this.sector;
+    data['difficulty'] = this.difficulty;
+    data['settingDate'] = this.settingDate;
+    data['removalDate'] = this.removalDate;
+    data['isFakeRemovalDate'] = this.isFakeRemovalDate;
+    data['hasSolution'] = this.hasSolution;
+    data['imageUrl'] = this.imageUrl;
+    data['gymName'] = this.gymName;
+    data['imageSource'] = this.imageSource;
+    data['isHoney'] = this.isHoney;
     return data;
   }
 }

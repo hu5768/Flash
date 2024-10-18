@@ -105,6 +105,35 @@ class FilterModal extends StatelessWidget {
                           ),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '꿀 문제 모아보기',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Obx(
+                            () => Switch(
+                              inactiveTrackColor: ColorGroup.selectBtnFGC,
+                              activeTrackColor: ColorGroup.selectBtnBGC,
+                              value: problemFilterController.isHoneyTemp.value,
+                              onChanged: (bool value) {
+                                AnalyticsService.buttonClick(
+                                  'FilterModal',
+                                  '꿀문제보기',
+                                  '',
+                                  '',
+                                );
+                                problemFilterController.isHoneyTemp.value =
+                                    value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 35),
                       Center(
                         child: SizedBox(
@@ -115,13 +144,14 @@ class FilterModal extends StatelessWidget {
                                 'FilterModal_apply',
                                 problemFilterController.allTempSelection[1]
                                     .toString(),
-                                '아무도 못푼문제' +
+                                '못푼문제' +
                                     problemFilterController.nobodySolTemp
                                         .toString(),
                                 problemFilterController.allTempSelection[0]
                                     .toString(),
                               );
                               problemFilterController.tempToSel();
+                              problemListController.morePage = false;
                               await problemListController.newFetch();
                               problemListController.ScrollUp();
                               Navigator.of(context).pop();

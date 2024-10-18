@@ -8,6 +8,8 @@ class ProblemFilterController extends GetxController {
   var allTempSelection = <RxList<String>>[].obs; // 모달에서 선택중인 선택 여부
   var nobodySol = false.obs; // 아무도 못 푼 문제 보기
   var nobodySolTemp = false.obs;
+  var isHoney = false.obs; // 꿀 문제 보기
+  var isHoneyTemp = false.obs;
 
   @override
   void onInit() {
@@ -26,6 +28,7 @@ class ProblemFilterController extends GetxController {
     allTempSelection.add(<String>[].obs);
     allTempSelection.add(<String>[].obs);
     nobodySol.value = false;
+    isHoney.value = false;
   }
 
   void inToTemp() {
@@ -35,6 +38,7 @@ class ProblemFilterController extends GetxController {
       allSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
     );
     nobodySolTemp.value = nobodySol.value;
+    isHoneyTemp.value = isHoney.value;
   }
 
   void tempToSel() {
@@ -44,10 +48,7 @@ class ProblemFilterController extends GetxController {
       allTempSelection.map((rxlist) => RxList<String>.from(rxlist)).toList(),
     );
     nobodySol.value = nobodySolTemp.value;
-  }
-
-  void checkBoxToggle() {
-    nobodySol.value = nobodySol.value ? true : false;
+    isHoney.value = isHoneyTemp.value;
   }
 
   bool allTempEmpty() {
@@ -57,6 +58,7 @@ class ProblemFilterController extends GetxController {
       ans &= allTempSelection[i].isEmpty;
     }
     ans &= !nobodySolTemp.value;
+    ans &= !isHoneyTemp.value;
     return ans;
   }
 
@@ -67,12 +69,14 @@ class ProblemFilterController extends GetxController {
       ans &= allSelection[i].isEmpty;
     }
     ans &= !nobodySol.value;
+    ans &= !isHoney.value;
     return ans;
   }
 
   void goEmpty() {
     //모달의 모든 값 초기화
     nobodySolTemp.value = false;
+    isHoneyTemp.value = false;
     for (int i = 0; i < allTempSelection.length; i++) {
       allTempSelection[i].clear();
     }
@@ -93,6 +97,7 @@ class ProblemFilterController extends GetxController {
       cnt += allSelection[i].length;
     }
     cnt += nobodySol.value ? 1 : 0;
+    cnt += isHoney.value ? 1 : 0;
     return cnt;
   }
 }

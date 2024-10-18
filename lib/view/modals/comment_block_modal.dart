@@ -1,24 +1,21 @@
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/controller/dio/answer_data_controller.dart';
+import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/user_block_controller.dart';
-import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/report_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class BlockModal extends StatelessWidget {
-  final int solutionId;
-  final String problemId;
-  final String uploaderId;
-  final UserBlockController userBlockController = UserBlockController();
-  final answerDataController = Get.put(AnswerDataController());
-  BlockModal({
+class CommentBlockModal extends StatelessWidget {
+  final int commentId, solutionId;
+  String commenterId;
+  CommentBlockModal({
     super.key,
+    required this.commentId,
     required this.solutionId,
-    required this.problemId,
-    required this.uploaderId,
+    required this.commenterId,
   });
-
+  final commentController = Get.put(CommentController());
+  final UserBlockController userBlockController = UserBlockController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,13 +47,7 @@ class BlockModal extends StatelessWidget {
               children: [
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    AnalyticsService.buttonClick(
-                      'solutionMore',
-                      '차단',
-                      '',
-                      '',
-                    );
+                  onTap: () async {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -73,7 +64,7 @@ class BlockModal extends StatelessWidget {
                             color: const Color.fromARGB(255, 0, 0, 0),
                           ),
                           title: Text('사용자 차단'),
-                          content: Text('해당 사용자를 차단하시겠습니까?'),
+                          content: Text('정말 이 사용자를 차단하시겠습니까?'),
                           actions: [
                             TextButton(
                               child: Text(
@@ -85,12 +76,6 @@ class BlockModal extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                AnalyticsService.buttonClick(
-                                  'block',
-                                  '취소',
-                                  '',
-                                  '',
-                                );
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },
@@ -104,15 +89,8 @@ class BlockModal extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              onPressed: () {
-                                AnalyticsService.buttonClick(
-                                  'block',
-                                  '진짜차단',
-                                  '',
-                                  '',
-                                );
-                                userBlockController.block(uploaderId);
-                                answerDataController.fetchData(problemId);
+                              onPressed: () async {
+                                userBlockController.block(commenterId);
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },
@@ -140,26 +118,23 @@ class BlockModal extends StatelessWidget {
                     ),
                   ),
                 ),
-                Divider(height: 1),
+                Divider(
+                  height: 1,
+                  color: Color.fromRGBO(246, 246, 246, 1),
+                ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    AnalyticsService.buttonClick(
-                      'solutionMore',
-                      '신고',
-                      '',
-                      '',
-                    );
+                  onTap: () async {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
                         return ReportList(
-                          solutionId: solutionId,
-                          content: 'SOLUTION',
+                          solutionId: commentId,
+                          content: 'COMMENT',
                         );
                       },
                     );
-                  }, //userBlockController.report(solutionId);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 22, 0, 22),
                     child: Row(
@@ -171,7 +146,7 @@ class BlockModal extends StatelessWidget {
                         ),
                         SizedBox(width: 16),
                         Text(
-                          '게시물 신고하기',
+                          '댓글 신고하기',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
