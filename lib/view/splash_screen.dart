@@ -2,11 +2,13 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
+import 'package:flash/controller/dio/version_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -23,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final String appStoreUrl = "https://apps.apple.com/us/app/flash/id6590617249";
   final centerTitleController = Get.put(CenterTitleController());
   final problemListController = Get.put(ProblemListController());
+  VersionController versionController = VersionController();
   @override
   void initState() {
     super.initState();
@@ -50,12 +53,42 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  bool compareVersion(String version1, String version2) {
+    List<String> v1Parts = version1.split('.');
+    List<String> v2Parts = version2.split('.');
+
+    print("버전 비교" + version1 + version2);
+    for (int i = 0; i < 3; i++) {
+      int v1 = int.parse(v1Parts[i]);
+      int v2 = int.parse(v2Parts[i]);
+
+      if (v1 > v2) {
+        return true; // version1이 더 큼
+      } else if (v1 < v2) {
+        return false; // version2가 더 큼
+      }
+    }
+    return true; // 두 버전이 동일함
+  }
+
   Future<void> _showUpdateDialog(BuildContext context) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     print(packageInfo);
-    print("ver : ${packageInfo.version}");
-    print("bundle : ${packageInfo.buildNumber}");
-    if (false) return;
+    await versionController.getVersion();
+
+    if (isAndroid()) {
+      //andriod
+      if (compareVersion(
+        packageInfo.version,
+        versionController.androidVersion,
+      )) return; //앱 버전이 서버에서 받아온 최소 지원 버전보다 크면  모달 안띄우고 종료
+    } else if (isiOS()) {
+      if (compareVersion(
+        packageInfo.version,
+        versionController.iosVersion,
+      )) return;
+    }
+
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -72,7 +105,12 @@ class _SplashScreenState extends State<SplashScreen> {
             TextButton(
               child: Text('업데이트'),
               onPressed: () {
-                OpenAppstore();
+                if (isAndroid()) {
+                  OpenPlaystore();
+                } else if (isiOS()) {
+                  OpenAppstore();
+                }
+
                 Navigator.of(context).pop(); // 팝업 닫기
               },
             ),
