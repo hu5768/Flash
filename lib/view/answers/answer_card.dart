@@ -172,18 +172,6 @@ class AnswerCard extends StatelessWidget {
             bottom: 90,
             child: Column(
               children: [
-                Icon(
-                  Icons.star,
-                  color: const Color.fromARGB(255, 255, 157, 0),
-                  size: 40,
-                ),
-                Text(
-                  '45',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
                 IconButton(
                   onPressed: () async {
                     commentController.commentText.clear();

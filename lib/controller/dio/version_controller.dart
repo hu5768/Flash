@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 
 class VersionController {
-  String androidVersion = '', iosVersion = '';
+  String androidVersion = '0.0.0', iosVersion = '0.0.0';
 
   Future<void> getVersion() async {
     try {
