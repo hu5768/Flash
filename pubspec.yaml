@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # google play
 #version: 1.0.4+9
 #appstore
-version: 1.0.6+10
+version: 1.0.6+11
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
