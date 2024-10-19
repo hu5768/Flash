@@ -13,11 +13,13 @@ import 'package:get/get.dart';
 
 class MySolution extends StatelessWidget {
   final int solutionId;
+  final String profileUrl;
   final mySolutionDetailController = Get.put(MySolutionDetailController());
   final commentController = Get.put(CommentController());
   MySolution({
     super.key,
     required this.solutionId,
+    required this.profileUrl,
   });
 
   @override
@@ -35,47 +37,6 @@ class MySolution extends StatelessWidget {
           children: [
             MySolutionPlayer(
               useUri: mySolutionDetailController.sdm.videoUrl!,
-            ),
-            Positioned(
-              top: 60,
-              left: 15,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    AnalyticsService.buttonClick(
-                      'answer',
-                      '더보기',
-                      '',
-                      '',
-                    );
-                    showModalBottomSheet(
-                      backgroundColor: ColorGroup.modalBGC,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ManageModal(
-                          review: mySolutionDetailController.sdm.review!,
-                          videoUrl: mySolutionDetailController.sdm.videoUrl!,
-                          problemId: '',
-                          solutionId: solutionId,
-                          perceivedDifficulty: mySolutionDetailController
-                                  .sdm.perceivedDifficulty ??
-                              '보통',
-                        );
-                      },
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.more_horiz,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
             ),
             Positioned(
               top: 60,
@@ -203,6 +164,12 @@ class MySolution extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () async {
+                      AnalyticsService.buttonClick(
+                        'commentClick',
+                        '내문제해설에서옴',
+                        '',
+                        '',
+                      );
                       commentController.commentText.clear();
                       await commentController.newFetch(solutionId);
                       showModalBottomSheet(
@@ -210,7 +177,10 @@ class MySolution extends StatelessWidget {
                         context: context,
                         //isScrollControlled: true,
                         builder: (BuildContext context) {
-                          return CommentModal(solutionId: solutionId);
+                          return CommentModal(
+                            solutionId: solutionId,
+                            profileUrl: profileUrl,
+                          );
                         },
                       );
                     },

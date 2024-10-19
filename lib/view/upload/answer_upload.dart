@@ -595,6 +595,12 @@ class DifficultyChip extends StatelessWidget {
           ),
           selected: isSelected,
           onSelected: (value) {
+            AnalyticsService.buttonClick(
+              'voteDiff',
+              difficulty,
+              '',
+              '',
+            );
             uploadController.difficultyLabel.value = difficulty;
           },
         );

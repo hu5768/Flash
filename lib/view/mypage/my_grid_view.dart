@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyGridView extends StatelessWidget {
+  final String profileUrl;
   MyGridView({
     super.key,
+    required this.profileUrl,
   });
   MyGridviewController myGridviewController = Get.put(MyGridviewController());
   @override
@@ -38,6 +40,7 @@ class MyGridView extends StatelessWidget {
                   .toString(),
               uploadedAt: myGridviewController.solutionList[index].uploadedAt
                   .toString(),
+              profileUrl: profileUrl,
             );
           },
         );

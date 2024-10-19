@@ -55,11 +55,6 @@ class ReportList extends StatelessWidget {
               content: content,
             ),
             ReportCard(
-              reson: '마음에 들지 않습니다.',
-              solutionId: solutionId,
-              content: content,
-            ),
-            ReportCard(
               reson: '혐오 발언 또는 상징',
               solutionId: solutionId,
               content: content,

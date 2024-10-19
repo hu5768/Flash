@@ -160,7 +160,8 @@ class _MypageState extends State<Mypage> {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: MyGridView(),
+              child: MyGridView(
+                  profileUrl: mypageController.userModel.profileImageUrl ?? ''),
             ),
           ],
         ),

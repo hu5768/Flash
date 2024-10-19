@@ -10,7 +10,12 @@ import 'package:get/get.dart';
 class MyVideoCard extends StatelessWidget {
   final int solutionId;
   final mySolutionDetailController = Get.put(MySolutionDetailController());
-  final String gymName, sectorName, difficultyName, problemImageUrl, uploadedAt;
+  final String gymName,
+      sectorName,
+      difficultyName,
+      problemImageUrl,
+      uploadedAt,
+      profileUrl;
   MyVideoCard({
     super.key,
     required this.solutionId,
@@ -19,6 +24,7 @@ class MyVideoCard extends StatelessWidget {
     required this.difficultyName,
     required this.problemImageUrl,
     required this.uploadedAt,
+    required this.profileUrl,
   });
 
   @override
@@ -37,6 +43,7 @@ class MyVideoCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => MySolution(
               solutionId: solutionId,
+              profileUrl: profileUrl,
             ),
           ),
         );
