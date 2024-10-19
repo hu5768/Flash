@@ -34,9 +34,9 @@ class MoreproblemModal extends StatelessWidget {
         255,
       ),
       titlePadding: EdgeInsets.fromLTRB(
-        60,
+        45,
         36,
-        60,
+        45,
         0,
       ),
       titleTextStyle: TextStyle(
@@ -77,6 +77,12 @@ class MoreproblemModal extends StatelessWidget {
             height: 49,
             child: OutlinedButton(
               onPressed: () async {
+                AnalyticsService.buttonClick(
+                  'moreProblem',
+                  'googleform',
+                  '',
+                  '',
+                );
                 if (await canLaunchUrl(Uri.parse(inquiryForm))) {
                   await launchUrl(Uri.parse(inquiryForm));
                 } else {
@@ -120,6 +126,12 @@ class MoreproblemModal extends StatelessWidget {
             height: 49,
             child: OutlinedButton(
               onPressed: () {
+                AnalyticsService.buttonClick(
+                  'moreProblem',
+                  '인스타그램dm',
+                  '',
+                  '',
+                );
                 openWeb.OpenInstagram('climbing_answer');
               },
               style: OutlinedButton.styleFrom(
@@ -159,6 +171,12 @@ class MoreproblemModal extends StatelessWidget {
             height: 49,
             child: TextButton(
               onPressed: () {
+                AnalyticsService.buttonClick(
+                  'moreProblem',
+                  '취소',
+                  '',
+                  '',
+                );
                 Navigator.of(
                   context,
                 ).pop();

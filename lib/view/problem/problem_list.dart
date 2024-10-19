@@ -67,6 +67,13 @@ class ProblemList extends StatelessWidget {
                                           SizedBox(height: 5),
                                           GestureDetector(
                                             onTap: () {
+                                              AnalyticsService.buttonClick(
+                                                'findProblem',
+                                                centerTitleController
+                                                    .centerTitle.value,
+                                                '',
+                                                '',
+                                              );
                                               showDialog(
                                                 context: context,
                                                 builder:

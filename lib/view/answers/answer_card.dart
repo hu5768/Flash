@@ -174,14 +174,23 @@ class AnswerCard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () async {
+                    AnalyticsService.buttonClick(
+                      'commentClick',
+                      '문제해설에서옴',
+                      '',
+                      '',
+                    );
                     commentController.commentText.clear();
                     await commentController.newFetch(solutionId);
                     showModalBottomSheet(
                       backgroundColor: ColorGroup.modalBGC,
                       context: context,
-                      //isScrollControlled: true,
+                      isScrollControlled: true,
                       builder: (BuildContext context) {
-                        return CommentModal(solutionId: solutionId);
+                        return CommentModal(
+                          solutionId: solutionId,
+                          profileUrl: profileUrl,
+                        );
                       },
                     );
                   },
