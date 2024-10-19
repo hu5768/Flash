@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answer_player.dart';
@@ -23,6 +24,7 @@ class AnswerCard extends StatelessWidget {
   final bool isUploader;
   final VideoPlayerController videoController;
   final commentController = Get.put(CommentController());
+  final mypageController = Get.put(MypageController());
   final mySolutionDetailController = Get.put(MySolutionDetailController());
   final OpenWeb openWeb = OpenWeb();
   AnswerCard({
@@ -189,7 +191,8 @@ class AnswerCard extends StatelessWidget {
                       builder: (BuildContext context) {
                         return CommentModal(
                           solutionId: solutionId,
-                          profileUrl: profileUrl,
+                          profileUrl:
+                              mypageController.userModel.profileImageUrl ?? "",
                         );
                       },
                     );
