@@ -175,7 +175,7 @@ class MySolution extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: ColorGroup.modalBGC,
                         context: context,
-                        //isScrollControlled: true,
+                        isScrollControlled: true,
                         builder: (BuildContext context) {
                           return CommentModal(
                             solutionId: solutionId,

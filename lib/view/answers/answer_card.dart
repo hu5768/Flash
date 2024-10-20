@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class AnswerCard extends StatelessWidget {
+class AnswerCard extends StatefulWidget {
   final String uploader,
       review,
       instagramId,
@@ -23,10 +23,7 @@ class AnswerCard extends StatelessWidget {
   final int solutionId, commentCount;
   final bool isUploader;
   final VideoPlayerController videoController;
-  final commentController = Get.put(CommentController());
-  final mypageController = Get.put(MypageController());
-  final mySolutionDetailController = Get.put(MySolutionDetailController());
-  final OpenWeb openWeb = OpenWeb();
+
   AnswerCard({
     super.key,
     required this.uploader,
@@ -43,6 +40,55 @@ class AnswerCard extends StatelessWidget {
   });
 
   @override
+  State<AnswerCard> createState() => _AnswerCardState();
+}
+
+class _AnswerCardState extends State<AnswerCard> {
+  final commentController = Get.put(CommentController());
+  final mypageController = Get.put(MypageController());
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
+
+  final OpenWeb openWeb = OpenWeb();
+  bool iscomplet = false;
+  bool pauseIcon = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initvideo();
+  }
+
+  Future<void> initvideo() async {
+    try {
+      if (!widget.videoController.value.isInitialized) {
+        await widget.videoController.initialize();
+        //print('영상 다운');
+      }
+      iscomplet = true;
+      widget.videoController.seekTo(Duration.zero);
+      widget.videoController.addListener(() {
+        if (widget.videoController.value.position ==
+            widget.videoController.value.duration) {
+          // 비디오가 끝났을 때 다시 재생
+          widget.videoController.seekTo(Duration.zero);
+          widget.videoController.play();
+        }
+        if (mounted) {
+          //slider 초기화를 위함
+          setState(() {});
+        }
+      });
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('영상 카드 만들기 오류 $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -54,9 +100,78 @@ class AnswerCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
-          AnswerPlayer(
-            videoController: videoController,
-            useUri: videoUrl,
+          /*AnswerPlayer(
+            videoController: widget.videoController,
+            useUri: widget.videoUrl,
+          ),*/
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 0, 0, 0)),
+            child: iscomplet
+                ? GestureDetector(
+                    onTap: () {
+                      if (widget.videoController.value.isPlaying) {
+                        widget.videoController.pause();
+                        setState(() {
+                          pauseIcon = true;
+                        });
+                      } else {
+                        widget.videoController.play();
+                        setState(() {
+                          pauseIcon = false;
+                        });
+                      }
+                    },
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.contain,
+                          child: SizedBox(
+                            height: 720,
+                            child: AspectRatio(
+                              aspectRatio:
+                                  widget.videoController.value.aspectRatio,
+                              child: VideoPlayer(
+                                widget.videoController,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          child: pauseIcon
+                              ? Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 60, 60, 60)
+                                        .withOpacity(0.7), // 배경색 설정
+                                    shape: BoxShape.circle, // 동그란 모양으로 설정
+                                  ),
+                                  child: const Icon(
+                                    Icons.pause,
+                                    color: Colors.white,
+                                    size: 50,
+                                  ),
+                                )
+                              : SizedBox(),
+                        ),
+                      ],
+                    ),
+                  )
+                : const Center(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        backgroundColor: ColorGroup.modalSBtnBGC,
+                        color: ColorGroup.selectBtnBGC,
+                        strokeWidth: 10,
+                      ),
+                    ),
+                  ),
           ),
           Positioned(
             bottom: 0,
@@ -93,7 +208,7 @@ class AnswerCard extends StatelessWidget {
                               );
                             },
                             child: ClipOval(
-                              child: profileUrl == ''
+                              child: widget.profileUrl == ''
                                   ? Image.asset(
                                       'assets/images/problem.png',
                                       height: 45,
@@ -101,7 +216,7 @@ class AnswerCard extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     )
                                   : Image.network(
-                                      profileUrl,
+                                      widget.profileUrl,
                                       height: 45,
                                       width: 45,
                                       fit: BoxFit.cover,
@@ -122,7 +237,7 @@ class AnswerCard extends StatelessWidget {
                                   );
                                 },
                                 child: Text(
-                                  '$uploader',
+                                  '${widget.uploader}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -133,7 +248,7 @@ class AnswerCard extends StatelessWidget {
                               const SizedBox(
                                 width: 20,
                               ),
-                              instagramId == ''
+                              widget.instagramId == ''
                                   ? SizedBox()
                                   : GestureDetector(
                                       onTap: () async {
@@ -144,11 +259,11 @@ class AnswerCard extends StatelessWidget {
                                           '',
                                         );
                                         await openWeb.OpenInstagram(
-                                          instagramId,
+                                          widget.instagramId,
                                         );
                                       },
                                       child: Text(
-                                        "@$instagramId",
+                                        "@${widget.instagramId}",
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -164,7 +279,47 @@ class AnswerCard extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  OverflowTextWithMore(text: review),
+                  OverflowTextWithMore(text: widget.review),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              pauseIcon ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Expanded(
+                            child: Slider(
+                              activeColor: Colors.white,
+                              inactiveColor: Color.fromARGB(102, 217, 217, 217),
+                              thumbColor:
+                                  const Color.fromARGB(0, 255, 255, 255),
+                              value: widget
+                                  .videoController.value.position.inSeconds
+                                  .toDouble(),
+                              max: widget
+                                  .videoController.value.duration.inSeconds
+                                  .toDouble(),
+                              onChanged: (double var1) {
+                                final position =
+                                    Duration(seconds: var1.toInt());
+                                widget.videoController.seekTo(position);
+                              },
+                            ),
+                          ),
+                          Text(
+                            '${widget.videoController.value.position.inMinutes.toString().padLeft(2, '0')}:${widget.videoController.value.position.inSeconds.toString().padLeft(2, '0')}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -183,14 +338,14 @@ class AnswerCard extends StatelessWidget {
                       '',
                     );
                     commentController.commentText.clear();
-                    await commentController.newFetch(solutionId);
+                    await commentController.newFetch(widget.solutionId);
                     showModalBottomSheet(
                       backgroundColor: ColorGroup.modalBGC,
                       context: context,
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         return CommentModal(
-                          solutionId: solutionId,
+                          solutionId: widget.solutionId,
                           profileUrl:
                               mypageController.userModel.profileImageUrl ?? "",
                         );
@@ -204,7 +359,7 @@ class AnswerCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  commentCount.toString(),
+                  widget.commentCount.toString(),
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
@@ -227,27 +382,28 @@ class AnswerCard extends StatelessWidget {
                         '',
                       );
 
-                      await mySolutionDetailController.fetchData(solutionId);
+                      await mySolutionDetailController
+                          .fetchData(widget.solutionId);
                       showModalBottomSheet(
                         backgroundColor: ColorGroup.modalBGC,
                         context: context,
                         builder: (BuildContext context) {
-                          return isUploader
+                          return widget.isUploader
                               ? ManageModal(
                                   review:
                                       mySolutionDetailController.sdm.review!,
-                                  videoUrl: videoUrl,
-                                  problemId: problemId,
-                                  solutionId: solutionId,
+                                  videoUrl: widget.videoUrl,
+                                  problemId: widget.problemId,
+                                  solutionId: widget.solutionId,
                                   perceivedDifficulty:
                                       mySolutionDetailController
                                               .sdm.perceivedDifficulty ??
                                           '보통',
                                 )
                               : BlockModal(
-                                  solutionId: solutionId,
-                                  problemId: problemId,
-                                  uploaderId: uploaderId,
+                                  solutionId: widget.solutionId,
+                                  problemId: widget.problemId,
+                                  uploaderId: widget.uploaderId,
                                 );
                         },
                       );
