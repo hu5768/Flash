@@ -294,22 +294,35 @@ class _AnswerCardState extends State<AnswerCard> {
                             ),
                           ),
                           Expanded(
-                            child: Slider(
-                              activeColor: Colors.white,
-                              inactiveColor: Color.fromARGB(102, 217, 217, 217),
-                              thumbColor:
-                                  const Color.fromARGB(0, 255, 255, 255),
-                              value: widget
-                                  .videoController.value.position.inSeconds
-                                  .toDouble(),
-                              max: widget
-                                  .videoController.value.duration.inSeconds
-                                  .toDouble(),
-                              onChanged: (double var1) {
-                                final position =
-                                    Duration(seconds: var1.toInt());
-                                widget.videoController.seekTo(position);
-                              },
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius:
+                                      1.0, // thumb 크기를 작게 설정 (기본값 10.0)
+                                ),
+                                overlayShape: RoundSliderOverlayShape(
+                                  overlayRadius: 6.0,
+                                ), // 오버레이 크기 줄이기
+                                overlayColor: Colors.transparent,
+                              ),
+                              child: Slider(
+                                activeColor: Colors.white,
+                                inactiveColor:
+                                    Color.fromARGB(102, 217, 217, 217),
+                                thumbColor:
+                                    const Color.fromARGB(0, 255, 255, 255),
+                                value: widget
+                                    .videoController.value.position.inSeconds
+                                    .toDouble(),
+                                max: widget
+                                    .videoController.value.duration.inSeconds
+                                    .toDouble(),
+                                onChanged: (double var1) {
+                                  final position =
+                                      Duration(seconds: var1.toInt());
+                                  widget.videoController.seekTo(position);
+                                },
+                              ),
                             ),
                           ),
                           Text(
