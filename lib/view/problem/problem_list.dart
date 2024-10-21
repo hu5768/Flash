@@ -26,118 +26,113 @@ class ProblemList extends StatelessWidget {
       floatingActionButton:
           SortedButton(problemTitleController: problemTitleController),
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 400,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              GetX<ProblemListController>(
-                builder: (controller) {
-                  return Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        await problemListController.newFetch();
-                        problemListController.ScrollUp();
-                      },
-                      child: ListView.builder(
-                        controller: problemListController.scrollController,
-                        itemCount: problemListController.problemList.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              problemListController.problemList[index].id ==
-                                      'no'
-                                  ? Center(
-                                      child: Column(
-                                        children: [
-                                          /*ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text('찾으시는 문제가 없으신가요?'),
-                                          ),*/
-                                          Text(
-                                            '더 이상 문제가 없습니다',
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            GetX<ProblemListController>(
+              builder: (controller) {
+                return Container(
+                  height: 400,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await problemListController.newFetch();
+                      problemListController.ScrollUp();
+                    },
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      controller: problemListController.scrollController,
+                      itemCount: problemListController.problemList.length,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            problemListController.problemList[index].id == 'no'
+                                ? Center(
+                                    child: Column(
+                                      children: [
+                                        /*ElevatedButton(
+                                          onPressed: () {},
+                                          child: Text('찾으시는 문제가 없으신가요?'),
+                                        ),*/
+                                        Text(
+                                          '더 이상 문제가 없습니다',
+                                          style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        GestureDetector(
+                                          onTap: () {
+                                            AnalyticsService.buttonClick(
+                                              'findProblem',
+                                              centerTitleController
+                                                  .centerTitle.value,
+                                              '',
+                                              '',
+                                            );
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MoreproblemModal();
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            '찾으시는 문제가 없으신가요?',
                                             style: TextStyle(
-                                              fontSize: 19,
-                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
-                                          SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              AnalyticsService.buttonClick(
-                                                'findProblem',
-                                                centerTitleController
-                                                    .centerTitle.value,
-                                                '',
-                                                '',
-                                              );
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return MoreproblemModal();
-                                                },
-                                              );
-                                            },
-                                            child: Text(
-                                              '찾으시는 문제가 없으신가요?',
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 70,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : ProblemCard(
-                                      gymName: centerTitleController
-                                          .centerTitle.value,
-                                      id: problemListController
-                                          .problemList[index].id
-                                          .toString(),
-                                      sector: problemListController
-                                          .problemList[index].sector
-                                          .toString(),
-                                      difficulty: problemListController
-                                          .problemList[index].difficulty
-                                          .toString(),
-                                      settingDate: problemListController
-                                          .problemList[index].settingDate
-                                          .toString(),
-                                      removalDate: problemListController
-                                          .problemList[index].removalDate
-                                          .toString(),
-                                      hasSolution: problemListController
-                                          .problemList[index].hasSolution!,
-                                      imageUrl: problemListController
-                                          .problemList[index].imageUrl
-                                          .toString(),
-                                      isHoney: problemListController
-                                              .problemList[index].isHoney ??
-                                          false,
+                                        ),
+                                        SizedBox(
+                                          height: 70,
+                                        ),
+                                      ],
                                     ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+                                  )
+                                : ProblemCard(
+                                    gymName:
+                                        centerTitleController.centerTitle.value,
+                                    id: problemListController
+                                        .problemList[index].id
+                                        .toString(),
+                                    sector: problemListController
+                                        .problemList[index].sector
+                                        .toString(),
+                                    difficulty: problemListController
+                                        .problemList[index].difficulty
+                                        .toString(),
+                                    settingDate: problemListController
+                                        .problemList[index].settingDate
+                                        .toString(),
+                                    removalDate: problemListController
+                                        .problemList[index].removalDate
+                                        .toString(),
+                                    hasSolution: problemListController
+                                        .problemList[index].hasSolution!,
+                                    imageUrl: problemListController
+                                        .problemList[index].imageUrl
+                                        .toString(),
+                                    isHoney: problemListController
+                                            .problemList[index].isHoney ??
+                                        false,
+                                  ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
