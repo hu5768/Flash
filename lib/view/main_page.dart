@@ -215,7 +215,7 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
   @override
-  Size get preferredSize => Size.fromHeight(52);
+  Size get preferredSize => Size.fromHeight(60);
 
   CenterTitleController centerTitleController = Get.find();
   ProblemFilterController problemFilterController = Get.find();
@@ -225,14 +225,13 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
       backgroundColor: ColorGroup.appbarBGC,
       title: Container(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
         height: AppBar().preferredSize.height,
         decoration: const BoxDecoration(),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MapButton(centerTitleController: centerTitleController),
               GestureDetector(
                 onTap: () {
                   AnalyticsService.buttonClick(
@@ -252,7 +251,8 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child:
                     TitleButton(centerTitleController: centerTitleController),
               ),
-              Obx(
+              MapButton(centerTitleController: centerTitleController),
+              /*Obx(
                 () => Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -286,7 +286,7 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -353,12 +353,12 @@ class TitleButton extends StatelessWidget {
           return Text(
             centerTitleController.centerTitle.toString(),
             style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
             ),
           );
         }),
-        const Icon(Icons.keyboard_arrow_down_rounded),
+        const Icon(Icons.arrow_drop_down),
       ],
     );
   }
@@ -374,34 +374,29 @@ class MapButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: Colors.grey[200], // 배경색 설정
-        shape: BoxShape.circle, // 동그란 모양으로 설정
-      ),
-      child: IconButton(
-        onPressed: () {
-          AnalyticsService.buttonClick(
-            'MainPage',
-            '지도 버튼',
-            centerTitleController.centerTitle.value,
-            '',
-          );
-          showModalBottomSheet(
-            backgroundColor: ColorGroup.modalBGC,
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return MapModal(
-                mapImgUrl: centerTitleController.mapImgUrl,
-                gymName: centerTitleController.centerTitle.string,
-              );
-            },
-          );
-        },
-        icon: const Icon(Icons.map),
+    return IconButton(
+      onPressed: () {
+        AnalyticsService.buttonClick(
+          'MainPage',
+          '지도 버튼',
+          centerTitleController.centerTitle.value,
+          '',
+        );
+        showModalBottomSheet(
+          backgroundColor: ColorGroup.modalBGC,
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return MapModal(
+              mapImgUrl: centerTitleController.mapImgUrl,
+              gymName: centerTitleController.centerTitle.string,
+            );
+          },
+        );
+      },
+      icon: const Icon(
+        Icons.info_outline,
+        size: 32,
       ),
     );
   }

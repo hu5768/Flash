@@ -119,6 +119,7 @@ flutter:
     - assets/images/background1.jpeg
     - assets/images/profile.png
     - assets/images/gesture_guide.png
+    - assets/images/gym_map.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

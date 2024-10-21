@@ -63,7 +63,7 @@ class ProblemCard extends StatelessWidget {
         child: Stack(
           children: [
             AspectRatio(
-              aspectRatio: 3 / 4,
+              aspectRatio: 1 / 1,
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,

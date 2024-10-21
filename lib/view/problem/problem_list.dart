@@ -8,6 +8,7 @@ import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
+import 'package:flash/view/problem/problem_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,11 +29,12 @@ class ProblemList extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            ProblemFilter(),
             const SizedBox(height: 10),
             GetX<ProblemListController>(
               builder: (controller) {
                 return Container(
-                  height: 400,
+                  height: 300,
                   child: RefreshIndicator(
                     onRefresh: () async {
                       await problemListController.newFetch();

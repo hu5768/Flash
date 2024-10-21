@@ -13,6 +13,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
@@ -41,6 +42,7 @@ Future<void> main() async {
       fatal: true,
     ),
   );
+  debugPaintSizeEnabled = false;
   runApp(const App());
 }
 
