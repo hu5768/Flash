@@ -66,12 +66,10 @@ class FilterModal extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       FilterTab(
-                        problemFilterController: problemFilterController,
                         index: 0,
                         title: "난이도",
                       ),
                       FilterTab(
-                        problemFilterController: problemFilterController,
                         index: 1,
                         title: "섹터",
                       ),
@@ -192,13 +190,12 @@ class FilterModal extends StatelessWidget {
 class FilterTab extends StatelessWidget {
   FilterTab({
     super.key,
-    required this.problemFilterController,
     required this.index,
     required this.title,
   });
   final int index;
   final String title;
-  final ProblemFilterController problemFilterController;
+  final ProblemFilterController problemFilterController = Get.find();
   final CenterTitleController centerTitleController = Get.find(); //analytics
   @override
   Widget build(BuildContext context) {

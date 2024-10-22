@@ -130,7 +130,8 @@ class _AnswerCardState extends State<AnswerCard> {
                         FittedBox(
                           fit: BoxFit.contain,
                           child: SizedBox(
-                            height: 720,
+                            //height: double.infinity,
+                            height: MediaQuery.of(context).size.height,
                             child: AspectRatio(
                               aspectRatio:
                                   widget.videoController.value.aspectRatio,

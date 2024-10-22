@@ -59,6 +59,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
       //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.video,
+        // allowCompression: false,
       );
 
       if (result != null) {

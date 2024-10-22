@@ -90,6 +90,15 @@ class ProblemFilterController extends GetxController {
     }
   }
 
+  void SectorSelection(String option) {
+    if (allSelection[1].contains(option)) {
+      allSelection[1].remove(option);
+    } else {
+      //allSelection[1].clear();
+      allSelection[1].add(option);
+    }
+  }
+
   int countFilter() {
     //필터 갯수 리턴
     int cnt = 0;
