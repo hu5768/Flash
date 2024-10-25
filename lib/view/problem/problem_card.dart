@@ -96,35 +96,45 @@ class ProblemCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 60,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 15,
-                            height: 15,
-                            decoration: BoxDecoration(
-                              color: CenterColor.TheClimbColorList[difficulty],
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white, // 테두리 색상
-                                width: 1,
+                    Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color:
+                                      CenterColor.TheClimbColorList[difficulty],
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white, // 테두리 색상
+                                    width: 1,
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 4),
+                              Text(
+                                difficulty,
+                                style: TextStyle(color: ColorGroup.btnBGC),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 4),
+                        ),
+                        if (isHoney)
                           Text(
-                            difficulty,
-                            style: TextStyle(color: ColorGroup.btnBGC),
+                            ' 🍯',
+                            style: TextStyle(fontSize: 20),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
                     Text(
                       "$sector Sector",
@@ -160,7 +170,7 @@ class ProblemCard extends StatelessWidget {
                         size: 24,
                       ),
                       Text(
-                        solutionCount.toString(),
+                        ' ' + solutionCount.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],

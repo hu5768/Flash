@@ -48,7 +48,7 @@ class MapModal extends StatelessWidget {
                 return const SizedBox(
                   width: 350,
                   height: 350,
-                  child: Text("지도를 불러오지 못했습니다."),
+                  child: Text("일정을 불러오지 못했습니다."),
                 );
               },
             ),

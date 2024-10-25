@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/problem/sort_menu_button.dart';
@@ -13,13 +14,37 @@ class ProblemFilter extends StatelessWidget {
   ProblemFilter({super.key});
   final ProblemFilterController problemFilterController = Get.find();
   final ProblemListController problemListController = Get.find();
+  final CenterTitleController centerTitleController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
           SizedBox(height: 20),
-          Image.asset('assets/images/gym_map.png'),
+          Obx(
+            () {
+              String mapImgUrl =
+                  centerTitleController.centerDetailModel.value.mapImageUrl ??
+                      "";
+              print(mapImgUrl);
+              return mapImgUrl != ''
+                  ? SizedBox(
+                      height: 112,
+                      child: Image.network(
+                        centerTitleController
+                            .centerDetailModel.value.mapImageUrl!,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const SizedBox(
+                            width: 350,
+                            height: 350,
+                            child: Text("지도를 불러오지 못했습니다."),
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox();
+            },
+          ),
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -173,14 +198,17 @@ class SectorFilter extends StatelessWidget {
                           selected: isSelected,
                           visualDensity: VisualDensity(vertical: 0.0),
                           showCheckmark: false,
-                          label: Text(
-                            option,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: isSelected
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 17, 17, 17),
-                              height: 0,
+                          label: Align(
+                            alignment: Alignment(0, -1.2),
+                            child: Text(
+                              option,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: isSelected
+                                    ? Colors.white
+                                    : Color.fromARGB(255, 17, 17, 17),
+                                height: 0,
+                              ),
                             ),
                           ),
                           backgroundColor: Colors.white,

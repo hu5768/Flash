@@ -5,8 +5,8 @@ class SolutionModel {
   String? instagramId;
   String? videoUrl;
   String? uploaderId;
-  int? uploaderHeight;
-  int? uploaderReach;
+  double? uploaderHeight;
+  double? uploaderReach;
   String? uploaderGender;
   bool? isUploader;
   String? profileImageUrl;

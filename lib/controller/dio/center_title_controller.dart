@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/model/center_detail_model.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/main_page.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,8 @@ import '../problem_filter_controller.dart';
 class CenterTitleController extends GetxController {
   var centerId = 1.obs;
   var centerTitle = ''.obs;
-  String mapImgUrl = '';
-  List<String> gradeDifficulties = [];
-  List<String> secterList = [];
+
+  var centerDetailModel = CenterDetailModel().obs;
   dynamic mainContext;
 
   @override
@@ -37,18 +37,14 @@ class CenterTitleController extends GetxController {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get("/gyms/${centerId.value}");
-      print(response.statusCode);
+
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
-
+      centerDetailModel.value = CenterDetailModel.fromJson(resMap);
       centerTitle.value = resMap['gymName'];
-      mapImgUrl = resMap['mapImageUrl'];
-
       ProblemFilterController problemFilterController = Get.find();
-      gradeDifficulties = List<String>.from(resMap['difficulties']);
-      problemFilterController.gradeOption = gradeDifficulties;
-      secterList = List<String>.from(resMap['sectors']);
-      problemFilterController.sectorOption = secterList;
-
+      problemFilterController.gradeOption =
+          centerDetailModel.value.difficulties!;
+      problemFilterController.sectorOption = centerDetailModel.value.sectors!;
       await problemFilterController.allInit();
     } catch (e) {
       print('암장 타이틀 실패$e');

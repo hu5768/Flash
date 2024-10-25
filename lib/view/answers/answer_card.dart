@@ -8,6 +8,7 @@ import 'package:flash/view/modals/block_modal.dart';
 import 'package:flash/view/modals/comment_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
@@ -20,7 +21,8 @@ class AnswerCard extends StatefulWidget {
       uploaderId,
       uploaderGender,
       profileUrl;
-  final int solutionId, commentCount, uploaderHeight, uploaderReach;
+  final int solutionId, commentCount;
+  final double uploaderHeight, uploaderReach;
   final bool isUploader;
   final VideoPlayerController videoController;
 
@@ -150,24 +152,6 @@ class _AnswerCardState extends State<AnswerCard> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          child: pauseIcon
-                              ? Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 60, 60, 60)
-                                        .withOpacity(0.7), // 배경색 설정
-                                    shape: BoxShape.circle, // 동그란 모양으로 설정
-                                  ),
-                                  child: const Icon(
-                                    Icons.pause,
-                                    color: Colors.white,
-                                    size: 50,
-                                  ),
-                                )
-                              : SizedBox(),
-                        ),
                       ],
                     ),
                   )
@@ -238,8 +222,8 @@ class _AnswerCardState extends State<AnswerCard> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/icon/comment_icon.png',
+                                    SvgPicture.asset(
+                                      'assets/images/icon/comment_icon.svg',
                                     ),
                                     Text(
                                       widget.commentCount.toString(),
@@ -419,8 +403,8 @@ class _AnswerCardState extends State<AnswerCard> {
                               ),
                               child: Row(
                                 children: [
-                                  Image.asset(
-                                    'assets/images/icon/height_icon.png',
+                                  SvgPicture.asset(
+                                    'assets/images/icon/height_icon.svg',
                                   ),
                                   Text(
                                     widget.uploaderHeight.toString(),
@@ -441,8 +425,8 @@ class _AnswerCardState extends State<AnswerCard> {
                               ),
                               child: Row(
                                 children: [
-                                  Image.asset(
-                                    'assets/images/icon/width_icon.png',
+                                  SvgPicture.asset(
+                                    'assets/images/icon/width_icon.svg',
                                   ),
                                   Text(
                                     widget.uploaderReach.toString(),
@@ -486,7 +470,7 @@ class _AnswerCardState extends State<AnswerCard> {
                               }
                             },
                             icon: Icon(
-                              pauseIcon ? Icons.pause : Icons.play_arrow,
+                              pauseIcon ? Icons.play_arrow : Icons.pause,
                               color: Colors.white,
                             ),
                           ),

@@ -156,10 +156,16 @@ class ProblemDetailCard extends StatelessWidget {
                               color: Colors.white,
                               size: 24,
                             ),
-                            Text(
-                              ' 3',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
+                            Obx(
+                              () {
+                                return Text(
+                                  ' ' +
+                                      answerDataController.solutionCount.value
+                                          .toString(),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                );
+                              },
                             ),
                           ],
                         ),

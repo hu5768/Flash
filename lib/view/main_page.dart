@@ -295,11 +295,11 @@ class MapButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         AnalyticsService.buttonClick(
           'MainPage',
-          '지도 버튼',
+          '일정 버튼',
           centerTitleController.centerTitle.value,
           '',
         );
@@ -309,13 +309,14 @@ class MapButton extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return MapModal(
-              mapImgUrl: centerTitleController.mapImgUrl,
+              mapImgUrl: centerTitleController
+                  .centerDetailModel.value.calendarImageUrl!,
               gymName: centerTitleController.centerTitle.string,
             );
           },
         );
       },
-      icon: const Icon(
+      child: const Icon(
         Icons.info_outline,
         size: 32,
       ),
