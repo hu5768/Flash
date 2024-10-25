@@ -28,30 +28,23 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
   }
 
   Future<void> initvideo() async {
-    /*_videoController = VideoPlayerController.network(
-      widget.useUri,
-
-      // 비디오 URL
-    );*/
-    // print("다운 전 영상 높이 ${widget.videoController.value.size.height}");
     try {
       if (!widget.videoController.value.isInitialized) {
         await widget.videoController.initialize();
         //print('영상 다운');
       }
-      //  print("다운 후 영상 높이 ${widget.videoController.value.size.height}");
       iscomplet = true;
-
       widget.videoController.seekTo(Duration.zero);
-      //widget.videoController.play();
-      // print('영상 실행 ');
       widget.videoController.addListener(() {
         if (widget.videoController.value.position ==
             widget.videoController.value.duration) {
           // 비디오가 끝났을 때 다시 재생
-
           widget.videoController.seekTo(Duration.zero);
           widget.videoController.play();
+        }
+        if (mounted) {
+          //slider 초기화를 위함
+          setState(() {});
         }
       });
 
@@ -87,16 +80,6 @@ class _AnswerPlayerState extends State<AnswerPlayer> {
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  /*FittedBox(
-                    fit: BoxFit.contain,
-                    child: SizedBox(
-                      width: widget.videoController.value.size.width,
-                      height: widget.videoController.value.size.height,
-                      child: VideoPlayer(
-                        widget.videoController,
-                      ),
-                    ),
-                  ),*/
                   FittedBox(
                     fit: BoxFit.contain,
                     child: SizedBox(

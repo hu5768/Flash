@@ -15,6 +15,7 @@ class AnswerDataController extends GetxController {
   var answerList = <Widget>[].obs;
   String difficulty = '';
   String sector = '';
+  var solutionCount = 0.obs;
   List<VideoPlayerController?> videoControllerList = [];
 
   final AnswerCarouselController answerCarouselController =
@@ -67,6 +68,7 @@ class AnswerDataController extends GetxController {
 
       List<Map<String, dynamic>> resMapList =
           List<Map<String, dynamic>>.from(response.data["solutions"]);
+
       List<SolutionModel> sm =
           resMapList.map((e) => SolutionModel.fromJson(e)).toList();
       videoControllerList = List.generate(sm.length, (index) => null);
@@ -89,10 +91,14 @@ class AnswerDataController extends GetxController {
             isUploader: entry.value.isUploader ?? false,
             profileUrl: entry.value.profileImageUrl ?? '',
             commentCount: entry.value.commentCount ?? 0,
+            uploaderGender: entry.value.uploaderGender ?? '',
+            uploaderHeight: entry.value.uploaderHeight ?? 0,
+            uploaderReach: entry.value.uploaderReach ?? 0,
           );
         },
       ).toList();
       print("답지 적용 개수 ${solutionVideoList.length}");
+      solutionCount.value = solutionVideoList.length;
       answerList.addAll(solutionVideoList);
     } catch (e) {
       if (e is DioException) {

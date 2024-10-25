@@ -4,29 +4,28 @@ import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/open_web.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
-import 'package:flash/view/answers/answer_player.dart';
 import 'package:flash/view/modals/block_modal.dart';
 import 'package:flash/view/modals/comment_modal.dart';
 import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class AnswerCard extends StatelessWidget {
+class AnswerCard extends StatefulWidget {
   final String uploader,
       review,
       instagramId,
       videoUrl,
       problemId,
       uploaderId,
+      uploaderGender,
       profileUrl;
   final int solutionId, commentCount;
+  final double uploaderHeight, uploaderReach;
   final bool isUploader;
   final VideoPlayerController videoController;
-  final commentController = Get.put(CommentController());
-  final mypageController = Get.put(MypageController());
-  final mySolutionDetailController = Get.put(MySolutionDetailController());
-  final OpenWeb openWeb = OpenWeb();
+
   AnswerCard({
     super.key,
     required this.uploader,
@@ -40,7 +39,59 @@ class AnswerCard extends StatelessWidget {
     required this.isUploader,
     required this.profileUrl,
     required this.commentCount,
+    required this.uploaderGender,
+    required this.uploaderHeight,
+    required this.uploaderReach,
   });
+
+  @override
+  State<AnswerCard> createState() => _AnswerCardState();
+}
+
+class _AnswerCardState extends State<AnswerCard> {
+  final commentController = Get.put(CommentController());
+  final mypageController = Get.put(MypageController());
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
+
+  final OpenWeb openWeb = OpenWeb();
+  bool iscomplet = false;
+  bool pauseIcon = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initvideo();
+  }
+
+  Future<void> initvideo() async {
+    try {
+      if (!widget.videoController.value.isInitialized) {
+        await widget.videoController.initialize();
+        //print('영상 다운');
+      }
+      iscomplet = true;
+      widget.videoController.seekTo(Duration.zero);
+      widget.videoController.addListener(() {
+        if (widget.videoController.value.position ==
+            widget.videoController.value.duration) {
+          // 비디오가 끝났을 때 다시 재생
+          widget.videoController.seekTo(Duration.zero);
+          widget.videoController.play();
+        }
+        if (mounted) {
+          //slider 초기화를 위함
+          setState(() {});
+        }
+      });
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('영상 카드 만들기 오류 $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +105,67 @@ class AnswerCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
-          AnswerPlayer(
-            videoController: videoController,
-            useUri: videoUrl,
+          /*AnswerPlayer(
+            videoController: widget.videoController,
+            useUri: widget.videoUrl,
+          ),*/
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 0, 0, 0)),
+            child: iscomplet
+                ? GestureDetector(
+                    onTap: () {
+                      AnalyticsService.buttonClick(
+                        'videoPauseButton',
+                        '하단탭',
+                        '',
+                        '',
+                      );
+                      if (widget.videoController.value.isPlaying) {
+                        widget.videoController.pause();
+                        setState(() {
+                          pauseIcon = true;
+                        });
+                      } else {
+                        widget.videoController.play();
+                        setState(() {
+                          pauseIcon = false;
+                        });
+                      }
+                    },
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.contain,
+                          child: SizedBox(
+                            //height: double.infinity,
+                            height: MediaQuery.of(context).size.height,
+                            child: AspectRatio(
+                              aspectRatio:
+                                  widget.videoController.value.aspectRatio,
+                              child: VideoPlayer(
+                                widget.videoController,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const Center(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        backgroundColor: ColorGroup.modalSBtnBGC,
+                        color: ColorGroup.selectBtnBGC,
+                        strokeWidth: 10,
+                      ),
+                    ),
+                  ),
           ),
           Positioned(
             bottom: 0,
@@ -79,6 +188,111 @@ class AnswerCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  AnalyticsService.buttonClick(
+                                    'commentClick',
+                                    '문제해설에서옴',
+                                    '',
+                                    '',
+                                  );
+                                  commentController.commentText.clear();
+                                  await commentController
+                                      .newFetch(widget.solutionId);
+                                  showModalBottomSheet(
+                                    backgroundColor: ColorGroup.modalBGC,
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return CommentModal(
+                                        solutionId: widget.solutionId,
+                                        profileUrl: mypageController
+                                                .userModel.profileImageUrl ??
+                                            "",
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/icon/comment_icon.svg',
+                                    ),
+                                    Text(
+                                      widget.commentCount.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.5,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () async {
+                              AnalyticsService.buttonClick(
+                                'answer',
+                                '더보기',
+                                '',
+                                '',
+                              );
+
+                              await mySolutionDetailController
+                                  .fetchData(widget.solutionId);
+                              showModalBottomSheet(
+                                backgroundColor: ColorGroup.modalBGC,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return widget.isUploader
+                                      ? ManageModal(
+                                          review: mySolutionDetailController
+                                              .sdm.review!,
+                                          videoUrl: widget.videoUrl,
+                                          problemId: widget.problemId,
+                                          solutionId: widget.solutionId,
+                                          perceivedDifficulty:
+                                              mySolutionDetailController.sdm
+                                                      .perceivedDifficulty ??
+                                                  '보통',
+                                        )
+                                      : BlockModal(
+                                          solutionId: widget.solutionId,
+                                          problemId: widget.problemId,
+                                          uploaderId: widget.uploaderId,
+                                        );
+                                },
+                              );
+                            },
+                            child: SizedBox(
+                              height: 42,
+                              width: 42,
+                              child: Center(
+                                child: const Icon(
+                                  Icons.more_horiz_outlined,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
@@ -93,7 +307,7 @@ class AnswerCard extends StatelessWidget {
                               );
                             },
                             child: ClipOval(
-                              child: profileUrl == ''
+                              child: widget.profileUrl == ''
                                   ? Image.asset(
                                       'assets/images/problem.png',
                                       height: 45,
@@ -101,7 +315,7 @@ class AnswerCard extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     )
                                   : Image.network(
-                                      profileUrl,
+                                      widget.profileUrl,
                                       height: 45,
                                       width: 45,
                                       fit: BoxFit.cover,
@@ -122,7 +336,7 @@ class AnswerCard extends StatelessWidget {
                                   );
                                 },
                                 child: Text(
-                                  '$uploader',
+                                  '${widget.uploader}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -133,7 +347,7 @@ class AnswerCard extends StatelessWidget {
                               const SizedBox(
                                 width: 20,
                               ),
-                              instagramId == ''
+                              widget.instagramId == ''
                                   ? SizedBox()
                                   : GestureDetector(
                                       onTap: () async {
@@ -144,11 +358,11 @@ class AnswerCard extends StatelessWidget {
                                           '',
                                         );
                                         await openWeb.OpenInstagram(
-                                          instagramId,
+                                          widget.instagramId,
                                         );
                                       },
                                       child: Text(
-                                        "@$instagramId",
+                                        "@${widget.instagramId}",
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -159,108 +373,157 @@ class AnswerCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          if (widget.uploaderGender != '')
+                            Container(
+                              height: 32,
+                              width: 32,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                widget.uploaderGender == 'MALE'
+                                    ? Icons.male
+                                    : Icons.female_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                          SizedBox(width: 4),
+                          if (widget.uploaderHeight != 0)
+                            Container(
+                              height: 32,
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/icon/height_icon.svg',
+                                  ),
+                                  Text(
+                                    widget.uploaderHeight.toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          SizedBox(width: 4),
+                          if (widget.uploaderReach != 0)
+                            Container(
+                              height: 32,
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/icon/width_icon.svg',
+                                  ),
+                                  Text(
+                                    widget.uploaderReach.toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  OverflowTextWithMore(text: review),
+                  OverflowTextWithMore(text: widget.review),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              AnalyticsService.buttonClick(
+                                'videoPauseButton',
+                                '중앙탭',
+                                '',
+                                '',
+                              );
+                              if (widget.videoController.value.isPlaying) {
+                                widget.videoController.pause();
+                                setState(() {
+                                  pauseIcon = true;
+                                });
+                              } else {
+                                widget.videoController.play();
+                                setState(() {
+                                  pauseIcon = false;
+                                });
+                              }
+                            },
+                            icon: Icon(
+                              pauseIcon ? Icons.play_arrow : Icons.pause,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Expanded(
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius:
+                                      1.0, // thumb 크기를 작게 설정 (기본값 10.0)
+                                ),
+                                overlayShape: RoundSliderOverlayShape(
+                                  overlayRadius: 6.0,
+                                ), // 오버레이 크기 줄이기
+                                overlayColor: Colors.transparent,
+                              ),
+                              child: Slider(
+                                activeColor: Colors.white,
+                                inactiveColor:
+                                    Color.fromARGB(102, 217, 217, 217),
+                                thumbColor:
+                                    const Color.fromARGB(0, 255, 255, 255),
+                                value: widget
+                                    .videoController.value.position.inSeconds
+                                    .toDouble(),
+                                max: widget
+                                    .videoController.value.duration.inSeconds
+                                    .toDouble(),
+                                onChanged: (double var1) {
+                                  AnalyticsService.buttonClick(
+                                    'videoPauseButton',
+                                    '슬라이더 사용',
+                                    '',
+                                    '',
+                                  );
+                                  final position =
+                                      Duration(seconds: var1.toInt());
+                                  widget.videoController.seekTo(position);
+                                },
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${widget.videoController.value.position.inMinutes.toString().padLeft(2, '0')}:${widget.videoController.value.position.inSeconds.toString().padLeft(2, '0')}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ), //오른쪽 col
-          Positioned(
-            right: 20,
-            bottom: 90,
-            child: Column(
-              children: [
-                IconButton(
-                  onPressed: () async {
-                    AnalyticsService.buttonClick(
-                      'commentClick',
-                      '문제해설에서옴',
-                      '',
-                      '',
-                    );
-                    commentController.commentText.clear();
-                    await commentController.newFetch(solutionId);
-                    showModalBottomSheet(
-                      backgroundColor: ColorGroup.modalBGC,
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return CommentModal(
-                          solutionId: solutionId,
-                          profileUrl:
-                              mypageController.userModel.profileImageUrl ?? "",
-                        );
-                      },
-                    );
-                  },
-                  icon: Icon(
-                    Icons.comment,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                ),
-                Text(
-                  commentCount.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                SizedBox(height: 15),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: () async {
-                      AnalyticsService.buttonClick(
-                        'answer',
-                        '더보기',
-                        '',
-                        '',
-                      );
-
-                      await mySolutionDetailController.fetchData(solutionId);
-                      showModalBottomSheet(
-                        backgroundColor: ColorGroup.modalBGC,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return isUploader
-                              ? ManageModal(
-                                  review:
-                                      mySolutionDetailController.sdm.review!,
-                                  videoUrl: videoUrl,
-                                  problemId: problemId,
-                                  solutionId: solutionId,
-                                  perceivedDifficulty:
-                                      mySolutionDetailController
-                                              .sdm.perceivedDifficulty ??
-                                          '보통',
-                                )
-                              : BlockModal(
-                                  solutionId: solutionId,
-                                  problemId: problemId,
-                                  uploaderId: uploaderId,
-                                );
-                        },
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

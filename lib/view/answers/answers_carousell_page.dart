@@ -1,5 +1,6 @@
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/upload/answer_upload.dart';
 import 'package:get/get.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,14 +8,16 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flutter/material.dart';
 
 class AnswersCarousell extends StatelessWidget {
-  final String gymName, id;
+  final String gymName, id, difficulty;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final answerDataController = Get.put(AnswerDataController());
-
+  final bool hasSolution;
   AnswersCarousell({
     super.key,
     required this.gymName,
     required this.id,
+    required this.hasSolution,
+    required this.difficulty,
   });
   @override
   Widget build(BuildContext context) {
@@ -84,6 +87,25 @@ class AnswersCarousell extends StatelessWidget {
                     ),
                   ),
                   Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.9),
+                            Colors.black.withOpacity(0.6),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
                     //인디케이터
                     top: 10,
                     child: CarouselIndicator(
@@ -92,9 +114,56 @@ class AnswersCarousell extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 30,
-                    right: 15,
-                    child: CloseButton(),
+                    top: 40,
+                    left: 24,
+                    right: 24,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CloseButton(),
+                        TextButton(
+                          onPressed: () async {
+                            AnalyticsService.buttonClick(
+                              'upload',
+                              hasSolution.toString(),
+                              gymName,
+                              difficulty,
+                            );
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AnswerUpload(
+                                  problemId: id,
+                                  gymName: gymName,
+                                  difficulty: difficulty,
+                                ),
+                              ),
+                            );
+                            await answerDataController.disposeVideo();
+                            answerDataController.fetchData(id);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.upload,
+                                size: 32,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                '내 풀이 업로드',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -113,21 +182,14 @@ class CloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7), // 배경색 설정
-        shape: BoxShape.circle, // 동그란 모양으로 설정
-      ),
-      child: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.close,
-          color: Colors.white,
-        ),
+    return IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: const Icon(
+        Icons.arrow_back_ios,
+        color: Colors.white,
+        size: 32,
       ),
     );
   }

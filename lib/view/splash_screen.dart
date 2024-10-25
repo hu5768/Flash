@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final centerTitleController = Get.put(CenterTitleController());
   final problemListController = Get.put(ProblemListController());
   VersionController versionController = VersionController();
+
   @override
   void initState() {
     super.initState();

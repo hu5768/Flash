@@ -8,8 +8,8 @@ String formatDateString(String dateString) {
   String year = DateFormat('yy').format(dateTime);
 
   // 월과 일을 한국어 형식으로 포맷팅합니다.
-  String month = DateFormat('M').format(dateTime);
-  String day = DateFormat('d').format(dateTime);
+  String month = DateFormat('MM').format(dateTime);
+  String day = DateFormat('dd').format(dateTime);
 
-  return '$year년 $month월 $day일';
+  return '$year.$month.$day';
 }

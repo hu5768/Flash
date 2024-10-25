@@ -5,6 +5,9 @@ class SolutionModel {
   String? instagramId;
   String? videoUrl;
   String? uploaderId;
+  double? uploaderHeight;
+  double? uploaderReach;
+  String? uploaderGender;
   bool? isUploader;
   String? profileImageUrl;
   int? commentCount;
@@ -16,6 +19,9 @@ class SolutionModel {
     this.instagramId,
     this.videoUrl,
     this.uploaderId,
+    this.uploaderHeight,
+    this.uploaderReach,
+    this.uploaderGender,
     this.isUploader,
     this.profileImageUrl,
     this.commentCount,
@@ -28,6 +34,9 @@ class SolutionModel {
     instagramId = json['instagramId'];
     videoUrl = json['videoUrl'];
     uploaderId = json['uploaderId'];
+    uploaderHeight = json['uploaderHeight'];
+    uploaderReach = json['uploaderReach'];
+    uploaderGender = json['uploaderGender'];
     isUploader = json['isUploader'];
     profileImageUrl = json['profileImageUrl'];
     commentCount = json['commentCount'];
@@ -41,6 +50,9 @@ class SolutionModel {
     data['instagramId'] = this.instagramId;
     data['videoUrl'] = this.videoUrl;
     data['uploaderId'] = this.uploaderId;
+    data['uploaderHeight'] = this.uploaderHeight;
+    data['uploaderReach'] = this.uploaderReach;
+    data['uploaderGender'] = this.uploaderGender;
     data['isUploader'] = this.isUploader;
     data['profileImageUrl'] = this.profileImageUrl;
     data['commentCount'] = this.commentCount;
