@@ -35,6 +35,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
   VideoPlayerController? videoController;
   File? _video;
+  bool fileLoad = false;
   String difficultyLabel = '보통';
   final TextEditingController userOpinionController = TextEditingController();
   final uploadController = Get.put(UploadController());
@@ -55,6 +56,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
   Future<void> PickVideo() async {
     print('파일 열기');
     int sizeLimit = 300 * 1024 * 1024;
+
     try {
       //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -62,6 +64,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
         // allowCompression: false,
       );
 
+      setState(() {
+        fileLoad = true;
+      });
       if (result != null) {
         PlatformFile fileCheck = result.files.first;
         print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
@@ -117,97 +122,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
     } catch (e) {
       print("비디오 선택 오류 $e");
     }
+    fileLoad = false;
   }
 
-/*
-  Future<void> _uploadVideo() async {
-    if (_video == null) return;
-    print('업로드 시작');
-    try {
-      //get에서 url 받아오기
-      final presignedUrlResponse = await DioClient().dio.get(
-            'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions/presigned-url',
-          );
-      print("get요청 받는중");
-      final presignedUrlData = presignedUrlResponse.data;
-      print(presignedUrlData);
-      final uploadUrl = presignedUrlData['body']['upload_url'];
-      final fileName = presignedUrlData['body']['file_name'];
-
-      List<int> videoBytes = await _video!.readAsBytes();
-// s3에 put
-      print('s3에  put 하는중');
-      final uploadResponse = await DioClient().dio.put(
-            uploadUrl,
-            data: Stream.fromIterable(videoBytes.map((e) => [e])),
-            options: Options(
-              headers: {
-                "Content-Type": "video/mp4",
-                "Content-Length": videoBytes.length.toString(),
-              },
-            ),
-          );
-// put 성공하면
-      if (uploadResponse.statusCode == 200) {
-        print("s3 put 완료" + fileName);
-
-        final apiResponse = await DioClient().dio.post(
-          'https://1rpjfkrhnj.execute-api.ap-northeast-2.amazonaws.com/dev/solutions',
-          data: {
-            'problem_id': widget.problemId,
-            'video_name': fileName,
-            'uploader': 'Flash',
-            'review': userOpinionController.text,
-            'instagram_id': 'climbing_answer',
-          },
-        );
-        if (apiResponse.statusCode == 200) {
-          print("최종 업로드 완료!");
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                backgroundColor: ColorGroup.BGC,
-                titleTextStyle: TextStyle(
-                  fontSize: 15,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                  fontWeight: FontWeight.w700,
-                ),
-                contentTextStyle: TextStyle(
-                  fontSize: 13,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                ),
-                title: Text('업로드 완료'),
-                content: Text('영상이 업로드 되었습니다'),
-                actions: [
-                  TextButton(
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      }
-    } on DioException catch (e) {
-      print('영상 업로드 오류$e');
-      print('오류 헤더${e.response?.headers}');
-      print('오류 바디${e.response?.data}');
-    }
-  }
-*/
   Future<void> _uploadVideo2() async {
     if (_video == null) return;
     print('업로드 시작');
@@ -397,20 +314,38 @@ class _AnswerUploadState extends State<AnswerUpload> {
                     color: Color.fromARGB(248, 0, 0, 0),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: videoController == null
-                      ? null
-                      : VideoPlayer(videoController!),
+                  child: fileLoad
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(59.5, 95, 59.5, 95),
+                          child: CircularProgressIndicator(
+                            backgroundColor: ColorGroup.modalSBtnBGC,
+                            color: ColorGroup.selectBtnBGC,
+                            strokeWidth: 10,
+                          ),
+                        )
+                      : videoController == null
+                          ? null
+                          : VideoPlayer(videoController!),
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    AnalyticsService.buttonClick(
-                      'SolutionUpload',
-                      '영상선택',
-                      widget.gymName,
-                      widget.difficulty,
-                    );
-                    PickVideo();
+                    if (!fileLoad) {
+                      AnalyticsService.buttonClick(
+                        'SolutionUpload',
+                        '영상선택',
+                        widget.gymName,
+                        widget.difficulty,
+                      );
+                      PickVideo();
+                    } else {
+                      AnalyticsService.buttonClick(
+                        'SolutionUpload',
+                        '로딩중 영상선택',
+                        widget.gymName,
+                        widget.difficulty,
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,

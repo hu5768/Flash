@@ -13,6 +13,7 @@ class ProblemCard extends StatelessWidget {
       settingDate,
       removalDate,
       imageUrl;
+  final int solutionCount;
   final bool hasSolution, isHoney;
 
   const ProblemCard({
@@ -26,6 +27,7 @@ class ProblemCard extends StatelessWidget {
     required this.hasSolution,
     required this.imageUrl,
     required this.isHoney,
+    required this.solutionCount,
   });
 
   @override
@@ -41,7 +43,12 @@ class ProblemCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AnswersCarousell(gymName: gymName, id: id),
+            builder: (context) => AnswersCarousell(
+              gymName: gymName,
+              id: id,
+              hasSolution: hasSolution,
+              difficulty: difficulty,
+            ),
             allowSnapshotting: true,
           ),
         );
@@ -51,13 +58,6 @@ class ProblemCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: ColorGroup.cardBGC,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 10,
-            ),
-          ],
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
@@ -80,7 +80,7 @@ class ProblemCard extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                 //color: Colors.black.withOpacity(0.1),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -96,8 +96,38 @@ class ProblemCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      width: 60,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: CenterColor.TheClimbColorList[difficulty],
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white, // 테두리 색상
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            difficulty,
+                            style: TextStyle(color: ColorGroup.btnBGC),
+                          ),
+                        ],
+                      ),
+                    ),
                     Text(
-                      "$gymName $sector",
+                      "$sector Sector",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
@@ -109,81 +139,34 @@ class ProblemCard extends StatelessWidget {
                       formatDateString(settingDate) + ' 세팅',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.0,
+                        fontSize: 14.0,
                       ),
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 15,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color:
-                                      CenterColor.TheClimbColorList[difficulty],
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white, // 테두리 색상
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                difficulty,
-                                style: TextStyle(color: ColorGroup.btnBGC),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        hasSolution
-                            ? Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Icon(
-                                  Icons.play_circle_fill,
-                                  color: Colors.white,
-                                  size: 24.0,
-                                ),
-                              )
-                            : SizedBox(),
-                        if (isHoney)
-                          Text(
-                            ' 🍯',
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        /*hasSolution
-                            ? const Text(
-                                "영상 있음",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorGroup.selectBtnBGC,
-                                ),
-                              )
-                            : const Text(
-                                "영상 없음",
-                              ),*/
-                      ],
                     ),
                   ],
                 ),
               ),
             ),
+            if (hasSolution)
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.video_library,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      Text(
+                        solutionCount.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -4,7 +4,6 @@ import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
-import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
@@ -23,9 +22,6 @@ class ProblemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton:
-          SortedButton(problemTitleController: problemTitleController),
       body: Center(
         child: Column(
           children: [
@@ -49,53 +45,7 @@ class ProblemList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             problemListController.problemList[index].id == 'no'
-                                ? Center(
-                                    child: Column(
-                                      children: [
-                                        /*ElevatedButton(
-                                          onPressed: () {},
-                                          child: Text('찾으시는 문제가 없으신가요?'),
-                                        ),*/
-                                        Text(
-                                          '더 이상 문제가 없습니다',
-                                          style: TextStyle(
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        GestureDetector(
-                                          onTap: () {
-                                            AnalyticsService.buttonClick(
-                                              'findProblem',
-                                              centerTitleController
-                                                  .centerTitle.value,
-                                              '',
-                                              '',
-                                            );
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return MoreproblemModal();
-                                              },
-                                            );
-                                          },
-                                          child: Text(
-                                            '찾으시는 문제가 없으신가요?',
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 70,
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                ? NoProblemCard()
                                 : ProblemCard(
                                     gymName:
                                         centerTitleController.centerTitle.value,
@@ -122,6 +72,9 @@ class ProblemList extends StatelessWidget {
                                     isHoney: problemListController
                                             .problemList[index].isHoney ??
                                         false,
+                                    solutionCount: problemListController
+                                            .problemList[index].solutionCount ??
+                                        0,
                                   ),
                             const SizedBox(
                               height: 30,
@@ -141,57 +94,77 @@ class ProblemList extends StatelessWidget {
   }
 }
 
-class SortedButton extends StatelessWidget {
-  const SortedButton({
+class NoProblemCard extends StatelessWidget {
+  NoProblemCard({
     super.key,
-    required this.problemTitleController,
   });
 
-  final ProblemSortController problemTitleController;
+  final CenterTitleController centerTitleController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 115,
-      height: 60,
-      child: FloatingActionButton(
-        foregroundColor: ColorGroup.btnFGC,
-        backgroundColor: ColorGroup.btnBGC,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40.0),
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+      decoration: BoxDecoration(
+        color: ColorGroup.cardBGC,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color.fromARGB(255, 153, 153, 153), // 테두리 색상
+          width: 1.0, // 테두리 두께
         ),
-        onPressed: () {
-          AnalyticsService.buttonClick(
-            'MyPage',
-            '정렬버튼',
-            '',
-            '',
-          );
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return const SortModal();
-            },
-          );
-        },
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                size: 25,
+      ),
+      child: AspectRatio(
+        aspectRatio: 1 / 1,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/emptyHodIcon.png'),
+            SizedBox(height: 15),
+            Text(
+              '더 이상 문제가 없습니다',
+              style: TextStyle(
+                color: const Color.fromARGB(255, 153, 153, 153),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              Obx(
-                () {
-                  return Text(
-                    problemTitleController.sorttitle.toString(),
-                    style: TextStyle(fontSize: 17),
-                  );
-                },
+            ),
+            SizedBox(height: 5),
+            GestureDetector(
+              onTap: () {
+                AnalyticsService.buttonClick(
+                  'findProblem',
+                  centerTitleController.centerTitle.value,
+                  '',
+                  '',
+                );
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return MoreproblemModal();
+                  },
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: const Color.fromARGB(255, 153, 153, 153), // 밑줄 색상
+                      width: 1.0, // 밑줄 두께
+                    ),
+                  ),
+                ),
+                child: Text(
+                  '찾으시는 문제가 없으신가요?',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 153, 153, 153),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    height: 0.9,
+                  ),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

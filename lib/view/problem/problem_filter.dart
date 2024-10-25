@@ -1,5 +1,9 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/problem/sort_menu_button.dart';
+import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +12,7 @@ import '../../controller/problem_filter_controller.dart';
 class ProblemFilter extends StatelessWidget {
   ProblemFilter({super.key});
   final ProblemFilterController problemFilterController = Get.find();
+  final ProblemListController problemListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,12 +30,96 @@ class ProblemFilter extends StatelessWidget {
                   SectorFilter(),
                   SizedBox(height: 12),
                   GradeFilter(),
+                  SizedBox(height: 12),
+                  ToggleFilter(),
                 ],
               ),
             ),
           ),
+          Container(
+            padding: EdgeInsets.fromLTRB(24, 0, 24, 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SortMenuButton(),
+              ],
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class ToggleFilter extends StatelessWidget {
+  ToggleFilter({
+    super.key,
+  });
+
+  final ProblemFilterController problemFilterController = Get.find();
+  final ProblemListController problemListController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Text(
+              '아무도 못푼 문제 ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Obx(
+              () => Switch(
+                inactiveTrackColor: ColorGroup.selectBtnFGC,
+                activeTrackColor: ColorGroup.selectBtnBGC,
+                value: problemFilterController.nobodySol.value,
+                onChanged: (bool value) {
+                  AnalyticsService.buttonClick(
+                    'FilterModal_Toggle',
+                    '풀이 없는 문제 필터 $value',
+                    problemFilterController.allSelection[0].toString(),
+                    problemFilterController.allSelection[1].toString(),
+                  );
+                  problemFilterController.nobodySol.value = value;
+                  problemListController.FilterApply();
+                },
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              '꿀 문제 ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Obx(
+              () => Switch(
+                inactiveTrackColor: ColorGroup.selectBtnFGC,
+                activeTrackColor: ColorGroup.selectBtnBGC,
+                value: problemFilterController.isHoney.value,
+                onChanged: (bool value) {
+                  AnalyticsService.buttonClick(
+                    'FilterModal_Toggle',
+                    '꿀문제 필터 $value',
+                    problemFilterController.allSelection[0].toString(),
+                    problemFilterController.allSelection[1].toString(),
+                  );
+                  problemFilterController.isHoney.value = value;
+                  problemListController.FilterApply();
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -41,7 +130,7 @@ class SectorFilter extends StatelessWidget {
   });
 
   final ProblemFilterController problemFilterController = Get.find();
-
+  final ProblemListController problemListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -63,48 +152,63 @@ class SectorFilter extends StatelessWidget {
         SizedBox(
           height: 30,
           width: 300,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: problemFilterController.allOption[1].length,
-            itemBuilder: (context, index) {
-              return Obx(
-                () {
-                  final option = problemFilterController.allOption[1][index];
-                  final isSelected =
-                      problemFilterController.allSelection[1].contains(option);
+          child: Obx(
+            () {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: problemFilterController.allOption[1].length,
+                itemBuilder: (context, index) {
+                  return Obx(
+                    () {
+                      final option =
+                          problemFilterController.allOption[1][index];
+                      final isSelected = problemFilterController.allSelection[1]
+                          .contains(option);
 
-                  return Container(
-                    height: 30,
-                    padding: EdgeInsets.only(right: 12),
-                    child: ChoiceChip(
-                      selected: isSelected,
-                      visualDensity: VisualDensity(vertical: 0.0),
-                      showCheckmark: false,
-                      label: Text(
-                        option,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: const Color.fromARGB(255, 17, 17, 17),
-                          height: 1,
+                      return Container(
+                        height: 30,
+                        padding: EdgeInsets.only(right: 12),
+                        child: ChoiceChip(
+                          selected: isSelected,
+                          visualDensity: VisualDensity(vertical: 0.0),
+                          showCheckmark: false,
+                          label: Text(
+                            option,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: isSelected
+                                  ? Colors.white
+                                  : Color.fromARGB(255, 17, 17, 17),
+                              height: 0,
+                            ),
+                          ),
+                          backgroundColor: Colors.white,
+                          selectedColor: const Color.fromARGB(255, 0, 87, 255),
+                          side: BorderSide(
+                            color: isSelected
+                                ? Color.fromARGB(255, 0, 87, 255)
+                                : Color.fromARGB(255, 196, 196, 196),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              30,
+                            ),
+                          ),
+                          onSelected: (bool selected) {
+                            AnalyticsService.buttonClick(
+                              'FilterModal_Sector',
+                              option,
+                              problemFilterController.allSelection[0]
+                                  .toString(),
+                              '',
+                            );
+                            problemFilterController.SectorSelection(option);
+                            problemListController.FilterApply();
+                          },
                         ),
-                      ),
-                      backgroundColor: Colors.white,
-                      selectedColor: const Color.fromARGB(255, 0, 115, 255),
-                      side: BorderSide(
-                        color: const Color.fromARGB(255, 196, 196, 196),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          30,
-                        ),
-                      ),
-                      onSelected: (bool selected) {
-                        problemFilterController.SectorSelection(option);
-                        print(option);
-                        print(isSelected);
-                      },
-                    ),
+                      );
+                    },
                   );
                 },
               );
@@ -122,7 +226,7 @@ class GradeFilter extends StatelessWidget {
   });
 
   final ProblemFilterController problemFilterController = Get.find();
-
+  final ProblemListController problemListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -144,19 +248,62 @@ class GradeFilter extends StatelessWidget {
         SizedBox(
           height: 30,
           width: 300,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: problemFilterController.allOption[0].length,
-            itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.only(right: 12),
-                child: Icon(
-                  Icons.circle,
-                  size: 30,
-                  color: CenterColor.TheClimbColorList[
-                      problemFilterController.allOption[0][index]],
-                ),
+          child: Obx(
+            () {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: problemFilterController.allOption[0].length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      AnalyticsService.buttonClick(
+                        'FilterModal_Gade',
+                        problemFilterController.allOption[0][index],
+                        problemFilterController.allSelection[0].toString(),
+                        '',
+                      );
+                      problemFilterController.GradeSelection(
+                        problemFilterController.allOption[0][index],
+                      );
+                      problemListController.FilterApply();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Obx(
+                        () {
+                          final option =
+                              problemFilterController.allOption[0][index];
+                          final isSelected = problemFilterController
+                              .allSelection[0]
+                              .contains(option);
+
+                          return Stack(
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                size: 30,
+                                color: CenterColor.TheClimbColorList[
+                                    problemFilterController.allOption[0]
+                                        [index]],
+                              ),
+                              if (isSelected)
+                                Positioned(
+                                  left: 3.335,
+                                  top: 3.335,
+                                  bottom: 3.335,
+                                  child: Image.asset(
+                                    'assets/images/select_color.png',
+                                    height: 23.33,
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),

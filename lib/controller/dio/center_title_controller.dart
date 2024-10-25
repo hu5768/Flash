@@ -15,6 +15,7 @@ class CenterTitleController extends GetxController {
   List<String> gradeDifficulties = [];
   List<String> secterList = [];
   dynamic mainContext;
+
   @override
   void onInit() {
     super.onInit();
@@ -43,15 +44,12 @@ class CenterTitleController extends GetxController {
       mapImgUrl = resMap['mapImageUrl'];
 
       ProblemFilterController problemFilterController = Get.find();
-
       gradeDifficulties = List<String>.from(resMap['difficulties']);
-
       problemFilterController.gradeOption = gradeDifficulties;
-
       secterList = List<String>.from(resMap['sectors']);
       problemFilterController.sectorOption = secterList;
 
-      problemFilterController.allInit();
+      await problemFilterController.allInit();
     } catch (e) {
       print('암장 타이틀 실패$e');
       print(centerId.value);

@@ -7,15 +7,12 @@ import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_list_page.dart';
-import 'package:flash/view/modals/filter_modal.dart';
 import 'package:flash/view/modals/map_modal.dart';
 import 'package:flash/view/mypage/mypage.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../controller/dio/my_gridview_controller.dart';
 
 class MainPage extends StatefulWidget {
@@ -252,85 +249,9 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
                     TitleButton(centerTitleController: centerTitleController),
               ),
               MapButton(centerTitleController: centerTitleController),
-              /*Obx(
-                () => Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    FilterButton(
-                      problemFilterController: problemFilterController,
-                    ),
-                    problemFilterController.allEmpty()
-                        ? SizedBox()
-                        : Positioned(
-                            right: -10,
-                            top: -8,
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: ColorGroup.selectBtnBGC, // 배경색 설정
-                                shape: BoxShape.circle, // 동그란 모양으로 설정
-                              ),
-                              child: Center(
-                                child: Text(
-                                  problemFilterController
-                                      .countFilter()
-                                      .toString(),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorGroup.BGC,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                  ],
-                ),
-              ),*/
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FilterButton extends StatelessWidget {
-  const FilterButton({
-    super.key,
-    required this.problemFilterController,
-  });
-
-  final ProblemFilterController problemFilterController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: Colors.grey[200], // 배경색 설정
-        shape: BoxShape.circle, // 동그란 모양으로 설정
-      ),
-      child: IconButton(
-        onPressed: () {
-          AnalyticsService.buttonClick(
-            'MainPage',
-            '필터 선택 버튼',
-            '',
-            '',
-          );
-          problemFilterController.inToTemp();
-          showModalBottomSheet(
-            backgroundColor: ColorGroup.modalBGC,
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return FilterModal();
-            },
-          );
-        },
-        icon: const Icon(Icons.tune),
       ),
     );
   }

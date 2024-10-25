@@ -113,6 +113,12 @@ class ProblemListController extends GetxController {
     );
   }
 
+  Future<void> FilterApply() async {
+    morePage = false;
+    await newFetch();
+    ScrollUp();
+  }
+
   void nextFetch() async {
     if (morePage &&
         !loadRunning &&

@@ -120,6 +120,11 @@ flutter:
     - assets/images/profile.png
     - assets/images/gesture_guide.png
     - assets/images/gym_map.png
+    - assets/images/select_color.png
+    - assets/images/icon/comment_icon.png
+    - assets/images/icon/height_icon.png
+    - assets/images/icon/width_icon.png
+    - assets/images/emptyHodIcon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
