@@ -57,6 +57,9 @@ class _AnswerUploadState extends State<AnswerUpload> {
     print('파일 열기');
     int sizeLimit = 300 * 1024 * 1024;
 
+    setState(() {
+      fileLoad = true;
+    });
     try {
       //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -64,9 +67,6 @@ class _AnswerUploadState extends State<AnswerUpload> {
         // allowCompression: false,
       );
 
-      setState(() {
-        fileLoad = true;
-      });
       if (result != null) {
         PlatformFile fileCheck = result.files.first;
         print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
