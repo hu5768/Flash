@@ -486,29 +486,32 @@ class _AnswerCardState extends State<AnswerCard> {
                                 ), // 오버레이 크기 줄이기
                                 overlayColor: Colors.transparent,
                               ),
-                              child: Slider(
-                                activeColor: Colors.white,
-                                inactiveColor:
-                                    Color.fromARGB(102, 217, 217, 217),
-                                thumbColor:
-                                    const Color.fromARGB(0, 255, 255, 255),
-                                value: widget
-                                    .videoController.value.position.inSeconds
-                                    .toDouble(),
-                                max: widget
-                                    .videoController.value.duration.inSeconds
-                                    .toDouble(),
-                                onChanged: (double var1) {
-                                  AnalyticsService.buttonClick(
-                                    'videoPauseButton',
-                                    '슬라이더 사용',
-                                    '',
-                                    '',
-                                  );
-                                  final position =
-                                      Duration(seconds: var1.toInt());
-                                  widget.videoController.seekTo(position);
-                                },
+                              child: SizedBox(
+                                height: 50,
+                                child: Slider(
+                                  activeColor: Colors.white,
+                                  inactiveColor:
+                                      Color.fromARGB(102, 217, 217, 217),
+                                  thumbColor:
+                                      const Color.fromARGB(0, 255, 255, 255),
+                                  value: widget
+                                      .videoController.value.position.inSeconds
+                                      .toDouble(),
+                                  max: widget
+                                      .videoController.value.duration.inSeconds
+                                      .toDouble(),
+                                  onChanged: (double var1) {
+                                    AnalyticsService.buttonClick(
+                                      'videoPauseButton',
+                                      '슬라이더 사용',
+                                      '',
+                                      '',
+                                    );
+                                    final position =
+                                        Duration(seconds: var1.toInt());
+                                    widget.videoController.seekTo(position);
+                                  },
+                                ),
                               ),
                             ),
                           ),
