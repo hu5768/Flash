@@ -6,6 +6,7 @@ import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/problem/sort_menu_button.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../controller/problem_filter_controller.dart';
@@ -320,8 +321,8 @@ class GradeFilter extends StatelessWidget {
                                   left: 3.335,
                                   top: 3.335,
                                   bottom: 3.335,
-                                  child: Image.asset(
-                                    'assets/images/select_color.png',
+                                  child: SvgPicture.asset(
+                                    'assets/images/select_color.svg',
                                     height: 23.33,
                                   ),
                                 ),

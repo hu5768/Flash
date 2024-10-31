@@ -80,6 +80,7 @@ class CommentCard extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
+              commentController.focusNode.unfocus();
               showModalBottomSheet(
                 backgroundColor: ColorGroup.modalBGC,
                 context: context,

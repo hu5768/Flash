@@ -10,7 +10,7 @@ class CenterColor {
     '시크릿': Color.fromARGB(255, 255, 255, 255),
     '핑크': Color.fromARGB(255, 249, 54, 168),
     '검정': Color.fromARGB(255, 0, 0, 0),
-    '흰색': Color.fromARGB(255, 255, 255, 255),
+    '흰색': Color.fromARGB(255, 232, 232, 232),
   };
 }
 
