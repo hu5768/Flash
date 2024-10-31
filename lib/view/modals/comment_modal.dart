@@ -18,7 +18,10 @@ class CommentModal extends StatelessWidget {
       maxChildSize: 0.9,
       builder: (context, scrollController) {
         return GestureDetector(
-          onTap: FocusScope.of(context).unfocus,
+          // onTap: FocusScope.of(context).unfocus,
+          onTap: () {
+            commentController.focusNode.unfocus();
+          },
           child: Scaffold(
             body: Container(
               width: double.infinity,
@@ -89,7 +92,12 @@ class CommentModal extends StatelessWidget {
                   color: Color.fromRGBO(247, 247, 247, 1),
                   border: Border(
                     top: BorderSide(
-                      color: const Color.fromARGB(255, 173, 173, 173), // 테두리 색상
+                      color: const Color.fromARGB(
+                        255,
+                        173,
+                        173,
+                        173,
+                      ), // 테두리 색상
                       width: 0.8, // 테두리 두께
                     ),
                   ),
@@ -116,6 +124,7 @@ class CommentModal extends StatelessWidget {
                     SizedBox(width: 10),
                     Expanded(
                       child: TextFormField(
+                        focusNode: commentController.focusNode,
                         controller: commentController.commentText,
                         //enabled: isEnabled,
                         decoration: InputDecoration(
@@ -138,7 +147,11 @@ class CommentModal extends StatelessWidget {
                             style: commentController.textEmpty.value
                                 ? TextStyle(
                                     color: const Color.fromARGB(
-                                        255, 186, 186, 186),
+                                      255,
+                                      186,
+                                      186,
+                                      186,
+                                    ),
                                   )
                                 : TextStyle(
                                     fontWeight: FontWeight.bold,

@@ -11,6 +11,7 @@ class CommentController extends GetxController {
   final ScrollController scrollController = ScrollController();
   var textEmpty = true.obs;
   var commentList = <CommentModel>[].obs;
+  final focusNode = FocusNode();
 
   @override
   void onInit() {

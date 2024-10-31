@@ -121,7 +121,7 @@ flutter:
     - assets/images/profile.png
     - assets/images/gesture_guide.png
     - assets/images/gym_map.png
-    - assets/images/select_color.png
+    - assets/images/select_color.svg
 
     - assets/images/icon/comment_icon.svg
     - assets/images/icon/height_icon.svg
