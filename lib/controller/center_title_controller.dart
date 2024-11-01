@@ -31,7 +31,7 @@ class CenterTitleController extends GetxController {
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
 
       centerTitle.value = resMap['gymName'];
-      mapImgUrl = resMap['mapImageUrl'];
+      mapImgUrl = mapImgUrl = resMap['mapImageUrl'] ?? '';
 
       ProblemFilterController problemFilterController = Get.find();
 

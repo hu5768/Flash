@@ -1,7 +1,10 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/controller/login_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});
@@ -11,112 +14,39 @@ class ReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorGroup.BGC,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
-        backgroundColor: ColorGroup.appbarBGC,
-        title: const Text(
-          '영상 제보하기',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('바로가기'),
       ),
+      backgroundColor: ColorGroup.BGC,
       body: Align(
         alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '여러분의 풀이를 제보해주세요!\n보내주신 풀이 영상은 저희 답지에 업로드 됩니다.',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color.fromRGBO(122, 116, 116, 1),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  '제보 양식',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: ColorGroup.selectBtnBGC,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(7.0),
-                  ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              reportForm,
-                              style: const TextStyle(fontSize: 13),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        top: 15,
-                        right: 10,
-                        child: CopyButton(copyText: reportForm),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  '이메일',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: ColorGroup.selectBtnBGC,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 400,
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(7.0),
-                  ),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
-                        child: Text(
-                          myEmail,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      Positioned(
-                        top: 5,
-                        right: 10,
-                        child: CopyButton(copyText: myEmail),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(text: LoginController.accessstoken),
+                );
+              },
+              child: const Text('엑세스 토큰 복사'),
             ),
-          ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                Uri url = Uri.parse(
+                  'https://d297x044mh9gdo.cloudfront.net/',
+                );
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                } else {
+                  throw '이 URL을 열 수 없습니다: $url';
+                }
+              },
+              child: const Text('문제 업로드 사이트'),
+            ),
+          ],
         ),
       ),
     );

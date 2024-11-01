@@ -132,12 +132,8 @@ class MainPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.cloud_upload_outlined,
-                  size: 30,
-                ),
                 Text(
-                  '업로드',
+                  '바로가기',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
