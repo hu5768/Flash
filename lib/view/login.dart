@@ -8,8 +8,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   LoginController loginController = LoginController();
   final TextEditingController textController = TextEditingController(
-    text:
-        "ya29.a0AeDClZApDK4NYaiReXxZdLd3Q-YR3X5hF3oljqJZPeOnOdUC5JkoRzUfDOc8lALoYUnXQSG5DgklCNOobJE646KOtBdW4GITNMYufi01W3ll38ERY2PdoKo9JMdoY-94kUD_iAy84D-fb8az9PLAzIfaw8Jjzc4zWd6_VEfZaCgYKAVUSARMSFQHGX2MiOsBDphHJwyuQsVVBkDAhdg0175",
+    text: "",
   );
   @override
   Widget build(BuildContext context) {

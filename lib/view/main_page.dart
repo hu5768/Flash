@@ -38,16 +38,12 @@ class MainPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    width: 50,
-                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Obx(() {
                         return Text(
-                          //"${centerTitleController.centerTitle} (개발 서버)",
-                          centerTitleController.centerTitle.toString(),
+                          "  ${centerTitleController.centerTitle.toString()} id: ${centerTitleController.centerId.toString()}",
                           style: const TextStyle(fontWeight: FontWeight.w800),
                         );
                       }),
@@ -123,7 +119,7 @@ class MainPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ReportPage(),
+                builder: (context) => ReportPage(),
                 allowSnapshotting: true,
               ),
             );

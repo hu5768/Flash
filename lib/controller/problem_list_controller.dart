@@ -26,7 +26,7 @@ class ProblemListController extends GetxController {
     newFetch();
   }
 
-  void newFetch() async {
+  Future<void> newFetch() async {
     dios.Response response;
     loadRunning = true;
     try {
@@ -109,5 +109,19 @@ class ProblemListController extends GetxController {
       }
       loadRunning = false;
     }
+  }
+
+  void ScrollUp() {
+    scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  Future<void> FilterApply() async {
+    morePage = false;
+    await newFetch();
+    ScrollUp();
   }
 }

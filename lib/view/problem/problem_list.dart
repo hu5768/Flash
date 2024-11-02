@@ -5,9 +5,10 @@ import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
-import 'package:flash/view/modals/filter_modal.dart';
+
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
+import 'package:flash/view/problem/problem_filter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,173 +25,136 @@ class ProblemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 400,
-          ),
-          child: Column(
-            children: [
-              TextField(
-                controller: idCon,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '',
-                  fillColor: Colors.white, // 배경색을 흰색으로 설정
-                  filled: true, // 배경색을 적용하도록 설정
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      print("문제id${idCon.value}");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AnswersCarousell(id: idCon.text),
-                          allowSnapshotting: true,
-                        ),
-                      );
-                    },
-                    child: const Text('문제 탐색'),
+      body: Row(
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 400,
+            ),
+            child: Column(
+              children: [
+                TextField(
+                  controller: idCon,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: '',
+                    fillColor: Colors.white, // 배경색을 흰색으로 설정
+                    filled: true, // 배경색을 적용하도록 설정
                   ),
-                  Obx(
-                    () => ElevatedButton(
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const SortModal();
-                          },
+                        print("문제id${idCon.value}");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AnswersCarousell(id: idCon.text),
+                            allowSnapshotting: true,
+                          ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(115, 40),
-                        side: BorderSide(
-                          color: problemTitleController.sortkey.toString() ==
-                                  'recommand'
-                              ? ColorGroup.modalBtnBGC
-                              : ColorGroup.selectBtnBGC,
-                        ),
-                        foregroundColor:
-                            problemTitleController.sortkey.toString() ==
-                                    'recommand'
-                                ? ColorGroup.btnFGC
-                                : ColorGroup.selectBtnBGC,
-                        backgroundColor:
-                            problemTitleController.sortkey.toString() ==
-                                    'recommand'
-                                ? ColorGroup.btnBGC
-                                : ColorGroup.modalSBtnBGC,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(problemTitleController.sorttitle.toString()),
-                          const Icon(Icons.keyboard_arrow_down),
-                        ],
-                      ),
+                      child: const Text('문제 탐색'),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Obx(
-                    () {
-                      return ElevatedButton(
+                    Obx(
+                      () => ElevatedButton(
                         onPressed: () {
-                          problemFilterController.inToTemp();
                           showModalBottomSheet(
-                            backgroundColor: ColorGroup.modalBGC,
-                            isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) {
-                              return FilterModal();
+                              return const SortModal();
                             },
                           );
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(115, 40),
                           side: BorderSide(
-                            color: problemFilterController.allEmpty()
+                            color: problemTitleController.sortkey.toString() ==
+                                    'recommand'
                                 ? ColorGroup.modalBtnBGC
                                 : ColorGroup.selectBtnBGC,
                           ),
-                          foregroundColor: problemFilterController.allEmpty()
-                              ? ColorGroup.btnFGC
-                              : ColorGroup.selectBtnBGC,
-                          backgroundColor: problemFilterController.allEmpty()
-                              ? ColorGroup.btnBGC
-                              : ColorGroup.modalSBtnBGC,
+                          foregroundColor:
+                              problemTitleController.sortkey.toString() ==
+                                      'recommand'
+                                  ? ColorGroup.btnFGC
+                                  : ColorGroup.selectBtnBGC,
+                          backgroundColor:
+                              problemTitleController.sortkey.toString() ==
+                                      'recommand'
+                                  ? ColorGroup.btnBGC
+                                  : ColorGroup.modalSBtnBGC,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         child: Row(
                           children: [
-                            problemFilterController.allEmpty()
-                                ? const Text('필터')
-                                : Text(
-                                    '필터${problemFilterController.countFilter()}',
-                                  ),
-                            const Icon(Icons.filter_alt_outlined),
+                            Text(problemTitleController.sorttitle.toString()),
+                            const Icon(Icons.keyboard_arrow_down),
                           ],
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              GetX<ProblemListController>(
-                builder: (controller) {
-                  return Expanded(
-                    child: ListView.builder(
-                      controller: scrollController.scrollController,
-                      itemCount: scrollController.problemList.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ProblemCard(
-                              id: scrollController.problemList[index].id
-                                  .toString(),
-                              sector: scrollController.problemList[index].sector
-                                  .toString(),
-                              difficulty: scrollController
-                                  .problemList[index].difficulty
-                                  .toString(),
-                              settingDate: scrollController
-                                  .problemList[index].settingDate
-                                  .toString(),
-                              removalDate: scrollController
-                                  .problemList[index].removalDate
-                                  .toString(),
-                              hasSolution: scrollController
-                                  .problemList[index].hasSolution!,
-                              imageUrl: scrollController
-                                  .problemList[index].imageUrl
-                                  .toString(),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                          ],
-                        );
-                      },
+                      ),
                     ),
-                  );
-                },
-              ),
-              //const ProblemCard(sector: 'Flat'),
-            ],
+                    const SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                GetX<ProblemListController>(
+                  builder: (controller) {
+                    return Expanded(
+                      child: ListView.builder(
+                        controller: scrollController.scrollController,
+                        itemCount: scrollController.problemList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProblemCard(
+                                id: scrollController.problemList[index].id
+                                    .toString(),
+                                sector: scrollController
+                                    .problemList[index].sector
+                                    .toString(),
+                                difficulty: scrollController
+                                    .problemList[index].difficulty
+                                    .toString(),
+                                settingDate: scrollController
+                                    .problemList[index].settingDate
+                                    .toString(),
+                                removalDate: scrollController
+                                    .problemList[index].removalDate
+                                    .toString(),
+                                hasSolution: scrollController
+                                    .problemList[index].hasSolution!,
+                                imageUrl: scrollController
+                                    .problemList[index].imageUrl
+                                    .toString(),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+                //const ProblemCard(sector: 'Flat'),
+              ],
+            ),
           ),
-        ),
+          const SizedBox(
+            width: 100,
+          ),
+          ProblemFilter(),
+        ],
       ),
     );
   }

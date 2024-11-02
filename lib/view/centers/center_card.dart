@@ -44,7 +44,7 @@ class CenterCard extends StatelessWidget {
               ),
             ),
             Text(
-              title,
+              " $title id: $id",
               style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
