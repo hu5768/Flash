@@ -4,7 +4,6 @@ import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/problem/sort_menu_button.dart';
-import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
