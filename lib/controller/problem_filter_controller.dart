@@ -1,4 +1,3 @@
-import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:get/get.dart';
 
 class ProblemFilterController extends GetxController {
