@@ -2,13 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flash/controller/dio_singletone.dart';
 import 'package:flash/controller/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 
 class SectorController extends GetxController {
   final TextEditingController gymCon = TextEditingController();
   final TextEditingController secCon = TextEditingController();
   final TextEditingController adminCon = TextEditingController();
   final TextEditingController settingCon = TextEditingController();
+  final TextEditingController remoeCon = TextEditingController();
   var sectorText = ''.obs;
   @override
   void onInit() {
@@ -22,19 +23,37 @@ class SectorController extends GetxController {
     try {
       DioClient().updateOptions(token: LoginController.accessstoken);
 
-      final respone = await DioClient().dio.post(
-            "/admin/gyms/${gymCon.text}/sectors",
-            data: {
-              "name": secCon.text,
-              "adminName": adminCon.text,
-              "settingDate": settingCon.text,
-            },
-            options: Options(
-              headers: {
-                'Content-Type': 'application/json',
+      Response? respone;
+      if (remoeCon.text == "") {
+        respone = await DioClient().dio.post(
+              "/admin/gyms/${gymCon.text}/sectors",
+              data: {
+                "name": secCon.text,
+                "adminName": adminCon.text,
+                "settingDate": settingCon.text,
               },
-            ),
-          );
+              options: Options(
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              ),
+            );
+      } else {
+        respone = await DioClient().dio.post(
+              "/admin/gyms/${gymCon.text}/sectors",
+              data: {
+                "name": secCon.text,
+                "adminName": adminCon.text,
+                "settingDate": settingCon.text,
+                "removalDate": remoeCon.text,
+              },
+              options: Options(
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              ),
+            );
+      }
       print(respone.data);
       sectorText.value = respone.data["id"].toString();
     } catch (e) {
