@@ -4,7 +4,7 @@ import 'package:flash/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
 
-class SectorController extends GetxController {
+class SectorEditController extends GetxController {
   final TextEditingController gymCon = TextEditingController();
   final TextEditingController secCon = TextEditingController();
   final TextEditingController adminCon = TextEditingController();
@@ -19,43 +19,43 @@ class SectorController extends GetxController {
     });
   }
 
-  void makeSector() async {
+  Future<void> textSet(
+    String gymId,
+    String sector,
+    String admin,
+    String settingDate,
+    String removeDate,
+  ) async {
+    gymCon.text = gymId;
+    secCon.text = sector;
+    adminCon.text = admin;
+    settingCon.text = settingDate;
+    remoeCon.text = removeDate;
+    sectorText.value = '';
+  }
+
+  void EditSector(int sectorId) async {
     try {
       DioClient().updateOptions(token: LoginController.accessstoken);
 
-      Response? respone;
-      if (remoeCon.text == "") {
-        respone = await DioClient().dio.post(
-              "/admin/gyms/${gymCon.text}/sectors",
-              data: {
-                "name": secCon.text,
-                "adminName": adminCon.text,
-                "settingDate": settingCon.text,
+      Response respone = await DioClient().dio.put(
+            "/admin/sectors/$sectorId",
+            data: {
+              "sectorName": secCon.text,
+              "adminSectorName": adminCon.text,
+              "settingDate": settingCon.text,
+              "removalDate": remoeCon.text,
+              "gymId": int.parse(gymCon.text),
+            },
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
               },
-              options: Options(
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              ),
-            );
-      } else {
-        respone = await DioClient().dio.post(
-              "/admin/gyms/${gymCon.text}/sectors",
-              data: {
-                "name": secCon.text,
-                "adminName": adminCon.text,
-                "settingDate": settingCon.text,
-                "removalDate": remoeCon.text,
-              },
-              options: Options(
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              ),
-            );
-      }
+            ),
+          );
+
       print(respone.data);
-      sectorText.value = respone.data["id"].toString() + adminCon.text;
+      sectorText.value = '${respone.data["id"]}수정됨';
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {

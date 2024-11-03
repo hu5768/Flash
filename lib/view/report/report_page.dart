@@ -1,6 +1,8 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/login_controller.dart';
 import 'package:flash/controller/sector_controller.dart';
+import 'package:flash/controller/sector_list_controller.dart';
+import 'package:flash/view/sectors/sector_list.dart';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +13,7 @@ class ReportPage extends StatelessWidget {
   ReportPage({super.key});
 
   var sectorController = Get.put(SectorController());
-
+  final sectorListController = Get.put(SectorListController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +44,27 @@ class ReportPage extends StatelessWidget {
                 },
                 child: const Text('문제 업로드 사이트'),
               ),
-              const SizedBox(height: 150),
-              const Text(
-                '섹터 생성',
-                style: TextStyle(fontSize: 20),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '섹터 생성',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await sectorListController.newFetch();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SectorList(),
+                        ),
+                      );
+                    },
+                    child: const Text('섹터 보기'),
+                  ),
+                ],
               ),
               const SizedBox(height: 30),
               TextField(
