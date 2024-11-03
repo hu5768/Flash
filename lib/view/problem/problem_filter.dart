@@ -21,29 +21,30 @@ class ProblemFilter extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 20),
-          Obx(
-            () {
-              String mapImgUrl =
-                  centerTitleController.centerDetailModel.value.mapImageUrl ??
-                      "";
-              print(mapImgUrl);
-              return mapImgUrl != ''
-                  ? SizedBox(
-                      height: 112,
-                      child: Image.network(
-                        centerTitleController
-                            .centerDetailModel.value.mapImageUrl!,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const SizedBox(
-                            width: 350,
-                            height: 350,
-                            child: Text("지도를 불러오지 못했습니다."),
-                          );
-                        },
-                      ),
-                    )
-                  : SizedBox();
-            },
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 770,
+            child: Obx(
+              () {
+                String mapImgUrl =
+                    centerTitleController.centerDetailModel.value.mapImageUrl ??
+                        "";
+                print(mapImgUrl);
+                return mapImgUrl != ''
+                    ? SizedBox(
+                        child: Image.network(
+                          centerTitleController
+                              .centerDetailModel.value.mapImageUrl!,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(
+                              width: 350,
+                              child: Text("지도를 불러오지 못했습니다."),
+                            );
+                          },
+                        ),
+                      )
+                    : SizedBox();
+              },
+            ),
           ),
           Align(
             alignment: Alignment.centerLeft,
