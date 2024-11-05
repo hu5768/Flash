@@ -135,6 +135,12 @@ class ProblemList extends StatelessWidget {
                                 imageUrl: scrollController
                                     .problemList[index].imageUrl
                                     .toString(),
+                                isHoney: scrollController
+                                        .problemList[index].isHoney ??
+                                    false,
+                                solutionCount: scrollController
+                                    .problemList[index].solutionCount
+                                    .toString(),
                               ),
                               const SizedBox(
                                 height: 30,

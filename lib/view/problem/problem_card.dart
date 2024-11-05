@@ -5,14 +5,21 @@ import 'package:flash/view/problem/admin_upload_web.dart';
 
 import 'package:flash/view/problem/answer_upload.dart'
     if (dart.library.html) 'answer_upload_web.dart';
+import 'package:flash/view/problem/honey_page.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ProblemCard extends StatelessWidget {
-  final String id, sector, difficulty, settingDate, removalDate, imageUrl;
-  final bool hasSolution;
+  final String id,
+      sector,
+      difficulty,
+      settingDate,
+      removalDate,
+      imageUrl,
+      solutionCount;
+  final bool hasSolution, isHoney;
 
   const ProblemCard({
     super.key,
@@ -23,6 +30,8 @@ class ProblemCard extends StatelessWidget {
     required this.removalDate,
     required this.hasSolution,
     required this.imageUrl,
+    required this.isHoney,
+    required this.solutionCount,
   });
 
   @override
@@ -92,29 +101,50 @@ class ProblemCard extends StatelessWidget {
                       },
                       child: Text(id),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              if (kIsWeb) {
-                                return AdminUploadWeb(
-                                  id: id,
-                                  imageUrl: imageUrl,
-                                );
-                              } else {
-                                return AdminUploadWeb(
-                                  id: id,
-                                  imageUrl: imageUrl,
-                                );
-                              }
-                            },
-                            allowSnapshotting: true,
-                          ),
-                        );
-                      },
-                      child: const Text("업로드"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  if (kIsWeb) {
+                                    return AdminUploadWeb(
+                                      id: id,
+                                      imageUrl: imageUrl,
+                                    );
+                                  } else {
+                                    return AdminUploadWeb(
+                                      id: id,
+                                      imageUrl: imageUrl,
+                                    );
+                                  }
+                                },
+                                allowSnapshotting: true,
+                              ),
+                            );
+                          },
+                          child: const Text("업로드"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return HoneyPage(
+                                    problemId: id,
+                                  );
+                                },
+                                allowSnapshotting: true,
+                              ),
+                            );
+                          },
+                          child: const Text("꿀"),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
@@ -133,6 +163,15 @@ class ProblemCard extends StatelessWidget {
                           width: 30,
                         ),
                         Text(difficulty),
+                        if (isHoney)
+                          const Text(
+                            ' 🍯',
+                            style: TextStyle(color: Colors.amber),
+                          ),
+                        Text(
+                          ' 풀이 수 : $solutionCount',
+                          style: const TextStyle(fontSize: 15),
+                        ),
                       ],
                     ),
                   ],
