@@ -30,7 +30,7 @@ class SectorList extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(
                   color: isExpired
-                      ? const Color.fromARGB(255, 47, 47, 47)
+                      ? const Color.fromARGB(255, 131, 131, 131)
                       : const Color.fromARGB(255, 195, 195, 195),
                   border: Border.all(
                     color: const Color.fromARGB(255, 255, 255, 255), // 테두리 색상
@@ -50,29 +50,29 @@ class SectorList extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
+                                SelectableText(
                                   '${sectorListController.sectorModelList[index].sectorName!.adminName}',
                                   style: const TextStyle(fontSize: 20),
                                 ),
-                                Text(
+                                SelectableText(
                                   '    id ${sectorListController.sectorModelList[index].id.toString()}',
                                 ),
-                                Text(
+                                SelectableText(
                                   '      Gym ${sectorListController.sectorModelList[index].gymId.toString()}',
                                 ),
                               ],
                             ),
-                            Text(
+                            SelectableText(
                               '세팅일 ${sectorListController.sectorModelList[index].settingDate}',
                             ),
                             Row(
                               children: [
                                 if (isFakedate)
-                                  const Text(
+                                  const SelectableText(
                                     'fake ',
                                     style: TextStyle(color: Colors.red),
                                   ),
-                                Text(
+                                SelectableText(
                                   '탈거일 ${sectorListController.sectorModelList[index].removalInfo!.removalDate}',
                                 ),
                               ],

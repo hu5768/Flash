@@ -79,9 +79,6 @@ class AnswerCard extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  await solutionDeleteController.DeleteSolution(
-                                    solutionId,
-                                  );
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -93,7 +90,10 @@ class AnswerCard extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await solutionDeleteController.DeleteSolution(
+                                    solutionId,
+                                  );
                                   Navigator.of(context).pop();
                                 },
                               ),
