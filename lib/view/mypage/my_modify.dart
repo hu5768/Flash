@@ -363,6 +363,15 @@ class MyModify extends StatelessWidget {
                                         ),
                                       ),
                                       onPressed: () async {
+                                        AnalyticsService.buttonClick(
+                                          'userDelete',
+                                          mypageController.userModel.nickName ??
+                                              '',
+                                          mypageController
+                                                  .userModel.instagramId ??
+                                              '',
+                                          '',
+                                        );
                                         userDeleteController.DeleteMember();
                                         await storage.delete(
                                           key: ACCESS_TOKEN_KEY,
@@ -464,6 +473,7 @@ class ModifyInfoCard extends StatelessWidget {
 }
 
 class ModifyMemberCard extends StatelessWidget {
+  final mypageController = Get.put(MypageController());
   ModifyMemberCard({
     super.key,
     required this.info,
@@ -479,10 +489,10 @@ class ModifyMemberCard extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         AnalyticsService.buttonClick(
-          'userModify',
+          'userModifyMember',
           info,
-          '',
-          '',
+          mypageController.userModel.instagramId ?? '',
+          mypageController.userModel.nickName ?? '',
         );
         clikFunction();
       },
