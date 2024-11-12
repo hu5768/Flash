@@ -64,7 +64,6 @@ class _AnswerUploadState extends State<AnswerUpload> {
       //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.video,
-        // allowCompression: false,
       );
 
       if (result != null) {
@@ -133,6 +132,7 @@ class _AnswerUploadState extends State<AnswerUpload> {
 
     //List<int> videoBytes = await _video!.readAsBytes();
 
+/*
     final info = await VideoCompress.compressVideo(
       _video!.path,
       quality: VideoQuality
@@ -140,32 +140,33 @@ class _AnswerUploadState extends State<AnswerUpload> {
       deleteOrigin: false, // 원본 파일 삭제 여부
     );
     print('압축 성공 압축된 비디오 파일 크기: ${info?.filesize} bytes');
+*/
 
     try {
-      if (info == null) {
-        print('압축 실패');
-      } else {
-        FormData formData = FormData.fromMap({
-          'file': await MultipartFile.fromFile(
-            //_video!.path,
-            info.path!,
-            filename: 'test.mp4', // 파일 이름 설정
-          ),
-          'problemId': widget.problemId,
-          'review': userOpinionController.text,
-          'perceivedDifficulty': uploadController.difficultyLabel.value,
-        });
+      //   if (info == null) {
+      //      print('압축 실패');
+      //   } else {
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(
+          _video!.path,
+          //info.path!,
+          filename: 'test.mp4', // 파일 이름 설정
+        ),
+        'problemId': widget.problemId,
+        'review': userOpinionController.text,
+        'perceivedDifficulty': uploadController.difficultyLabel.value,
+      });
 
-        final apiResponse = await DioClient().dio.post(
-              '${uploadServerUrl}upload/',
-              data: formData,
-              options: Options(
-                contentType: 'multipart/form-data',
-              ),
-            );
-        if (apiResponse.statusCode == 200) {
-          print("최종 업로드 완료!");
-          /* showDialog(
+      final apiResponse = await DioClient().dio.post(
+            '${uploadServerUrl}upload/',
+            data: formData,
+            options: Options(
+              contentType: 'multipart/form-data',
+            ),
+          );
+      if (apiResponse.statusCode == 200) {
+        print("최종 업로드 완료!");
+        /* showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -201,8 +202,8 @@ class _AnswerUploadState extends State<AnswerUpload> {
             );
           },
         );*/
-        }
       }
+      //  }
     } on DioException catch (e) {
       print('영상 업로드 오류$e');
       if (e.response != null) {
