@@ -14,7 +14,7 @@ class DioClient {
     print("dio 생성");
     _dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: baseUrlDev,
         connectTimeout: const Duration(milliseconds: 10000),
         receiveTimeout: const Duration(milliseconds: 10000),
       ),
