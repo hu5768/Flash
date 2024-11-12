@@ -21,30 +21,31 @@ class ProblemFilter extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 20),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 770,
-            child: Obx(
-              () {
-                String mapImgUrl =
-                    centerTitleController.centerDetailModel.value.mapImageUrl ??
-                        "";
-                print(mapImgUrl);
-                return mapImgUrl != ''
-                    ? SizedBox(
-                        child: Image.network(
-                          centerTitleController
-                              .centerDetailModel.value.mapImageUrl!,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox(
-                              width: 350,
-                              child: Text("지도를 불러오지 못했습니다."),
-                            );
-                          },
-                        ),
-                      )
-                    : SizedBox();
-              },
-            ),
+          Obx(
+            () {
+              String mapImgUrl =
+                  centerTitleController.centerDetailModel.value.mapImageUrl ??
+                      "";
+              print(mapImgUrl);
+              return mapImgUrl != ''
+                  ? SizedBox(
+                      width: double.infinity,
+                      child: Image.network(
+                        centerTitleController
+                            .centerDetailModel.value.mapImageUrl!,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const SizedBox(
+                            width: 350,
+                            child: Text(
+                              "지도를 불러오지 못했습니다.",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox();
+            },
           ),
           Align(
             alignment: Alignment.centerLeft,
