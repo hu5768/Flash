@@ -22,72 +22,75 @@ class ProblemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
-      body: Center(
-        child: Column(
-          children: [
-            ProblemFilter(),
-            const SizedBox(height: 10),
-            GetX<ProblemListController>(
-              builder: (controller) {
-                return Container(
-                  height: 300,
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      await problemListController.newFetch();
-                      problemListController.ScrollUp();
-                    },
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      controller: problemListController.scrollController,
-                      itemCount: problemListController.problemList.length,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            problemListController.problemList[index].id == 'no'
-                                ? NoProblemCard()
-                                : ProblemCard(
-                                    gymName:
-                                        centerTitleController.centerTitle.value,
-                                    id: problemListController
-                                        .problemList[index].id
-                                        .toString(),
-                                    sector: problemListController
-                                        .problemList[index].sector
-                                        .toString(),
-                                    difficulty: problemListController
-                                        .problemList[index].difficulty
-                                        .toString(),
-                                    settingDate: problemListController
-                                        .problemList[index].settingDate
-                                        .toString(),
-                                    removalDate: problemListController
-                                        .problemList[index].removalDate
-                                        .toString(),
-                                    hasSolution: problemListController
-                                        .problemList[index].hasSolution!,
-                                    imageUrl: problemListController
-                                        .problemList[index].imageUrl
-                                        .toString(),
-                                    isHoney: problemListController
-                                            .problemList[index].isHoney ??
-                                        false,
-                                    solutionCount: problemListController
-                                            .problemList[index].solutionCount ??
-                                        0,
-                                  ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                          ],
-                        );
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              ProblemFilter(),
+              GetX<ProblemListController>(
+                builder: (controller) {
+                  return Container(
+                    height: 300,
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await problemListController.newFetch();
+                        problemListController.ScrollUp();
                       },
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        controller: problemListController.scrollController,
+                        itemCount: problemListController.problemList.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              problemListController.problemList[index].id ==
+                                      'no'
+                                  ? NoProblemCard()
+                                  : ProblemCard(
+                                      gymName: centerTitleController
+                                          .centerTitle.value,
+                                      id: problemListController
+                                          .problemList[index].id
+                                          .toString(),
+                                      sector: problemListController
+                                          .problemList[index].sector
+                                          .toString(),
+                                      difficulty: problemListController
+                                          .problemList[index].difficulty
+                                          .toString(),
+                                      settingDate: problemListController
+                                          .problemList[index].settingDate
+                                          .toString(),
+                                      removalDate: problemListController
+                                          .problemList[index].removalDate
+                                          .toString(),
+                                      hasSolution: problemListController
+                                          .problemList[index].hasSolution!,
+                                      imageUrl: problemListController
+                                          .problemList[index].imageUrl
+                                          .toString(),
+                                      isHoney: problemListController
+                                              .problemList[index].isHoney ??
+                                          false,
+                                      solutionCount: problemListController
+                                              .problemList[index]
+                                              .solutionCount ??
+                                          0,
+                                    ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     );

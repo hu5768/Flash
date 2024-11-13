@@ -14,6 +14,7 @@ import 'package:flash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
@@ -43,6 +44,12 @@ Future<void> main() async {
     ),
   );
   debugPaintSizeEnabled = false;
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
   runApp(const App());
 }
 

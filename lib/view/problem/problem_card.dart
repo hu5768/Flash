@@ -1,9 +1,11 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/date_form.dart';
+import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProblemCard extends StatelessWidget {
   final String gymName,
@@ -15,8 +17,8 @@ class ProblemCard extends StatelessWidget {
       imageUrl;
   final int solutionCount;
   final bool hasSolution, isHoney;
-
-  const ProblemCard({
+  final answerDataController = Get.put(AnswerDataController());
+  ProblemCard({
     super.key,
     required this.gymName,
     required this.id,
@@ -33,13 +35,14 @@ class ProblemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         AnalyticsService.problemClick(
           id,
           difficulty,
           sector,
           hasSolution.toString(),
         );
+        await answerDataController.fetchData(id);
         Navigator.push(
           context,
           MaterialPageRoute(
