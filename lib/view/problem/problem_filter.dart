@@ -20,7 +20,7 @@ class ProblemFilter extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Obx(
             () {
               String mapImgUrl =
@@ -29,6 +29,7 @@ class ProblemFilter extends StatelessWidget {
               print(mapImgUrl);
               return mapImgUrl != ''
                   ? SizedBox(
+                      height: 112,
                       width: double.infinity,
                       child: Image.network(
                         centerTitleController
@@ -50,7 +51,7 @@ class ProblemFilter extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              padding: EdgeInsets.fromLTRB(24, 20, 24, 20),
+              padding: EdgeInsets.fromLTRB(24, 15, 24, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -23,7 +23,6 @@ class AnswersCarousell extends StatelessWidget {
   Widget build(BuildContext context) {
     AnalyticsService.screenView('SolutionPage', '');
     answerCarouselController.cIndex.value = 0;
-    answerDataController.fetchData(id);
 
     return PopScope(
       onPopInvokedWithResult: (bool a, result) async {
