@@ -29,7 +29,7 @@ class CenterCard extends StatelessWidget {
           '',
         );
         problemSortController.allInit();
-        centerTitleController.changeId(id);
+        await centerTitleController.changeId(id);
         await centerTitleController.getTitle();
         await problemListController.newFetch();
         problemListController.ScrollUp();
