@@ -22,6 +22,7 @@ class CenterTitleController extends GetxController {
     super.onInit();
     final gymId = await firstStorage.read(key: GYM_ID) ?? '1';
     centerId.value = int.parse(gymId);
+
     getTitle();
   }
 
@@ -40,7 +41,6 @@ class CenterTitleController extends GetxController {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get("/gyms/${centerId.value}");
-
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       centerDetailModel.value = CenterDetailModel.fromJson(resMap);
       centerTitle.value = resMap['gymName'];
