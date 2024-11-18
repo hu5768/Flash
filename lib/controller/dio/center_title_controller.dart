@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/const/gym_id.dart';
 import 'package:flash/model/center_detail_model.dart';
 import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/main_page.dart';
@@ -17,9 +18,11 @@ class CenterTitleController extends GetxController {
   dynamic mainContext;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    centerId.value = 1;
+    final gymId = await firstStorage.read(key: GYM_ID) ?? '1';
+    centerId.value = int.parse(gymId);
+
     getTitle();
   }
 
@@ -27,8 +30,9 @@ class CenterTitleController extends GetxController {
     mainContext = context;
   }
 
-  void changeId(int newId) {
+  Future<void> changeId(int newId) async {
     centerId.value = newId;
+    firstStorage.write(key: GYM_ID, value: newId.toString());
   }
 
   Future<void> getTitle() async {
@@ -37,7 +41,6 @@ class CenterTitleController extends GetxController {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       DioClient().updateOptions(token: token.toString());
       response = await DioClient().dio.get("/gyms/${centerId.value}");
-
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       centerDetailModel.value = CenterDetailModel.fromJson(resMap);
       centerTitle.value = resMap['gymName'];
