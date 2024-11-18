@@ -166,7 +166,7 @@ class AgreePage extends StatelessWidget {
                     ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (loginController.requireConsent1.value &&
                       loginController.requireConsent2.value &&
                       loginController.requireConsent3.value) {
@@ -174,7 +174,7 @@ class AgreePage extends StatelessWidget {
                         .agreeMarketing(loginController.emailConsent.value);
                     userOnboardingControlle.controllerInit();
                     Navigator.pop(context);
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => UserOnboardingPage(),

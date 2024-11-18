@@ -38,7 +38,7 @@ class MyVideoCard extends StatelessWidget {
           difficultyName,
         );
         await mySolutionDetailController.fetchData(solutionId);
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => MySolution(

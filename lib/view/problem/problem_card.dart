@@ -43,7 +43,7 @@ class ProblemCard extends StatelessWidget {
           hasSolution.toString(),
         );
         await answerDataController.fetchData(id);
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => AnswersCarousell(
