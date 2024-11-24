@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,9 +7,11 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/dio/upload_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
+import 'package:flash/view/upload/select_thumnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,53 +36,58 @@ class FirstAnswerUpload extends StatefulWidget {
 
 class _AnswerUploadState extends State<FirstAnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
-  VideoPlayerController? videoController;
-  File? _video;
+
   bool fileLoad = false;
   String difficultyLabel = '보통';
   final TextEditingController userOpinionController = TextEditingController();
-  final uploadController = Get.put(UploadController());
-
+  final firstAnswerController = Get.put(FirstAnswerController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    uploadController.difficultyLabel.value = '보통';
+    firstAnswerController.difficultyLabel.value = '보통';
   }
 
   @override
   void dispose() {
-    videoController?.dispose();
+    firstAnswerController.videoController = null;
     super.dispose();
   }
 
   Future<void> PickVideo() async {
-    print('파일 열기');
     int sizeLimit = 300 * 1024 * 1024;
-
     setState(() {
       fileLoad = true;
     });
     try {
-      //await platform.invokeMethod('openFilePicker');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.video,
       );
-
       if (result != null) {
         PlatformFile fileCheck = result.files.first;
         print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
         if (fileCheck.size < sizeLimit) {
-          _video = File(result.files.single.path!);
+          firstAnswerController.selectVideo = File(result.files.single.path!);
 
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectThumnail(
+                videoPath: firstAnswerController.selectVideo!.path,
+              ),
+              allowSnapshotting: true,
+            ),
+          );
           setState(() {
-            videoController = VideoPlayerController.file(_video!)
-              ..initialize().then((_) {
-                setState(() {});
-                videoController!.setVolume(0);
-                videoController!.play();
-              });
+            firstAnswerController.videoController =
+                VideoPlayerController.file(firstAnswerController.selectVideo!)
+                  ..initialize().then((_) {
+                    setState(() {});
+                    firstAnswerController.videoController!.play();
+                  });
           });
+
+          firstAnswerController.videoController!.play();
         } else {
           await showDialog(
             context: context,
@@ -123,11 +129,13 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
     } catch (e) {
       print("비디오 선택 오류 $e");
     }
-    fileLoad = false;
+    setState(() {
+      fileLoad = false;
+    });
   }
 
   Future<void> _uploadVideo2() async {
-    if (_video == null) return;
+    if (firstAnswerController.selectVideo == null) return;
     print('업로드 시작');
     final token = await storage.read(key: ACCESS_TOKEN_KEY);
     DioClient().updateOptions(token: token.toString());
@@ -150,13 +158,13 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
       //   } else {
       FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(
-          _video!.path,
+          firstAnswerController.selectVideo!.path,
           //info.path!,
           filename: 'test.mp4', // 파일 이름 설정
         ),
         //  'problemId': widget.problemId,
         'review': userOpinionController.text,
-        'perceivedDifficulty': uploadController.difficultyLabel.value,
+        'perceivedDifficulty': firstAnswerController.difficultyLabel.value,
       });
 
       final apiResponse = await DioClient().dio.post(
@@ -247,7 +255,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    if (_video == null) return;
+                    if (firstAnswerController.selectVideo == null) return;
 
                     _uploadVideo2();
                     await showDialog(
@@ -328,7 +336,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                   strokeWidth: 10,
                                 ),
                               )
-                            : videoController == null
+                            : firstAnswerController.videoController == null
                                 ? Container(
                                     padding:
                                         EdgeInsets.fromLTRB(30, 125, 30, 125),
@@ -360,7 +368,9 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                       ),
                                     ),
                                   )
-                                : VideoPlayer(videoController!),
+                                : VideoPlayer(
+                                    firstAnswerController.videoController!,
+                                  ),
                       ),
                       SizedBox(
                         width: 20,
