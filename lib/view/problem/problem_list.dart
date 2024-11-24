@@ -8,6 +8,7 @@ import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flash/view/problem/problem_filter.dart';
+import 'package:flash/view/upload/first_answer_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -124,7 +125,7 @@ class NoProblemCard extends StatelessWidget {
             Image.asset('assets/images/emptyHodIcon.png'),
             SizedBox(height: 15),
             Text(
-              '더 이상 문제가 없습니다',
+              '앗, 문제가 없어요!',
               style: TextStyle(
                 color: const Color.fromARGB(255, 153, 153, 153),
                 fontSize: 20,
@@ -132,6 +133,38 @@ class NoProblemCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5),
+            SizedBox(
+              height: 44,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FirstAnswerUpload(
+                        gymName: '양재',
+                        sector: '1&2',
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 56, 56, 56),
+                  backgroundColor: const Color.fromARGB(255, 238, 238, 238),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.0), // 둥근 모서리
+                  ),
+                ),
+                child: Text(
+                  '내 풀이 업로드',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: const Color.fromARGB(255, 102, 102, 102),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            /*
             GestureDetector(
               onTap: () {
                 AnalyticsService.buttonClick(
@@ -167,6 +200,7 @@ class NoProblemCard extends StatelessWidget {
                 ),
               ),
             ),
+          */
           ],
         ),
       ),
