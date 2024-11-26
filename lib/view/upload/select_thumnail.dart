@@ -145,45 +145,50 @@ class _SelectThumnailState extends State<SelectThumnail> {
                             children: frameThumbnails.map((thumbnail) {
                               return Image.file(
                                 thumbnail,
-                                width: 43,
+                                width: MediaQuery.of(context).size.width / 9,
                                 fit: BoxFit.cover,
                               );
                             }).toList(),
                           ),
                         ),
                         // 드래그 가능한 슬라이더
-                        SliderTheme(
-                          data: SliderThemeData(
-                            trackHeight: 0, // 트랙 숨김
-                            thumbShape: TransparentSquareThumb(),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width /
+                              9 *
+                              8, //thum이 조금 남아서 임의로 줄임?
+                          child: SliderTheme(
+                            data: SliderThemeData(
+                              trackHeight: 0, // 트랙 숨김
+                              thumbShape: TransparentSquareThumb(),
 
-                            overlayShape:
-                                RoundSliderOverlayShape(overlayRadius: 15),
-                          ),
-                          child: Slider(
-                            min: 0,
-                            max: (totalFrames - 1).toDouble(),
-                            value: currentSliderValue,
-                            divisions: totalFrames - 1,
-                            onChanged: (value) {
-                              setState(() {
-                                currentSliderValue = value;
-                              });
-                              final selectedTime = Duration(
-                                milliseconds: (videoController!
-                                            .value.duration.inMilliseconds /
-                                        totalFrames *
-                                        value)
-                                    .round(),
-                              );
-                              videoController!.seekTo(selectedTime);
-                            },
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 15),
+                            ),
+                            child: Slider(
+                              min: 0,
+                              max: (totalFrames - 1).toDouble(),
+                              value: currentSliderValue,
+                              divisions: (totalFrames - 1) * 3, //일단 24개
+                              onChanged: (value) {
+                                setState(() {
+                                  currentSliderValue = value;
+                                });
+                                final selectedTime = Duration(
+                                  milliseconds: (videoController!
+                                              .value.duration.inMilliseconds /
+                                          totalFrames *
+                                          value)
+                                      .round(),
+                                );
+                                videoController!.seekTo(selectedTime);
+                              },
+                            ),
                           ),
                         ),
                       ],
                     ),
                   )
-                : Center(child: Text("썸네일 로드 중...")),
+                : Center(child: Text("")),
           ],
         ),
       ),

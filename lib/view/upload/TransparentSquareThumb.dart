@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TransparentSquareThumb extends SliderComponentShape {
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size(30, 30); // Thumb 크기 조정
+    return Size(43, 43); // Thumb 크기 조정
   }
 
   @override
