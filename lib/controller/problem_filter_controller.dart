@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 class ProblemFilterController extends GetxController {
   List<String> gradeOption = [];
   List<String> sectorOption = [];
+  List<String> sectorImageUrl = [];
+  var sectorImageUrlString = ''.obs;
+
   var allOption = <List<String>>[].obs; //난이도 ,벽 도메인
   var allSelection = <RxList<String>>[].obs; // 문제 리스트 페이지에 반영될 선택 여부
 
@@ -40,13 +43,16 @@ class ProblemFilterController extends GetxController {
   }
 
 // new
-  void SectorSelection(String option) {
+  void SectorSelection(String option, int index) {
     if (allSelection[1].contains(option)) {
       allSelection[1].remove(option);
+      sectorImageUrlString.value = '';
     } else {
       allSelection[1].clear();
       allSelection[1].add(option);
+      sectorImageUrlString.value = sectorImageUrl[index];
     }
+    print('섹터 url' + sectorImageUrlString.value);
   }
 
   void GradeSelection(String option) {

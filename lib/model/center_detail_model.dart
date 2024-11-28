@@ -3,7 +3,7 @@ class CenterDetailModel {
   String? mapImageUrl;
   String? calendarImageUrl;
   List<String>? difficulties;
-  List<String>? sectors;
+  List<Sectors>? sectors;
 
   CenterDetailModel({
     this.gymName,
@@ -18,7 +18,12 @@ class CenterDetailModel {
     mapImageUrl = json['mapImageUrl'];
     calendarImageUrl = json['calendarImageUrl'];
     difficulties = json['difficulties'].cast<String>();
-    sectors = json['sectors'].cast<String>();
+    if (json['sectors'] != null) {
+      sectors = <Sectors>[];
+      json['sectors'].forEach((v) {
+        sectors!.add(new Sectors.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +32,28 @@ class CenterDetailModel {
     data['mapImageUrl'] = this.mapImageUrl;
     data['calendarImageUrl'] = this.calendarImageUrl;
     data['difficulties'] = this.difficulties;
-    data['sectors'] = this.sectors;
+    if (this.sectors != null) {
+      data['sectors'] = this.sectors!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Sectors {
+  String? name;
+  String? selectedImageUrl;
+
+  Sectors({this.name, this.selectedImageUrl});
+
+  Sectors.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    selectedImageUrl = json['selectedImageUrl'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['selectedImageUrl'] = this.selectedImageUrl;
     return data;
   }
 }

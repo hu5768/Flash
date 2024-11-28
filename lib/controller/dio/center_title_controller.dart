@@ -47,7 +47,14 @@ class CenterTitleController extends GetxController {
       ProblemFilterController problemFilterController = Get.find();
       problemFilterController.gradeOption =
           centerDetailModel.value.difficulties!;
-      problemFilterController.sectorOption = centerDetailModel.value.sectors!;
+      problemFilterController.sectorOption = centerDetailModel.value.sectors!
+              .map((sector) => sector.name ?? '')
+              .toList() ??
+          [];
+      problemFilterController.sectorImageUrl = centerDetailModel.value.sectors!
+              .map((sector) => sector.selectedImageUrl ?? '')
+              .toList() ??
+          [];
       await problemFilterController.allInit();
     } catch (e) {
       print('암장 타이틀 실패$e');

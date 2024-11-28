@@ -32,8 +32,10 @@ class ProblemFilter extends StatelessWidget {
                       height: 112,
                       width: double.infinity,
                       child: Image.network(
-                        centerTitleController
-                            .centerDetailModel.value.mapImageUrl!,
+                        problemFilterController.sectorImageUrlString.value != ''
+                            ? problemFilterController.sectorImageUrlString.value
+                            : centerTitleController
+                                .centerDetailModel.value.mapImageUrl!,
                         errorBuilder: (context, error, stackTrace) {
                           return const SizedBox(
                             width: 350,
@@ -234,7 +236,8 @@ class SectorFilter extends StatelessWidget {
                                   .toString(),
                               '',
                             );
-                            problemFilterController.SectorSelection(option);
+                            problemFilterController.SectorSelection(
+                                option, index);
                             problemListController.FilterApply();
                           },
                         ),
