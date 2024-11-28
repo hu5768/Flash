@@ -7,36 +7,48 @@ import 'package:get/get.dart';
 
 class HoldSelectModal extends StatelessWidget {
   void _showMenu(BuildContext context, Offset offset) async {
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
-
-    await showMenu(
+    showDialog(
       context: context,
-      color: Colors.white,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(offset.dx + 100, offset.dy + 58, 0, 0),
-        Offset.zero & overlay.size,
-      ),
-      items: [
-        PopupMenuItem(
-          onTap: () {
-            SortClick('추천순', 'recommand');
-          },
-          child: Text("추천순"),
-        ),
-        PopupMenuItem(
-          onTap: () {
-            SortClick('인기순', 'views');
-          },
-          child: Text("인기순"),
-        ),
-        PopupMenuItem(
-          onTap: () {
-            SortClick('난이도순', 'difficulty');
-          },
-          child: Text("난이도순"),
-        ),
-      ],
+      barrierColor: Colors.transparent, // 배경 클릭 감지
+      builder: (context) {
+        return Stack(
+          children: [
+            Positioned(
+              right: MediaQuery.of(context).size.width - offset.dx, //오른쪽 부터 계산
+              top: offset.dy + 10,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                width: 200, // 메뉴의 전체 너비
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 5,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: GridView.count(
+                  crossAxisCount: 4, // 한 행에 2개의 아이템
+                  shrinkWrap: true, // 크기 자동 조정
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  children: [
+                    Icon(Icons.abc),
+                    Icon(Icons.abc),
+                    Icon(Icons.abc),
+                    Icon(Icons.abc),
+                    Icon(Icons.abc),
+                    Icon(Icons.abc),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -61,7 +73,12 @@ class HoldSelectModal extends StatelessWidget {
       ),
       onPressed: () {
         RenderBox renderBox = context.findRenderObject() as RenderBox;
-        Offset offset = renderBox.localToGlobal(Offset.zero);
+        Offset offset = renderBox.localToGlobal(
+          Offset(
+            renderBox.size.width,
+            0,
+          ),
+        );
         _showMenu(context, offset);
       },
       child: Container(
