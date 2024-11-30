@@ -10,7 +10,9 @@ import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/dio/upload_controller.dart';
+import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
@@ -495,6 +497,18 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                             : SizedBox();
                       },
                     ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Text(
+                        '섹터',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    SectorFilter(),
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                       child: Text(
@@ -529,35 +543,120 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      height: 60,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: ColorGroup.selectBtnFGC,
+                          backgroundColor: ColorGroup.selectBtnBGC,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "업로드",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 40),
                   ],
-                ),
-              ),
-              SizedBox(height: 28),
-              SizedBox(height: 200),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(250, 60),
-                  foregroundColor: ColorGroup.selectBtnFGC,
-                  backgroundColor: ColorGroup.selectBtnBGC,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text(
-                  "다음",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SectorFilter extends StatelessWidget {
+  SectorFilter({
+    super.key,
+  });
+
+  final ProblemFilterController problemFilterController = Get.find();
+  final ProblemListController problemListController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 30,
+      width: 300,
+      child: Obx(
+        () {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: problemFilterController.allOption[1].length,
+            itemBuilder: (context, index) {
+              return Obx(
+                () {
+                  final option = problemFilterController.allOption[1][index];
+                  final isSelected =
+                      problemFilterController.allSelection[1].contains(option);
+
+                  return Container(
+                    height: 30,
+                    padding: EdgeInsets.only(right: 12),
+                    child: ChoiceChip(
+                      selected: isSelected,
+                      visualDensity: VisualDensity(vertical: 0.0),
+                      showCheckmark: false,
+                      label: Align(
+                        alignment: Alignment(0, -1.2),
+                        child: Text(
+                          option,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: isSelected
+                                ? Colors.white
+                                : Color.fromARGB(255, 17, 17, 17),
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                      backgroundColor: Colors.white,
+                      selectedColor: const Color.fromARGB(255, 0, 87, 255),
+                      side: BorderSide(
+                        color: isSelected
+                            ? Color.fromARGB(255, 0, 87, 255)
+                            : Color.fromARGB(255, 196, 196, 196),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          30,
+                        ),
+                      ),
+                      onSelected: (bool selected) {
+                        AnalyticsService.buttonClick(
+                          'FilterModal_Sector',
+                          option,
+                          problemFilterController.allSelection[0].toString(),
+                          '',
+                        );
+                        problemFilterController.SectorSelection(
+                          option,
+                          index,
+                        );
+                        problemListController.FilterApply();
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }

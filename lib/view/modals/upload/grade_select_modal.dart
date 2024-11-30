@@ -22,9 +22,8 @@ class GradeSelectModal extends StatelessWidget {
       items: [
         PopupMenuItem(
           onTap: () {},
-          child: Text(
-            "꿀이에요",
-            style: TextStyle(fontSize: 16),
+          child: Container(
+            color: Colors.blue,
           ),
         ),
         PopupMenuItem(
