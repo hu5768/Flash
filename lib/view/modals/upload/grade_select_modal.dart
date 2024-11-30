@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class HoldSelectModal extends StatelessWidget {
+class GradeSelectModal extends StatelessWidget {
   void _showMenu(BuildContext context, Offset offset) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -13,28 +13,33 @@ class HoldSelectModal extends StatelessWidget {
     await showMenu(
       context: context,
       color: Colors.white,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(offset.dx + 100, offset.dy + 58, 0, 0),
-        Offset.zero & overlay.size,
+      position: RelativeRect.fromLTRB(
+        offset.dx,
+        offset.dy + 8,
+        overlay.size.width - offset.dx + 112, // 오른쪽 공간
+        0,
       ),
       items: [
         PopupMenuItem(
-          onTap: () {
-            SortClick('추천순', 'recommand');
-          },
-          child: Text("추천순"),
+          onTap: () {},
+          child: Text(
+            "꿀이에요",
+            style: TextStyle(fontSize: 16),
+          ),
         ),
         PopupMenuItem(
-          onTap: () {
-            SortClick('인기순', 'views');
-          },
-          child: Text("인기순"),
+          onTap: () {},
+          child: Text(
+            "보통이에요",
+            style: TextStyle(fontSize: 16),
+          ),
         ),
         PopupMenuItem(
-          onTap: () {
-            SortClick('난이도순', 'difficulty');
-          },
-          child: Text("난이도순"),
+          onTap: () {},
+          child: Text(
+            "어려워요",
+            style: TextStyle(fontSize: 16),
+          ),
         ),
       ],
     );
@@ -44,7 +49,7 @@ class HoldSelectModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(14, 9, 14, 9),
+        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
         side: BorderSide(
           width: 1,
           color: const Color.fromARGB(
@@ -61,7 +66,12 @@ class HoldSelectModal extends StatelessWidget {
       ),
       onPressed: () {
         RenderBox renderBox = context.findRenderObject() as RenderBox;
-        Offset offset = renderBox.localToGlobal(Offset.zero);
+        Offset offset = renderBox.localToGlobal(
+          Offset(
+            0,
+            renderBox.size.height,
+          ),
+        );
         _showMenu(context, offset);
       },
       child: Container(
@@ -70,10 +80,13 @@ class HoldSelectModal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(
-              'assets/images/empty_hold.svg',
+              'assets/images/empty_color.svg',
             ),
             SizedBox(width: 10),
-            Icon(Icons.keyboard_arrow_down),
+            Icon(
+              Icons.keyboard_arrow_down,
+              size: 32,
+            ),
           ],
         ),
       ),

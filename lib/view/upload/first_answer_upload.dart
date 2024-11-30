@@ -6,11 +6,15 @@ import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/const/uploadBaseUrl.dart';
+import 'package:flash/controller/date_form.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/dio/upload_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
+import 'package:flash/view/modals/upload/vote_select_modal.dart';
 import 'package:flash/view/upload/select_thumnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +45,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
   String difficultyLabel = '보통';
   final TextEditingController userOpinionController = TextEditingController();
   final firstAnswerController = Get.put(FirstAnswerController());
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   void initState() {
     // TODO: implement initState
@@ -176,42 +181,6 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
           );
       if (apiResponse.statusCode == 200) {
         print("최종 업로드 완료!");
-        /* showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-              backgroundColor: ColorGroup.BGC,
-              titleTextStyle: TextStyle(
-                fontSize: 15,
-                color: const Color.fromARGB(255, 0, 0, 0),
-                fontWeight: FontWeight.w700,
-              ),
-              contentTextStyle: TextStyle(
-                fontSize: 13,
-                color: const Color.fromARGB(255, 0, 0, 0),
-              ),
-              title: Text('업로드 완료'),
-              content: Text('영상이 업로드 되었습니다\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.'),
-              actions: [
-                TextButton(
-                  child: Text(
-                    '확인',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );*/
       }
       //  }
     } on DioException catch (e) {
@@ -306,374 +275,290 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
         backgroundColor: ColorGroup.appbarBGC,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(34, 0, 34, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 294,
-                        width: 169,
-                        clipBehavior: Clip.hardEdge,
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 294,
+                      width: 169,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(248, 242, 242, 242),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: fileLoad
+                          ? Container(
+                              padding:
+                                  EdgeInsets.fromLTRB(44.5, 107, 44.5, 107),
+                              child: CircularProgressIndicator(
+                                backgroundColor: ColorGroup.modalSBtnBGC,
+                                color: ColorGroup.selectBtnBGC,
+                                strokeWidth: 10,
+                              ),
+                            )
+                          : firstAnswerController.videoController == null
+                              ? Container(
+                                  padding:
+                                      EdgeInsets.fromLTRB(30, 125, 30, 125),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (!fileLoad) {
+                                        PickVideo();
+                                      } else {}
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      foregroundColor:
+                                          Color.fromRGBO(0, 87, 255, 1),
+                                      backgroundColor:
+                                          Color.fromRGBO(217, 230, 255, 1),
+                                      padding: EdgeInsets.zero,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          24,
+                                        ), // 모서리 둥글기
+                                      ),
+                                    ),
+                                    child: Text(
+                                      '영상 선택하기',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : VideoPlayer(
+                                  firstAnswerController.videoController!,
+                                ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    SizedBox(
+                      width: 136,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('홀드 색'),
+                          SizedBox(height: 8),
+                          HoldSelectModal(),
+                          SizedBox(height: 16),
+                          Text('난이도'),
+                          SizedBox(height: 8),
+                          GradeSelectModal(),
+                          SizedBox(height: 16),
+                          Text('체감 난이도'),
+                          SizedBox(height: 8),
+                          VoteSelectModal(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Text(
+                        '날짜',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? dateTmp;
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(12), // 모서리 둥글게
+                              ),
+                              child: Theme(
+                                data: ThemeData.light().copyWith(
+                                  dialogBackgroundColor: Colors.white, // 배경 흰색
+                                  colorScheme: ColorScheme.light(
+                                    primary: Colors.blue, // 선택된 날짜 색상 (파란색)
+                                    onPrimary: Colors.white, // 선택된 날짜의 텍스트 색상
+                                    surface: Colors.white, // 달력의 기본 배경색
+                                  ),
+                                  textTheme: TextTheme(
+                                    bodyMedium: TextStyle(
+                                      color: Colors.black,
+                                    ), // 텍스트 색상 (검은색)
+                                  ),
+                                ),
+                                child: SizedBox(
+                                  height: 300,
+                                  child: CalendarDatePicker(
+                                    initialDate:
+                                        firstAnswerController.selectDate.value,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                    onDateChanged: (DateTime date) {
+                                      dateTmp = date;
+                                      Navigator.pop(context, date);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
+                        if (dateTmp != null) {
+                          firstAnswerController.selectDate.value = dateTmp!;
+                        }
+                      },
+                      child: Container(
+                        height: 58,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(248, 242, 242, 242),
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          border: Border.all(
+                            color: const Color.fromARGB(
+                              255,
+                              196,
+                              196,
+                              196,
+                            ), // 테두리 색상
+                            width: 1,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: fileLoad
-                            ? Container(
-                                padding:
-                                    EdgeInsets.fromLTRB(59.5, 95, 59.5, 95),
-                                child: CircularProgressIndicator(
-                                  backgroundColor: ColorGroup.modalSBtnBGC,
-                                  color: ColorGroup.selectBtnBGC,
-                                  strokeWidth: 10,
+                        child: Center(
+                          child: Obx(
+                            () {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    formatDateDate(
+                                      firstAnswerController.selectDate.value,
+                                    ),
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Text('변경'),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 28),
+                    Obx(
+                      () {
+                        String mapImgUrl = centerTitleController
+                                .centerDetailModel.value.mapImageUrl ??
+                            "";
+                        print(mapImgUrl);
+                        return mapImgUrl != ''
+                            ? SizedBox(
+                                height: 112,
+                                width: double.infinity,
+                                child: Image.network(
+                                  centerTitleController
+                                      .centerDetailModel.value.mapImageUrl!,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const SizedBox(
+                                      width: 350,
+                                      child: Text(
+                                        "지도를 불러오지 못했습니다.",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    );
+                                  },
                                 ),
                               )
-                            : firstAnswerController.videoController == null
-                                ? Container(
-                                    padding:
-                                        EdgeInsets.fromLTRB(30, 125, 30, 125),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (!fileLoad) {
-                                          PickVideo();
-                                        } else {}
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        foregroundColor:
-                                            Color.fromRGBO(0, 87, 255, 1),
-                                        backgroundColor:
-                                            Color.fromRGBO(217, 230, 255, 1),
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            24,
-                                          ), // 모서리 둥글기
-                                        ),
-                                      ),
-                                      child: Text(
-                                        '영상 선택하기',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : VideoPlayer(
-                                    firstAnswerController.videoController!,
-                                  ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      SizedBox(
-                        width: 136,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('홀드 색'),
-                            SizedBox(height: 8),
-                            HoldSelectModal(),
-                            /*
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(14, 9, 14, 9),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    196,
-                                    196,
-                                    196,
-                                  ),
-                                ),
-                                foregroundColor:
-                                    const Color.fromARGB(255, 115, 115, 115),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/images/empty_hold.svg',
-                                    ),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.keyboard_arrow_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            */
-                            SizedBox(height: 16),
-                            Text('난이도'),
-                            SizedBox(height: 8),
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    196,
-                                    196,
-                                    196,
-                                  ),
-                                ),
-                                foregroundColor:
-                                    const Color.fromARGB(255, 115, 115, 115),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/images/empty_color.svg',
-                                    ),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.keyboard_arrow_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text('체감 난이도'),
-                            SizedBox(height: 8),
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(13, 14, 13, 14),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    196,
-                                    196,
-                                    196,
-                                  ),
-                                ),
-                                foregroundColor:
-                                    const Color.fromARGB(255, 115, 115, 115),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Container(
-                                height: 30,
-                                width: 112,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('-'),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.keyboard_arrow_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                            : SizedBox();
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Text(
+                        '한줄평',
+                        style: TextStyle(
+                          fontSize: 14,
                         ),
                       ),
-                    ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(
+                            255,
+                            196,
+                            196,
+                            196,
+                          ), // 테두리 색상
+                          width: 1,
+                        ),
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: TextField(
+                        controller: userOpinionController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: '한줄평을 작성해주세요',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 28),
+              SizedBox(height: 200),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(250, 60),
+                  foregroundColor: ColorGroup.selectBtnFGC,
+                  backgroundColor: ColorGroup.selectBtnBGC,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                SizedBox(height: 16),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /*Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 12),
-                        child: Text(
-                          '클라이밍장',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(247, 247, 247, 1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          widget.gymName,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),*/
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 12),
-                        child: Text(
-                          '난이도',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(247, 247, 247, 1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: CenterColor.TheClimbColorList["빨강"],
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            Text(
-                              '빨강',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
-                        child: Text(
-                          '체감 난이도',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(247, 247, 247, 1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            DifficultyChip(difficulty: '쉬움'),
-                            DifficultyChip(difficulty: '보통'),
-                            DifficultyChip(difficulty: '어려움'),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 0, 12),
-                        child: Text(
-                          '한줄평',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(247, 247, 247, 1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: TextField(
-                          controller: userOpinionController,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: '한줄평을 작성해주세요',
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
+                child: const Text(
+                  "다음",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class DifficultyChip extends StatelessWidget {
-  final String difficulty;
-  final uploadController = Get.put(UploadController());
-  DifficultyChip({
-    super.key,
-    required this.difficulty,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () {
-        bool isSelected = uploadController.difficultyLabel.value == difficulty;
-        return ChoiceChip(
-          showCheckmark: false,
-          label: SizedBox(
-            width: 60,
-            child: Center(
-              child: Text(
-                difficulty,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: isSelected
-                      ? const Color.fromARGB(255, 63, 63, 63)
-                      : const Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: ColorGroup.btnBGC,
-          selectedColor: const Color.fromARGB(255, 227, 227, 227),
-          side: BorderSide(
-            color: isSelected
-                ? const Color.fromARGB(255, 107, 107, 107)
-                : Colors.transparent,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              16,
-            ),
-          ),
-          selected: isSelected,
-          onSelected: (value) {
-            AnalyticsService.buttonClick(
-              'voteDiff',
-              difficulty,
-              '',
-              '',
-            );
-            uploadController.difficultyLabel.value = difficulty;
-          },
-        );
-      },
     );
   }
 }

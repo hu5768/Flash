@@ -56,17 +56,11 @@ class CenterTitleController extends GetxController {
               .toList() ??
           [];
       await problemFilterController.allInit();
+      print('mapImageurl' + centerDetailModel.value.mapImageUrl.toString());
     } catch (e) {
       print('암장 타이틀 실패$e');
       print(centerId.value);
       print(centerTitle.value);
-      //await storage.delete(key: ACCESS_TOKEN_KEY);
-      /*Navigator.pushAndRemoveUntil(
-        mainContext,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-        (route) => false, // 스택에 있는 모든 이전 라우트를 제거
-      );
-      centerTitle.value = '--';*/
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:flash/view/problem/problem_card.dart';
 import 'package:flash/view/problem/problem_filter.dart';
 import 'package:flash/view/upload/first_answer_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ProblemList extends StatelessWidget {
@@ -93,6 +94,24 @@ class ProblemList extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: TextButton(
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FirstAnswerUpload(
+                gymName: '양재',
+                sector: '1&2',
+              ),
+            ),
+          );
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+        ),
+        child: SvgPicture.asset("assets/images/upload_button.svg"),
       ),
     );
   }

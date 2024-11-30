@@ -1,3 +1,4 @@
+import 'package:flash/const/Colors/make_hold_color.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -15,10 +16,10 @@ class HoldSelectModal extends StatelessWidget {
           children: [
             Positioned(
               right: MediaQuery.of(context).size.width - offset.dx, //오른쪽 부터 계산
-              top: offset.dy + 10,
+              top: offset.dy + 8,
               child: Container(
-                padding: const EdgeInsets.all(8),
-                width: 200, // 메뉴의 전체 너비
+                padding: const EdgeInsets.all(24),
+                width: MediaQuery.of(context).size.width * 0.7, // 메뉴의 전체 너비
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -31,17 +32,47 @@ class HoldSelectModal extends StatelessWidget {
                   ],
                 ),
                 child: GridView.count(
-                  crossAxisCount: 4, // 한 행에 2개의 아이템
+                  crossAxisCount: 4,
                   shrinkWrap: true, // 크기 자동 조정
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 24,
                   children: [
-                    Icon(Icons.abc),
-                    Icon(Icons.abc),
-                    Icon(Icons.abc),
-                    Icon(Icons.abc),
-                    Icon(Icons.abc),
-                    Icon(Icons.abc),
+                    SvgPicture.string(
+                      makeHold("#FF0000"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#FF6F00"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#FFCC00"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#73FF00"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
+                    SvgPicture.string(
+                      makeHold("#009041"),
+                    ),
                   ],
                 ),
               ),
@@ -90,7 +121,7 @@ class HoldSelectModal extends StatelessWidget {
               'assets/images/empty_hold.svg',
             ),
             SizedBox(width: 10),
-            Icon(Icons.keyboard_arrow_down),
+            Icon(Icons.keyboard_arrow_down, size: 32),
           ],
         ),
       ),

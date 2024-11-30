@@ -131,6 +131,7 @@ flutter:
     - assets/images/emptyHodIcon.png
     - assets/images/empty_hold.svg
     - assets/images/empty_color.svg
+    - assets/images/upload_button.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

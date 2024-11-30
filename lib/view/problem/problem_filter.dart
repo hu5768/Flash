@@ -12,9 +12,9 @@ import '../../controller/problem_filter_controller.dart';
 
 class ProblemFilter extends StatelessWidget {
   ProblemFilter({super.key});
-  final ProblemFilterController problemFilterController = Get.find();
-  final ProblemListController problemListController = Get.find();
-  final CenterTitleController centerTitleController = Get.find();
+  final problemFilterController = Get.put(ProblemFilterController());
+  final problemListController = Get.put(ProblemListController());
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,12 +27,13 @@ class ProblemFilter extends StatelessWidget {
                   centerTitleController.centerDetailModel.value.mapImageUrl ??
                       "";
               print(mapImgUrl);
-              return mapImgUrl != ''
+              return mapImgUrl != '' //mapImgUrl없으면 빈화면 보여줌
                   ? SizedBox(
                       height: 112,
                       width: double.infinity,
                       child: Image.network(
-                        problemFilterController.sectorImageUrlString.value != ''
+                        problemFilterController.sectorImageUrlString.value !=
+                                '' //섹터 이미지가 없으면 맵이미지 보여줌
                             ? problemFilterController.sectorImageUrlString.value
                             : centerTitleController
                                 .centerDetailModel.value.mapImageUrl!,
@@ -237,7 +238,9 @@ class SectorFilter extends StatelessWidget {
                               '',
                             );
                             problemFilterController.SectorSelection(
-                                option, index);
+                              option,
+                              index,
+                            );
                             problemListController.FilterApply();
                           },
                         ),
