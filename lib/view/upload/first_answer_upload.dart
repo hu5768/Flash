@@ -10,16 +10,13 @@ import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
-import 'package:flash/controller/dio/problem_list_controller.dart';
-import 'package:flash/controller/dio/upload_controller.dart';
-import 'package:flash/controller/problem_filter_controller.dart';
+
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
 import 'package:flash/view/modals/upload/vote_select_modal.dart';
 import 'package:flash/view/upload/select_thumnail.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 
@@ -475,14 +472,19 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                         String mapImgUrl = centerTitleController
                                 .centerDetailModel.value.mapImageUrl ??
                             "";
-                        print(mapImgUrl);
+
                         return mapImgUrl != ''
                             ? SizedBox(
                                 height: 112,
                                 width: double.infinity,
                                 child: Image.network(
-                                  centerTitleController
-                                      .centerDetailModel.value.mapImageUrl!,
+                                  firstAnswerController
+                                              .sectorImageUrlString.value !=
+                                          '' //섹터 이미지가 없으면 맵이미지 보여줌
+                                      ? firstAnswerController
+                                          .sectorImageUrlString.value
+                                      : centerTitleController
+                                          .centerDetailModel.value.mapImageUrl!,
                                   errorBuilder: (context, error, stackTrace) {
                                     return const SizedBox(
                                       width: 350,
@@ -585,74 +587,64 @@ class SectorFilter extends StatelessWidget {
     super.key,
   });
 
-  final ProblemFilterController problemFilterController = Get.find();
-  final ProblemListController problemListController = Get.find();
+  var firstAnswerController = Get.put(FirstAnswerController());
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 30,
       width: 300,
-      child: Obx(
-        () {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: problemFilterController.allOption[1].length,
-            itemBuilder: (context, index) {
-              return Obx(
-                () {
-                  final option = problemFilterController.allOption[1][index];
-                  final isSelected =
-                      problemFilterController.allSelection[1].contains(option);
-
-                  return Container(
-                    height: 30,
-                    padding: EdgeInsets.only(right: 12),
-                    child: ChoiceChip(
-                      selected: isSelected,
-                      visualDensity: VisualDensity(vertical: 0.0),
-                      showCheckmark: false,
-                      label: Align(
-                        alignment: Alignment(0, -1.2),
-                        child: Text(
-                          option,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: isSelected
-                                ? Colors.white
-                                : Color.fromARGB(255, 17, 17, 17),
-                            height: 0,
-                          ),
-                        ),
-                      ),
-                      backgroundColor: Colors.white,
-                      selectedColor: const Color.fromARGB(255, 0, 87, 255),
-                      side: BorderSide(
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: firstAnswerController.sectorOption.length,
+        itemBuilder: (context, index) {
+          return Obx(
+            () {
+              print('2차팅김');
+              final option = firstAnswerController.sectorOption[index];
+              final isSelected =
+                  firstAnswerController.sectorSelected.contains(option);
+              print('3차팅김');
+              return Container(
+                height: 30,
+                padding: EdgeInsets.only(right: 12),
+                child: ChoiceChip(
+                  selected: isSelected,
+                  visualDensity: VisualDensity(vertical: 0.0),
+                  showCheckmark: false,
+                  label: Align(
+                    alignment: Alignment(0, -1.2),
+                    child: Text(
+                      option,
+                      style: TextStyle(
+                        fontSize: 14,
                         color: isSelected
-                            ? Color.fromARGB(255, 0, 87, 255)
-                            : Color.fromARGB(255, 196, 196, 196),
+                            ? Colors.white
+                            : Color.fromARGB(255, 17, 17, 17),
+                        height: 0,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          30,
-                        ),
-                      ),
-                      onSelected: (bool selected) {
-                        AnalyticsService.buttonClick(
-                          'FilterModal_Sector',
-                          option,
-                          problemFilterController.allSelection[0].toString(),
-                          '',
-                        );
-                        problemFilterController.SectorSelection(
-                          option,
-                          index,
-                        );
-                        problemListController.FilterApply();
-                      },
                     ),
-                  );
-                },
+                  ),
+                  backgroundColor: Colors.white,
+                  selectedColor: const Color.fromARGB(255, 0, 87, 255),
+                  side: BorderSide(
+                    color: isSelected
+                        ? Color.fromARGB(255, 0, 87, 255)
+                        : Color.fromARGB(255, 196, 196, 196),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      30,
+                    ),
+                  ),
+                  onSelected: (bool selected) {
+                    firstAnswerController.SectorSelection(
+                      option,
+                      index,
+                    );
+                  },
+                ),
               );
             },
           );

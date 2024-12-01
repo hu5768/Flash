@@ -10,7 +10,6 @@ class ProblemFilterController extends GetxController {
   var allSelection = <RxList<String>>[].obs; // 문제 리스트 페이지에 반영될 선택 여부
 
   var nobodySol = false.obs; // 아무도 못 푼 문제 보기
-
   var isHoney = false.obs; // 꿀 문제 보기
 
   @override
