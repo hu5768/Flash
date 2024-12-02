@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/const/uploadBaseUrl.dart';
@@ -17,12 +15,10 @@ import 'package:flash/view/modals/upload/hold_select_modal.dart';
 import 'package:flash/view/modals/upload/vote_select_modal.dart';
 import 'package:flash/view/upload/select_thumnail.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 
 //import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_compress/video_compress.dart';
 
 class FirstAnswerUpload extends StatefulWidget {
   final String gymName, sector;
@@ -42,7 +38,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
 
   bool fileLoad = false;
   String difficultyLabel = '보통';
-  final TextEditingController userOpinionController = TextEditingController();
+
   final firstAnswerController = Get.put(FirstAnswerController());
   final centerTitleController = Get.put(CenterTitleController());
   @override
@@ -167,7 +163,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
           filename: 'test.mp4', // 파일 이름 설정
         ),
         //  'problemId': widget.problemId,
-        'review': userOpinionController.text,
+        'review': firstAnswerController.userOpinionText.text,
         'perceivedDifficulty': firstAnswerController.difficultyLabel.value,
       });
 
@@ -198,242 +194,339 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
   @override
   Widget build(BuildContext context) {
     AnalyticsService.screenView('UploadPage', '');
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back_ios),
-                ),
-                Text(
-                  '내 풀이 업로드',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(33, 33, 33, 1),
+    return GestureDetector(
+      onTap: () {
+        firstAnswerController.userOpinionFocusNode.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
                   ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    if (firstAnswerController.selectVideo == null) return;
+                  Text(
+                    '내 풀이 업로드',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(33, 33, 33, 1),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      if (firstAnswerController.selectVideo == null) return;
 
-                    _uploadVideo2();
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                          backgroundColor: ColorGroup.BGC,
-                          titleTextStyle: TextStyle(
-                            fontSize: 15,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          contentTextStyle: TextStyle(
-                            fontSize: 13,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          title: Text('업로드 시작'),
-                          content: Text(
-                            '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
-                          ),
-                          actions: [
-                            TextButton(
-                              child: Text(
-                                '확인',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  color: const Color.fromARGB(255, 0, 0, 0),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
+                      _uploadVideo2();
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+                            backgroundColor: ColorGroup.BGC,
+                            titleTextStyle: TextStyle(
+                              fontSize: 15,
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              fontWeight: FontWeight.w700,
                             ),
-                          ],
-                        );
-                      },
-                    );
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('업로드', style: TextStyle(fontSize: 16)),
-                ),
-              ],
+                            contentTextStyle: TextStyle(
+                              fontSize: 13,
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                            ),
+                            title: Text('업로드 시작'),
+                            content: Text(
+                              '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text(
+                                  '확인',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('업로드', style: TextStyle(fontSize: 16)),
+                  ),
+                ],
+              ),
             ),
           ),
+          backgroundColor: ColorGroup.appbarBGC,
         ),
-        backgroundColor: ColorGroup.appbarBGC,
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 294,
-                      width: 169,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(248, 242, 242, 242),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: fileLoad
-                          ? Container(
-                              padding:
-                                  EdgeInsets.fromLTRB(44.5, 107, 44.5, 107),
-                              child: CircularProgressIndicator(
-                                backgroundColor: ColorGroup.modalSBtnBGC,
-                                color: ColorGroup.selectBtnBGC,
-                                strokeWidth: 10,
-                              ),
-                            )
-                          : firstAnswerController.videoController == null
-                              ? Container(
-                                  padding:
-                                      EdgeInsets.fromLTRB(30, 125, 30, 125),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (!fileLoad) {
-                                        PickVideo();
-                                      } else {}
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      foregroundColor:
-                                          Color.fromRGBO(0, 87, 255, 1),
-                                      backgroundColor:
-                                          Color.fromRGBO(217, 230, 255, 1),
-                                      padding: EdgeInsets.zero,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ), // 모서리 둥글기
-                                      ),
-                                    ),
-                                    child: Text(
-                                      '영상 선택하기',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : VideoPlayer(
-                                  firstAnswerController.videoController!,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 294,
+                        width: 169,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(248, 242, 242, 242),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: fileLoad
+                            ? Container(
+                                padding:
+                                    EdgeInsets.fromLTRB(44.5, 107, 44.5, 107),
+                                child: CircularProgressIndicator(
+                                  backgroundColor: ColorGroup.modalSBtnBGC,
+                                  color: ColorGroup.selectBtnBGC,
+                                  strokeWidth: 10,
                                 ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: 136,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('홀드 색'),
-                          SizedBox(height: 8),
-                          HoldSelectModal(),
-                          SizedBox(height: 16),
-                          Text('난이도'),
-                          SizedBox(height: 8),
-                          GradeSelectModal(),
-                          SizedBox(height: 16),
-                          Text('체감 난이도'),
-                          SizedBox(height: 8),
-                          VoteSelectModal(),
-                        ],
+                              )
+                            : firstAnswerController.videoController == null
+                                ? Container(
+                                    padding:
+                                        EdgeInsets.fromLTRB(30, 125, 30, 125),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (!fileLoad) {
+                                          PickVideo();
+                                        } else {}
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        foregroundColor:
+                                            Color.fromRGBO(0, 87, 255, 1),
+                                        backgroundColor:
+                                            Color.fromRGBO(217, 230, 255, 1),
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            24,
+                                          ), // 모서리 둥글기
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '영상 선택하기',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : VideoPlayer(
+                                    firstAnswerController.videoController!,
+                                  ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: Text(
-                        '날짜',
-                        style: TextStyle(
-                          fontSize: 14,
+                      SizedBox(
+                        width: 20,
+                      ),
+                      SizedBox(
+                        width: 136,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('홀드 색'),
+                            SizedBox(height: 8),
+                            HoldSelectModal(),
+                            SizedBox(height: 16),
+                            Text('난이도'),
+                            SizedBox(height: 8),
+                            GradeSelectModal(),
+                            SizedBox(height: 16),
+                            Text('체감 난이도'),
+                            SizedBox(height: 8),
+                            VoteSelectModal(),
+                          ],
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        DateTime? dateTmp;
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12), // 모서리 둥글게
-                              ),
-                              child: Theme(
-                                data: ThemeData.light().copyWith(
-                                  dialogBackgroundColor: Colors.white, // 배경 흰색
-                                  colorScheme: ColorScheme.light(
-                                    primary: Colors.blue, // 선택된 날짜 색상 (파란색)
-                                    onPrimary: Colors.white, // 선택된 날짜의 텍스트 색상
-                                    surface: Colors.white, // 달력의 기본 배경색
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        child: Text(
+                          '날짜',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          DateTime? dateTmp;
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(12), // 모서리 둥글게
+                                ),
+                                child: Theme(
+                                  data: ThemeData.light().copyWith(
+                                    dialogBackgroundColor:
+                                        Colors.white, // 배경 흰색
+                                    colorScheme: ColorScheme.light(
+                                      primary: Colors.blue, // 선택된 날짜 색상 (파란색)
+                                      onPrimary: Colors.white, // 선택된 날짜의 텍스트 색상
+                                      surface: Colors.white, // 달력의 기본 배경색
+                                    ),
+                                    textTheme: TextTheme(
+                                      bodyMedium: TextStyle(
+                                        color: Colors.black,
+                                      ), // 텍스트 색상 (검은색)
+                                    ),
                                   ),
-                                  textTheme: TextTheme(
-                                    bodyMedium: TextStyle(
-                                      color: Colors.black,
-                                    ), // 텍스트 색상 (검은색)
+                                  child: SizedBox(
+                                    height: 300,
+                                    child: CalendarDatePicker(
+                                      initialDate: firstAnswerController
+                                          .selectDate.value,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.now(),
+                                      onDateChanged: (DateTime date) {
+                                        dateTmp = date;
+                                        Navigator.pop(context, date);
+                                      },
+                                    ),
                                   ),
                                 ),
-                                child: SizedBox(
-                                  height: 300,
-                                  child: CalendarDatePicker(
-                                    initialDate:
+                              );
+                            },
+                          );
+
+                          if (dateTmp != null) {
+                            firstAnswerController.selectDate.value = dateTmp!;
+                          }
+                        },
+                        child: Container(
+                          height: 58,
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                            border: Border.all(
+                              color: const Color.fromARGB(
+                                255,
+                                196,
+                                196,
+                                196,
+                              ), // 테두리 색상
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Obx(
+                              () {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      formatDateDate(
                                         firstAnswerController.selectDate.value,
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime.now(),
-                                    onDateChanged: (DateTime date) {
-                                      dateTmp = date;
-                                      Navigator.pop(context, date);
+                                      ),
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Text('변경'),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 28),
+                      Obx(
+                        () {
+                          String mapImgUrl = centerTitleController
+                                  .centerDetailModel.value.mapImageUrl ??
+                              "";
+
+                          return mapImgUrl != ''
+                              ? SizedBox(
+                                  height: 112,
+                                  width: double.infinity,
+                                  child: Image.network(
+                                    firstAnswerController
+                                                .sectorImageUrlString.value !=
+                                            '' //섹터 이미지가 없으면 맵이미지 보여줌
+                                        ? firstAnswerController
+                                            .sectorImageUrlString.value
+                                        : centerTitleController
+                                            .centerDetailModel
+                                            .value
+                                            .mapImageUrl!,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const SizedBox(
+                                        width: 350,
+                                        child: Text(
+                                          "지도를 불러오지 못했습니다.",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      );
                                     },
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-
-                        if (dateTmp != null) {
-                          firstAnswerController.selectDate.value = dateTmp!;
-                        }
-                      },
-                      child: Container(
-                        height: 58,
+                                )
+                              : SizedBox();
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        child: Text(
+                          '섹터',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      SectorFilter(),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        child: Text(
+                          '한줄평',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 255, 255, 1),
                           border: Border.all(
                             color: const Color.fromARGB(
                               255,
@@ -443,138 +536,50 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                             ), // 테두리 색상
                             width: 1,
                           ),
+                          color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Center(
-                          child: Obx(
-                            () {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    formatDateDate(
-                                      firstAnswerController.selectDate.value,
-                                    ),
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Text('변경'),
-                                ],
-                              );
-                            },
+                        child: TextField(
+                          controller: firstAnswerController.userOpinionText,
+                          focusNode: firstAnswerController.userOpinionFocusNode,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: '한줄평을 작성해주세요',
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 28),
-                    Obx(
-                      () {
-                        String mapImgUrl = centerTitleController
-                                .centerDetailModel.value.mapImageUrl ??
-                            "";
-
-                        return mapImgUrl != ''
-                            ? SizedBox(
-                                height: 112,
-                                width: double.infinity,
-                                child: Image.network(
-                                  firstAnswerController
-                                              .sectorImageUrlString.value !=
-                                          '' //섹터 이미지가 없으면 맵이미지 보여줌
-                                      ? firstAnswerController
-                                          .sectorImageUrlString.value
-                                      : centerTitleController
-                                          .centerDetailModel.value.mapImageUrl!,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const SizedBox(
-                                      width: 350,
-                                      child: Text(
-                                        "지도를 불러오지 못했습니다.",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
-                            : SizedBox();
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: Text(
-                        '섹터',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    SectorFilter(),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: Text(
-                        '한줄평',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromARGB(
-                            255,
-                            196,
-                            196,
-                            196,
-                          ), // 테두리 색상
-                          width: 1,
-                        ),
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: TextField(
-                        controller: userOpinionController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: '한줄평을 작성해주세요',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    SizedBox(
-                      height: 60,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: ColorGroup.selectBtnFGC,
-                          backgroundColor: ColorGroup.selectBtnBGC,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 60,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: ColorGroup.selectBtnFGC,
+                            backgroundColor: ColorGroup.selectBtnBGC,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          "업로드",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
+                          child: const Text(
+                            "업로드",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 40),
-                  ],
+                      SizedBox(height: 40),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -601,11 +606,9 @@ class SectorFilter extends StatelessWidget {
         itemBuilder: (context, index) {
           return Obx(
             () {
-              print('2차팅김');
               final option = firstAnswerController.sectorOption[index];
               final isSelected =
-                  firstAnswerController.sectorSelected.contains(option);
-              print('3차팅김');
+                  option == firstAnswerController.selectSector.value;
               return Container(
                 height: 30,
                 padding: EdgeInsets.only(right: 12),

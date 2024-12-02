@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/make_hold_color.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -7,8 +8,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class HoldSelectModal extends StatelessWidget {
+  final firstAnswerController = Get.put(FirstAnswerController());
   void _showMenu(BuildContext context, Offset offset) async {
-    showDialog(
+    await showDialog(
       context: context,
       barrierColor: Colors.transparent, // 배경 클릭 감지
       builder: (context) {
@@ -36,44 +38,21 @@ class HoldSelectModal extends StatelessWidget {
                   shrinkWrap: true, // 크기 자동 조정
                   mainAxisSpacing: 24,
                   crossAxisSpacing: 24,
-                  children: [
-                    SvgPicture.string(
-                      makeHold("#FF0000"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#FF6F00"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#FFCC00"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#73FF00"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                    SvgPicture.string(
-                      makeHold("#009041"),
-                    ),
-                  ],
+                  children: List.generate(
+                      firstAnswerController.HoldOption.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        firstAnswerController.selectHoldColor.value =
+                            firstAnswerController.HoldOption[index];
+                        Navigator.pop(context);
+                      },
+                      child: SvgPicture.string(
+                        makeHold(firstAnswerController.HoldOption[index]),
+                        width: 40,
+                        height: 40,
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),
@@ -113,20 +92,26 @@ class HoldSelectModal extends StatelessWidget {
         _showMenu(context, offset);
       },
       child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              'assets/images/empty_hold.svg',
-            ),
-            SizedBox(width: 10),
-            Icon(Icons.keyboard_arrow_down, size: 32),
-          ],
+        child: Obx(
+          () {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                firstAnswerController.selectHoldColor.value == ''
+                    ? SvgPicture.asset(
+                        'assets/images/empty_hold.svg',
+                      )
+                    : SvgPicture.string(
+                        makeHold(firstAnswerController.selectHoldColor.value),
+                      ),
+                SizedBox(width: 10),
+                Icon(Icons.keyboard_arrow_down, size: 32),
+              ],
+            );
+          },
         ),
       ),
     );
   }
-
-  Future<void> SortClick(String title, String sortKey) async {}
 }

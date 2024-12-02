@@ -35,7 +35,6 @@ class CommentController extends GetxController {
     final token = await storage.read(key: ACCESS_TOKEN_KEY);
     DioClient().updateOptions(token: token.toString());
     try {
-      print(commentText.text);
       final response = await DioClient().dio.post(
         '/solutions/${solutionId}/comments',
         data: {"content": commentText.text},

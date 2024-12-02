@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
@@ -19,6 +20,7 @@ class ProblemList extends StatelessWidget {
 
   final ProblemFilterController problemFilterController = Get.find();
   final problemListController = Get.put(ProblemListController());
+  final firstAnswerController = Get.put(FirstAnswerController());
   final CenterTitleController centerTitleController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,7 @@ class ProblemList extends StatelessWidget {
       ),
       floatingActionButton: TextButton(
         onPressed: () async {
+          await firstAnswerController.initUpload();
           await Navigator.push(
             context,
             MaterialPageRoute(
@@ -123,7 +126,7 @@ class NoProblemCard extends StatelessWidget {
   });
 
   final CenterTitleController centerTitleController = Get.find();
-
+  final firstAnswerController = Get.put(FirstAnswerController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -156,6 +159,7 @@ class NoProblemCard extends StatelessWidget {
               height: 44,
               child: ElevatedButton(
                 onPressed: () async {
+                  await firstAnswerController.initUpload();
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
