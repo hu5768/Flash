@@ -50,6 +50,18 @@ class LoginPage extends StatelessWidget {
               },
               child: const Text('토큰으로 이동'),
             ),
+            const SizedBox(
+              height: 100,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              child: const Text('뒤로가기 실수로 눌렀을 때'),
+            ),
           ],
         ),
       ),
