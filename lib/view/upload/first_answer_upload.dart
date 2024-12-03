@@ -293,8 +293,9 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                           color: Color.fromARGB(248, 242, 242, 242),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: fileLoad
+                        child: fileLoad //영상 로딩중인지 여부
                             ? Container(
+                                //로딩중이면 버퍼링
                                 padding:
                                     EdgeInsets.fromLTRB(44.5, 107, 44.5, 107),
                                 child: CircularProgressIndicator(
@@ -303,8 +304,10 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                   strokeWidth: 10,
                                 ),
                               )
-                            : firstAnswerController.videoController == null
+                            : firstAnswerController.videoController ==
+                                    null // 비디오가 존재하는지
                                 ? Container(
+                                    //존재 안하면 선택화면
                                     padding:
                                         EdgeInsets.fromLTRB(30, 125, 30, 125),
                                     child: ElevatedButton(
@@ -335,8 +338,88 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                       ),
                                     ),
                                   )
-                                : VideoPlayer(
-                                    firstAnswerController.videoController!,
+                                : Stack(
+                                    //존재하면 비디오 보여주기
+                                    children: [
+                                      VideoPlayer(
+                                        firstAnswerController.videoController!,
+                                      ),
+                                      Positioned(
+                                        left: 12,
+                                        bottom: 12,
+                                        child: SizedBox(
+                                          height: 35,
+                                          width: 65,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (!fileLoad) {
+                                                PickVideo();
+                                              } else {}
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0,
+                                              foregroundColor: Color.fromRGBO(
+                                                102,
+                                                102,
+                                                102,
+                                                1,
+                                              ),
+                                              backgroundColor: Color.fromRGBO(
+                                                238,
+                                                238,
+                                                238,
+                                                1,
+                                              ),
+                                              padding: EdgeInsets.zero,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  24,
+                                                ), // 모서리 둥글기
+                                              ),
+                                            ),
+                                            child: Text(
+                                              '변경',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 12,
+                                        bottom: 12,
+                                        child: SizedBox(
+                                          height: 35,
+                                          width: 35,
+                                          child: ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0,
+                                              foregroundColor: Color.fromRGBO(
+                                                102,
+                                                102,
+                                                102,
+                                                1,
+                                              ),
+                                              backgroundColor: Color.fromRGBO(
+                                                238,
+                                                238,
+                                                238,
+                                                1,
+                                              ),
+                                              padding: EdgeInsets.zero,
+                                              shape: const CircleBorder(),
+                                            ),
+                                            child: Icon(
+                                              Icons.search,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                       ),
                       SizedBox(
