@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flash/controller/dio_singletone.dart';
 import 'package:flash/controller/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:video_player/video_player.dart';
 
 class AdminUploadWeb extends StatefulWidget {
@@ -130,6 +131,27 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
     }
   }
 
+  late DropzoneViewController _controller;
+  String _uploadedFileName = '';
+
+  Future<void> _uploadFile(dynamic event) async {
+    final name = await _controller.getFilename(event);
+    final bytes = await _controller.getFileData(event);
+
+    _uploadedFileName = name;
+    videoFile = bytes;
+    final videoUrl = html.Url.createObjectUrlFromBlob(html.Blob([bytes]));
+    setState(() {
+      videoController = VideoPlayerController.networkUrl(Uri.parse(videoUrl))
+        ..initialize().then((_) {
+          setState(() {});
+          videoController!.play();
+        });
+    });
+
+    print('File uploaded: $_uploadedFileName');
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -159,8 +181,20 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
                       )
                     : const SizedBox(
                         width: 200,
-                        child: Text('비디오 골라라'),
+                        child: Text('오른쪽에 드래그앤 드랍해도됨'),
                       ),
+                Container(
+                  color: const Color.fromARGB(255, 185, 119, 114),
+                  height: 200,
+                  width: 200,
+                  child: DropzoneView(
+                    onCreated: (controller) => _controller = controller,
+                    onDropFile: _uploadFile,
+                    onError: (error) => print('Dropzone error: $error'),
+                    operation: DragOperation.copy,
+                    cursor: CursorType.grab,
+                  ),
+                ),
                 SizedBox(
                   child: Image.network(
                     widget.imageUrl,
