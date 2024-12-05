@@ -36,20 +36,18 @@ class FirstAnswerUpload extends StatefulWidget {
 class _AnswerUploadState extends State<FirstAnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
 
-  bool fileLoad = false;
-  String difficultyLabel = '보통';
-
   final firstAnswerController = Get.put(FirstAnswerController());
   final centerTitleController = Get.put(CenterTitleController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    firstAnswerController.difficultyLabel.value = '보통';
+    firstAnswerController.difficultyLabel.value = '보통이에요';
   }
 
   @override
   void dispose() {
+    firstAnswerController.videoController?.pause();
     firstAnswerController.videoController = null;
     super.dispose();
   }
@@ -57,12 +55,11 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
   Future<void> PickVideo() async {
     int sizeLimit = 300 * 1024 * 1024;
     setState(() {
-      fileLoad = true;
+      firstAnswerController.fileLoad = true;
     });
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.video,
-      );
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.video);
       if (result != null) {
         PlatformFile fileCheck = result.files.first;
         print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
@@ -130,7 +127,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
       print("비디오 선택 오류 $e");
     }
     setState(() {
-      fileLoad = false;
+      firstAnswerController.fileLoad = false;
     });
   }
 
@@ -221,51 +218,8 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                       color: Color.fromRGBO(33, 33, 33, 1),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      if (firstAnswerController.selectVideo == null) return;
-
-                      _uploadVideo2();
-                      await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                            backgroundColor: ColorGroup.BGC,
-                            titleTextStyle: TextStyle(
-                              fontSize: 15,
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                              fontWeight: FontWeight.w700,
-                            ),
-                            contentTextStyle: TextStyle(
-                              fontSize: 13,
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                            ),
-                            title: Text('업로드 시작'),
-                            content: Text(
-                              '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
-                            ),
-                            actions: [
-                              TextButton(
-                                child: Text(
-                                  '확인',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: const Color.fromARGB(255, 0, 0, 0),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('업로드', style: TextStyle(fontSize: 16)),
+                  SizedBox(
+                    width: 30,
                   ),
                 ],
               ),
@@ -290,10 +244,12 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                         width: 169,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(248, 242, 242, 242),
+                          color: firstAnswerController.videoController != null
+                              ? Color.fromARGB(248, 0, 0, 0)
+                              : Color.fromARGB(248, 242, 242, 242),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: fileLoad //영상 로딩중인지 여부
+                        child: firstAnswerController.fileLoad //영상 로딩중인지 여부
                             ? Container(
                                 //로딩중이면 버퍼링
                                 padding:
@@ -312,7 +268,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                         EdgeInsets.fromLTRB(30, 125, 30, 125),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        if (!fileLoad) {
+                                        if (!firstAnswerController.fileLoad) {
                                           PickVideo();
                                         } else {}
                                       },
@@ -341,8 +297,17 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                 : Stack(
                                     //존재하면 비디오 보여주기
                                     children: [
-                                      VideoPlayer(
-                                        firstAnswerController.videoController!,
+                                      Center(
+                                        child: AspectRatio(
+                                          aspectRatio: firstAnswerController
+                                              .videoController!
+                                              .value
+                                              .aspectRatio,
+                                          child: VideoPlayer(
+                                            firstAnswerController
+                                                .videoController!,
+                                          ),
+                                        ),
                                       ),
                                       Positioned(
                                         left: 12,
@@ -352,7 +317,13 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                           width: 65,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              if (!fileLoad) {
+                                              if (!firstAnswerController
+                                                  .fileLoad) {
+                                                firstAnswerController
+                                                    .videoController
+                                                    ?.pause();
+                                                firstAnswerController
+                                                    .videoController = null;
                                                 PickVideo();
                                               } else {}
                                             },
@@ -425,6 +396,13 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                       SizedBox(
                         width: 20,
                       ),
+                      if (firstAnswerController.thumbnailFile != null)
+                        SizedBox(
+                          height: 100,
+                          child: Image.file(
+                            firstAnswerController.thumbnailFile!,
+                          ),
+                        ),
                       SizedBox(
                         width: 136,
                         child: Column(
@@ -637,7 +615,56 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                         height: 60,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (firstAnswerController.selectVideo == null)
+                              return;
+
+                            _uploadVideo2();
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  actionsPadding:
+                                      EdgeInsets.fromLTRB(0, 0, 30, 10),
+                                  backgroundColor: ColorGroup.BGC,
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  contentTextStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  title: Text('업로드 시작'),
+                                  content: Text(
+                                    '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          color: const Color.fromARGB(
+                                            255,
+                                            0,
+                                            0,
+                                            0,
+                                          ),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            Navigator.of(context).pop();
+                          },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: ColorGroup.selectBtnFGC,
                             backgroundColor: ColorGroup.selectBtnBGC,

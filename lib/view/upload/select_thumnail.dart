@@ -37,6 +37,23 @@ class _SelectThumnailState extends State<SelectThumnail> {
     super.dispose();
   }
 
+  Future<void> selectThumbnailFile(int milliseconds) async {
+    final tempDir = await getTemporaryDirectory();
+    final String tempPath = tempDir.path;
+
+    final String? filePath = await VideoThumbnail.thumbnailFile(
+      video: widget.videoPath,
+      imageFormat: ImageFormat.PNG,
+      timeMs: milliseconds, // 초를 밀리초로 변환
+      quality: 75, // 품질 설정
+      thumbnailPath: tempPath, // 파일 저장 경로
+    );
+
+    if (filePath != null) {
+      firstAnswerController.thumbnailFile = File(filePath);
+    }
+  }
+
   Future<void> generateThumbnails() async {
     final directory = await getTemporaryDirectory();
     final files = directory.listSync(); // 디렉토리 내의 모든 파일/폴더 목록
@@ -93,6 +110,8 @@ class _SelectThumnailState extends State<SelectThumnail> {
               children: [
                 IconButton(
                   onPressed: () {
+                    firstAnswerController.videoController = null;
+                    firstAnswerController.selectVideo = null;
                     Navigator.pop(context);
                   },
                   icon: Icon(Icons.arrow_back_ios),
@@ -125,13 +144,22 @@ class _SelectThumnailState extends State<SelectThumnail> {
                   width: 225,
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(248, 242, 242, 242),
+                    color: Color.fromARGB(248, 0, 0, 0),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: videoController == null
                       ? SizedBox()
-                      : VideoPlayer(
-                          videoController!,
+                      : FittedBox(
+                          // 비율 유지 및 여백 추가
+                          fit: BoxFit.contain,
+                          child: SizedBox(
+                            width: videoController!.value.size.width,
+                            height: videoController!.value.size.height,
+                            child: AspectRatio(
+                              aspectRatio: videoController!.value.aspectRatio,
+                              child: VideoPlayer(videoController!),
+                            ),
+                          ),
                         ),
                 ),
                 SizedBox(height: 40),
@@ -139,6 +167,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
                 frameThumbnails.isNotEmpty
                     ? Container(
                         height: 77,
+                        color: Colors.black,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -203,7 +232,12 @@ class _SelectThumnailState extends State<SelectThumnail> {
                   height: 60,
                   width: MediaQuery.of(context).size.width / 9 * 8,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await selectThumbnailFile(
+                        videoController!.value.position.inMilliseconds,
+                      );
+                      Navigator.pop(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: ColorGroup.selectBtnFGC,
                       backgroundColor: ColorGroup.selectBtnBGC,

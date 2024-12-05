@@ -7,6 +7,8 @@ import 'package:video_player/video_player.dart';
 class FirstAnswerController extends GetxController {
   VideoPlayerController? videoController;
   File? selectVideo;
+  File? thumbnailFile;
+  bool fileLoad = false;
 
   List<String> HoldOption = []; // 홀드 색
   List<int> Holdid = [];
@@ -52,7 +54,6 @@ class FirstAnswerController extends GetxController {
   @override
   void dispose() {
     // TODO: implement dispose
-    videoController?.dispose();
     super.dispose();
   }
 }
