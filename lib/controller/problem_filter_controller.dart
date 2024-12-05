@@ -25,7 +25,7 @@ class ProblemFilterController extends GetxController {
     allSelection.clear();
     allSelection.add(<String>[].obs);
     allSelection.add(<String>[].obs);
-
+    sectorImageUrlString.value = '';
     nobodySol.value = false;
     isHoney.value = false;
   }

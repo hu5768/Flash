@@ -1,6 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/dio/version_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -25,6 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
   final String appStoreUrl = "https://apps.apple.com/us/app/flash/id6590617249";
   final centerTitleController = Get.put(CenterTitleController());
   final problemListController = Get.put(ProblemListController());
+  final mypageController =
+      Get.put(MypageController()); //나중에 problemlist 에서 한번에 되도록 고치기
   VersionController versionController = VersionController();
 
   @override
@@ -144,8 +147,9 @@ class _SplashScreenState extends State<SplashScreen> {
       );
     } else {
       //최초 회원 가입시 안불러와지는 버그 수정
-      await centerTitleController.getTitle();
-      await problemListController.newFetch();
+
+      await mypageController.fetchMemberData();
+      await problemListController.firstConnect();
       Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => MainPage(),

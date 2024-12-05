@@ -8,18 +8,9 @@ class FirstAnswerController extends GetxController {
   VideoPlayerController? videoController;
   File? selectVideo;
 
-  List<String> HoldOption = [
-    '#FF0000',
-    '#124242',
-    '#112101',
-    '#FF0000',
-    '#124242',
-    '#112101',
-    '#A24212',
-    '#A24212',
-    '#A24212',
-    '#A24212',
-  ]; // 홀드 색
+  List<String> HoldOption = []; // 홀드 색
+  List<int> Holdid = [];
+  int selectHoldId = 0;
   var selectHoldColor = ''.obs;
 
   List<String> gradeOption = []; // 난이도

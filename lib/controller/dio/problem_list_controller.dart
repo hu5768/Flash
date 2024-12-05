@@ -2,8 +2,10 @@ import 'package:dio/dio.dart' as dios;
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/hold_color_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/model/problems_model.dart';
 import 'package:flash/view/login/login_page.dart';
 
@@ -17,6 +19,8 @@ class ProblemListController extends GetxController {
   final centerTitleController = Get.put(CenterTitleController());
   final problemSortController = Get.put(ProblemSortController());
   final problemFilterController = Get.put(ProblemFilterController());
+  final holdColorController = Get.put(HoldColorController());
+  String userNickname = 'none';
   dynamic mainContext;
 
   String nextCursor = "";
@@ -32,6 +36,21 @@ class ProblemListController extends GetxController {
 
   void getContext(context) {
     mainContext = context;
+  }
+
+  Future<void> firstConnect() async {
+    //앱 최초 접속시
+
+    await centerTitleController.getTitle();
+    await newFetch();
+    await holdColorController.getHolds();
+    AnalyticsService.buttonClick(
+      'firstConnect',
+      'userNickname',
+      '',
+      '',
+    );
+    print('username' + userNickname);
   }
 
   Future<void> newFetch() async {

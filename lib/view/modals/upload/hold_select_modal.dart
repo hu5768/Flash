@@ -44,6 +44,8 @@ class HoldSelectModal extends StatelessWidget {
                       onTap: () {
                         firstAnswerController.selectHoldColor.value =
                             firstAnswerController.HoldOption[index];
+                        firstAnswerController.selectHoldId =
+                            firstAnswerController.Holdid[index];
                         Navigator.pop(context);
                       },
                       child: SvgPicture.string(

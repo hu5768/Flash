@@ -57,6 +57,7 @@ class MypageController extends GetxController {
   }
 
   Future<void> fetchMemberData() async {
+    //유저 정보 받아오기
     dios.Response response;
     final token = await storage.read(key: ACCESS_TOKEN_KEY);
     DioClient().updateOptions(token: token.toString());
@@ -68,6 +69,7 @@ class MypageController extends GetxController {
 
       Map<String, dynamic> resMap = Map<String, dynamic>.from(response.data);
       userModel = UserModel.fromJson(resMap);
+      problemListController.userNickname = userModel.nickName ?? '';
     } catch (e) {
       print('유저 정보 받아오기 실패${e}');
       print('일단 에러나면 나가게');

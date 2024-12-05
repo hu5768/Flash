@@ -706,17 +706,27 @@ class SectorFilter extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: isSelected
-                            ? Colors.white
+                            ? Color.fromARGB(
+                                255,
+                                0,
+                                128,
+                                255,
+                              )
                             : Color.fromARGB(255, 17, 17, 17),
                         height: 0,
                       ),
                     ),
                   ),
                   backgroundColor: Colors.white,
-                  selectedColor: const Color.fromARGB(255, 0, 87, 255),
+                  selectedColor: const Color.fromARGB(255, 217, 230, 255),
                   side: BorderSide(
                     color: isSelected
-                        ? Color.fromARGB(255, 0, 87, 255)
+                        ? Color.fromARGB(
+                            255,
+                            0,
+                            128,
+                            255,
+                          )
                         : Color.fromARGB(255, 196, 196, 196),
                   ),
                   shape: RoundedRectangleBorder(
