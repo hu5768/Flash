@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/controller/dio_singletone.dart';
 import 'package:flash/controller/login_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:video_player/video_player.dart';
@@ -183,18 +184,19 @@ class _AdminUploadWebState extends State<AdminUploadWeb> {
                         width: 200,
                         child: Text('오른쪽에 드래그앤 드랍해도됨'),
                       ),
-                Container(
-                  color: const Color.fromARGB(255, 185, 119, 114),
-                  height: 200,
-                  width: 200,
-                  child: DropzoneView(
-                    onCreated: (controller) => _controller = controller,
-                    onDropFile: _uploadFile,
-                    onError: (error) => print('Dropzone error: $error'),
-                    operation: DragOperation.copy,
-                    cursor: CursorType.grab,
+                if (kIsWeb)
+                  Container(
+                    color: const Color.fromARGB(255, 185, 119, 114),
+                    height: 200,
+                    width: 200,
+                    child: DropzoneView(
+                      onCreated: (controller) => _controller = controller,
+                      onDropFile: _uploadFile,
+                      onError: (error) => print('Dropzone error: $error'),
+                      operation: DragOperation.copy,
+                      cursor: CursorType.grab,
+                    ),
                   ),
-                ),
                 SizedBox(
                   child: Image.network(
                     widget.imageUrl,
