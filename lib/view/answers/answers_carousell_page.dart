@@ -1,6 +1,10 @@
 import 'package:flash/controller/dio/answer_data_controller.dart';
+import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
+import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/upload/answer_upload.dart';
+import 'package:flash/view/upload/next_answer_upload.dart';
 import 'package:get/get.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,9 +12,11 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flutter/material.dart';
 
 class AnswersCarousell extends StatelessWidget {
-  final String gymName, id, difficulty;
+  final String gymName, id, difficulty, sector, holdColorCode;
   final answerCarouselController = Get.put(AnswerCarouselController());
   final answerDataController = Get.put(AnswerDataController());
+  final firstAnswerController = Get.put(FirstAnswerController());
+
   final bool hasSolution;
   AnswersCarousell({
     super.key,
@@ -18,6 +24,8 @@ class AnswersCarousell extends StatelessWidget {
     required this.id,
     required this.hasSolution,
     required this.difficulty,
+    required this.sector,
+    required this.holdColorCode,
   });
   @override
   Widget build(BuildContext context) {
@@ -128,13 +136,20 @@ class AnswersCarousell extends StatelessWidget {
                               gymName,
                               difficulty,
                             );
+                            firstAnswerController.NextiInitUpload(
+                              holdColorCode,
+                              difficulty,
+                              sector,
+                            );
                             await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AnswerUpload(
+                                builder: (context) => NextAnswerUpload(
                                   problemId: id,
                                   gymName: gymName,
                                   difficulty: difficulty,
+                                  sector: sector,
+                                  holdColorcode: holdColorCode,
                                 ),
                               ),
                             );

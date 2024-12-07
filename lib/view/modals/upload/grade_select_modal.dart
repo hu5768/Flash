@@ -43,6 +43,7 @@ class GradeSelectModal extends StatelessWidget {
                       onTap: () {
                         firstAnswerController.selectGrade.value =
                             firstAnswerController.gradeOption[index];
+                        firstAnswerController.requiredCheck();
                         Navigator.pop(context);
                       },
                       child: Padding(
@@ -121,6 +122,9 @@ class GradeSelectModal extends StatelessWidget {
                 Icon(
                   Icons.keyboard_arrow_down,
                   size: 32,
+                  color: firstAnswerController.selectGrade.value == ''
+                      ? const Color.fromARGB(255, 17, 17, 17)
+                      : const Color.fromARGB(255, 196, 196, 196),
                 ),
               ],
             );

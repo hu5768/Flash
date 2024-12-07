@@ -101,7 +101,7 @@ class LoginController extends GetxController {
 
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
-          await mypageController.fetchMemberData();
+          await mypageController.fetchMemberData(context);
           await problemListController.firstConnect();
           Navigator.pushAndRemoveUntil(
             context,
@@ -172,7 +172,7 @@ class LoginController extends GetxController {
 
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
-          await mypageController.fetchMemberData();
+          await mypageController.fetchMemberData(context);
           await problemListController.firstConnect();
 
           Navigator.pushAndRemoveUntil(
@@ -231,7 +231,7 @@ class LoginController extends GetxController {
         DioClient().updateOptions(token: token);
         if (isCompleteRegistration) {
           //최초 회원 가입시 안불러와지는 버그 수정
-          await mypageController.fetchMemberData();
+          await mypageController.fetchMemberData(context);
           await problemListController.firstConnect();
 
           Navigator.pushAndRemoveUntil(

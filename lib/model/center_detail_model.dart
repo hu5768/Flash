@@ -40,18 +40,21 @@ class CenterDetailModel {
 }
 
 class Sectors {
+  int? id;
   String? name;
   String? selectedImageUrl;
 
-  Sectors({this.name, this.selectedImageUrl});
+  Sectors({this.id, this.name, this.selectedImageUrl});
 
   Sectors.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     selectedImageUrl = json['selectedImageUrl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
     data['selectedImageUrl'] = this.selectedImageUrl;
     return data;

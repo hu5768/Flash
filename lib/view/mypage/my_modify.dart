@@ -73,7 +73,7 @@ class MyModify extends StatelessWidget {
                     } else {
                       await mypageModifyController.updateMemberInfo();
                     }
-                    await mypageController.fetchMemberData(); //mypage 갱신
+                    await mypageController.fetchMemberData(context); //mypage 갱신
                     Navigator.pop(context);
                   },
                   child: Text('완료', style: TextStyle(fontSize: 16)),

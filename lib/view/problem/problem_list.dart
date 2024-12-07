@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/gym_id.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
@@ -21,7 +22,7 @@ class ProblemList extends StatelessWidget {
   final ProblemFilterController problemFilterController = Get.find();
   final problemListController = Get.put(ProblemListController());
   final firstAnswerController = Get.put(FirstAnswerController());
-  final CenterTitleController centerTitleController = Get.find();
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +82,10 @@ class ProblemList extends StatelessWidget {
                                               .problemList[index]
                                               .solutionCount ??
                                           0,
+                                      holdColorCode: problemListController
+                                              .problemList[index]
+                                              .holdColorCode ??
+                                          '#171717',
                                     ),
                             ],
                           );
@@ -104,8 +109,9 @@ class ProblemList extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => FirstAnswerUpload(
-                gymName: '양재',
-                sector: '1&2',
+                gymName: centerTitleController.centerTitle.value,
+                sector: '',
+                gymId: centerTitleController.centerId.value,
               ),
             ),
           );
@@ -164,8 +170,9 @@ class NoProblemCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FirstAnswerUpload(
-                        gymName: '양재',
-                        sector: '1&2',
+                        gymName: centerTitleController.centerTitle.value,
+                        sector: '',
+                        gymId: centerTitleController.centerId.value,
                       ),
                     ),
                   );

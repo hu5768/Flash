@@ -51,7 +51,6 @@ class ProblemFilterController extends GetxController {
       allSelection[1].add(option);
       sectorImageUrlString.value = sectorImageUrl[index];
     }
-    print('섹터 url' + sectorImageUrlString.value);
   }
 
   void GradeSelection(String option) {

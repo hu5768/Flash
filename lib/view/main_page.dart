@@ -110,9 +110,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    centerTitleController.getContext(context);
-    problemListController.getContext(context);
-    mypageController.fetchMemberData();
+    mypageController.fetchMemberData(context);
 
     AnalyticsService.screenView(
       'MainPage',
@@ -149,7 +147,7 @@ class _MainPageState extends State<MainPage> {
             OpenForm();
             return;
           } else if (index == 2) {
-            await mypageController.fetchMemberData();
+            await mypageController.fetchMemberData(context);
             await myGridviewController.fetchData();
           }
           setState(() {

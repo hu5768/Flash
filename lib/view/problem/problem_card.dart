@@ -16,7 +16,8 @@ class ProblemCard extends StatelessWidget {
       difficulty,
       settingDate,
       removalDate,
-      imageUrl;
+      imageUrl,
+      holdColorCode;
   final int solutionCount;
   final bool hasSolution, isHoney;
   final answerDataController = Get.put(AnswerDataController());
@@ -32,6 +33,7 @@ class ProblemCard extends StatelessWidget {
     required this.imageUrl,
     required this.isHoney,
     required this.solutionCount,
+    required this.holdColorCode,
   });
 
   @override
@@ -53,6 +55,8 @@ class ProblemCard extends StatelessWidget {
               id: id,
               hasSolution: hasSolution,
               difficulty: difficulty,
+              sector: sector,
+              holdColorCode: holdColorCode,
             ),
             allowSnapshotting: true,
           ),
@@ -80,6 +84,25 @@ class ProblemCard extends StatelessWidget {
                 },
               ),
             ),
+            if (isHoney)
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  height: 37,
+                  width: 77,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 204, 0), // 배경색
+                    borderRadius: BorderRadius.circular(20), // 모서리 둥글게 (반지름 설정)
+                  ),
+                  child: Center(
+                    child: Text(
+                      '꿀이에요!',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+              ),
             Positioned(
               bottom: 0,
               left: 0,
@@ -129,7 +152,7 @@ class ProblemCard extends StatelessWidget {
                                 left: 0,
                                 top: 0,
                                 child: SvgPicture.string(
-                                  makeHold("#0051FF"),
+                                  makeHold(holdColorCode),
                                   width: 40,
                                   height: 40,
                                 ),
@@ -137,11 +160,6 @@ class ProblemCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        if (isHoney)
-                          Text(
-                            ' 🍯',
-                            style: TextStyle(fontSize: 20),
-                          ),
                       ],
                     ),
                     Text(

@@ -21,7 +21,6 @@ class ProblemListController extends GetxController {
   final problemFilterController = Get.put(ProblemFilterController());
   final holdColorController = Get.put(HoldColorController());
   String userNickname = 'none';
-  dynamic mainContext;
 
   String nextCursor = "";
   bool loadRunning = false; //데이터 로딩중 여부
@@ -32,10 +31,6 @@ class ProblemListController extends GetxController {
     scrollController = ScrollController()..addListener(nextFetch);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {});
-  }
-
-  void getContext(context) {
-    mainContext = context;
   }
 
   Future<void> firstConnect() async {
@@ -121,14 +116,6 @@ class ProblemListController extends GetxController {
       0.0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-    );
-  }
-
-  void goOut() {
-    Navigator.pushAndRemoveUntil(
-      mainContext,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
     );
   }
 

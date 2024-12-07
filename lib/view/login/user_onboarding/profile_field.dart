@@ -184,7 +184,7 @@ class ProfileField extends StatelessWidget {
                               await userOnboardingControlle
                                   .updateOnboardInfoProfile();
                               //최초 회원 가입시 안불러와지는 버그 수정
-                              await mypageController.fetchMemberData();
+                              await mypageController.fetchMemberData(context);
                               await problemListController.firstConnect();
                               problemListController.ScrollUp();
 

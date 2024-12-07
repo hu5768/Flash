@@ -17,7 +17,6 @@ class CenterTitleController extends GetxController {
   var problemFilterController = Get.put(ProblemFilterController());
   var firstAnswerController = Get.put(FirstAnswerController());
   var centerDetailModel = CenterDetailModel().obs;
-  dynamic mainContext;
 
   @override
   void onInit() async {
@@ -26,10 +25,6 @@ class CenterTitleController extends GetxController {
     centerId.value = int.parse(gymId);
 
     getTitle();
-  }
-
-  void getContext(context) {
-    mainContext = context;
   }
 
   Future<void> changeId(int newId) async {
@@ -73,7 +68,10 @@ class CenterTitleController extends GetxController {
               .map((sector) => sector.selectedImageUrl ?? '')
               .toList() ??
           [];
-
+      firstAnswerController.sectorIdList = centerDetailModel.value.sectors!
+              .map((sector) => sector.id ?? 0)
+              .toList() ??
+          [];
       //필터 초기화
       await problemFilterController.allInit();
     } catch (e) {

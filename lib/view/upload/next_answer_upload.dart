@@ -12,6 +12,8 @@ import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
+import 'package:flash/view/modals/upload/next_upload_modal/next_grade_modal.dart';
+import 'package:flash/view/modals/upload/next_upload_modal/next_hold_modal.dart';
 import 'package:flash/view/modals/upload/vote_select_modal.dart';
 import 'package:flash/view/upload/select_thumnail.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +22,22 @@ import 'package:get/get.dart' hide FormData, MultipartFile;
 //import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class FirstAnswerUpload extends StatefulWidget {
-  final String gymName, sector;
-  final int gymId;
-  const FirstAnswerUpload({
+class NextAnswerUpload extends StatefulWidget {
+  final String gymName, problemId, difficulty, sector, holdColorcode;
+  const NextAnswerUpload({
     super.key,
     required this.gymName,
-    required this.gymId,
+    required this.problemId,
+    required this.difficulty,
     required this.sector,
+    required this.holdColorcode,
   });
 
   @override
-  State<FirstAnswerUpload> createState() => _AnswerUploadState();
+  State<NextAnswerUpload> createState() => _NextAnswerUploadState();
 }
 
-class _AnswerUploadState extends State<FirstAnswerUpload> {
+class _NextAnswerUploadState extends State<NextAnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
 
   final firstAnswerController = Get.put(FirstAnswerController());
@@ -414,11 +417,11 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                           children: [
                             Text('홀드 색'),
                             SizedBox(height: 8),
-                            HoldSelectModal(),
+                            NextHoldModal(),
                             SizedBox(height: 16),
                             Text('난이도'),
                             SizedBox(height: 8),
-                            GradeSelectModal(),
+                            NextGradeModal(),
                             SizedBox(height: 16),
                             Text('체감 난이도'),
                             SizedBox(height: 8),
@@ -630,7 +633,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                         firstAnswerController.thumbnailImageUrl,
                                       );
                                       firstAnswerController
-                                          .uploadVideo(widget.gymId);
+                                          .nextUploadVideo(widget.problemId);
                                       await showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -818,12 +821,7 @@ class SectorFilter extends StatelessWidget {
                       30,
                     ),
                   ),
-                  onSelected: (bool selected) {
-                    firstAnswerController.SectorSelection(
-                      option,
-                      index,
-                    );
-                  },
+                  //onSelected: (bool selected) {},
                 ),
               );
             },

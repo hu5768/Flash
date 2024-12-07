@@ -6,6 +6,7 @@ class ProblemDetailModel {
   String? removalDate;
   bool? isFakeRemovalDate;
   bool? hasSolution;
+  String? holdColorCode;
   String? imageUrl;
   String? gymName;
   String? imageSource;
@@ -19,6 +20,7 @@ class ProblemDetailModel {
     this.removalDate,
     this.isFakeRemovalDate,
     this.hasSolution,
+    this.holdColorCode,
     this.imageUrl,
     this.gymName,
     this.imageSource,
@@ -33,6 +35,7 @@ class ProblemDetailModel {
     removalDate = json['removalDate'];
     isFakeRemovalDate = json['isFakeRemovalDate'];
     hasSolution = json['hasSolution'];
+    holdColorCode = json['holdColorCode'];
     imageUrl = json['imageUrl'];
     gymName = json['gymName'];
     imageSource = json['imageSource'];
@@ -48,6 +51,7 @@ class ProblemDetailModel {
     data['removalDate'] = this.removalDate;
     data['isFakeRemovalDate'] = this.isFakeRemovalDate;
     data['hasSolution'] = this.hasSolution;
+    data['holdColorCode'] = this.holdColorCode;
     data['imageUrl'] = this.imageUrl;
     data['gymName'] = this.gymName;
     data['imageSource'] = this.imageSource;

@@ -43,7 +43,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
 
     final String? filePath = await VideoThumbnail.thumbnailFile(
       video: widget.videoPath,
-      imageFormat: ImageFormat.PNG,
+      imageFormat: ImageFormat.JPEG,
       timeMs: milliseconds, // 초를 밀리초로 변환
       quality: 75, // 품질 설정
       thumbnailPath: tempPath, // 파일 저장 경로
@@ -109,9 +109,10 @@ class _SelectThumnailState extends State<SelectThumnail> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
                     firstAnswerController.videoController = null;
                     firstAnswerController.selectVideo = null;
+                    //selectVideo 가 한번 선택되면 다시 널로 출력이 안되지만 ui에는 null로 표시됨? 왤까
                     Navigator.pop(context);
                   },
                   icon: Icon(Icons.arrow_back_ios),
@@ -236,6 +237,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
                       await selectThumbnailFile(
                         videoController!.value.position.inMilliseconds,
                       );
+
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(

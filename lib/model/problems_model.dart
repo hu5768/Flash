@@ -6,6 +6,7 @@ class ProblemModel {
   String? removalDate;
   bool? hasSolution;
   String? imageUrl;
+  String? holdColorCode;
   bool? isHoney;
   int? solutionCount;
 
@@ -17,6 +18,7 @@ class ProblemModel {
     this.removalDate,
     this.hasSolution,
     this.imageUrl,
+    this.holdColorCode,
     this.isHoney,
     this.solutionCount,
   });
@@ -29,6 +31,7 @@ class ProblemModel {
     removalDate = json['removalDate'];
     hasSolution = json['hasSolution'];
     imageUrl = json['imageUrl'];
+    holdColorCode = json['holdColorCode'];
     isHoney = json['isHoney'];
     solutionCount = json['solutionCount'];
   }
@@ -42,6 +45,7 @@ class ProblemModel {
     data['removalDate'] = this.removalDate;
     data['hasSolution'] = this.hasSolution;
     data['imageUrl'] = this.imageUrl;
+    data['holdColorCode'] = this.holdColorCode;
     data['isHoney'] = this.isHoney;
     data['solutionCount'] = this.solutionCount;
     return data;

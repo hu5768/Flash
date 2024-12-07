@@ -1,11 +1,13 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/Colors/make_hold_color.dart';
 import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/animations/blink_animation.dart';
 import 'package:flash/view/upload/answer_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ProblemDetailCard extends StatelessWidget {
@@ -18,7 +20,8 @@ class ProblemDetailCard extends StatelessWidget {
       removalDate,
       imgUrl,
       imageSource,
-      guide;
+      guide,
+      holdColorCode;
   final bool hasSolution, isHoney;
   ProblemDetailCard({
     super.key,
@@ -33,6 +36,7 @@ class ProblemDetailCard extends StatelessWidget {
     required this.imageSource,
     required this.guide,
     required this.isHoney,
+    required this.holdColorCode,
   });
 
   @override
@@ -82,35 +86,38 @@ class ProblemDetailCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 60,
-                    height: 35,
+                    width: 62,
+                    height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(16),
+                      color: const Color.fromARGB(0, 0, 0, 0).withOpacity(0.1),
+                      //borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
                       children: [
-                        Container(
-                          width: 15,
-                          height: 15,
-                          decoration: BoxDecoration(
-                            color: CenterColor.TheClimbColorList[difficulty],
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white, // 테두리 색상
-                              width: 1,
+                        Positioned(
+                          left: 10,
+                          top: 5,
+                          child: Container(
+                            width: 52,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: CenterColor.TheClimbColorList[difficulty],
                             ),
                           ),
                         ),
-                        SizedBox(width: 4),
-                        Text(
-                          difficulty,
-                          style: TextStyle(color: ColorGroup.btnBGC),
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: SvgPicture.string(
+                            makeHold(holdColorCode),
+                            width: 40,
+                            height: 40,
+                          ),
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 18),
                   Text(
                     "$gymName $sector Sector",
                     style: TextStyle(
@@ -163,7 +170,9 @@ class ProblemDetailCard extends StatelessWidget {
                                       answerDataController.solutionCount.value
                                           .toString(),
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 14),
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
                                 );
                               },
                             ),

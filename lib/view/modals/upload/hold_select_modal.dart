@@ -46,6 +46,7 @@ class HoldSelectModal extends StatelessWidget {
                             firstAnswerController.HoldOption[index];
                         firstAnswerController.selectHoldId =
                             firstAnswerController.Holdid[index];
+                        firstAnswerController.requiredCheck();
                         Navigator.pop(context);
                       },
                       child: SvgPicture.string(
@@ -108,7 +109,13 @@ class HoldSelectModal extends StatelessWidget {
                         makeHold(firstAnswerController.selectHoldColor.value),
                       ),
                 SizedBox(width: 10),
-                Icon(Icons.keyboard_arrow_down, size: 32),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 32,
+                  color: firstAnswerController.selectHoldColor.value == ''
+                      ? const Color.fromARGB(255, 17, 17, 17)
+                      : const Color.fromARGB(255, 196, 196, 196),
+                ),
               ],
             );
           },
