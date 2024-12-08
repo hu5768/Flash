@@ -624,11 +624,12 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                     onPressed: () async {
                                       if (firstAnswerController.selectVideo ==
                                           null) return;
+
+                                      //duplicate 모달창 추가하기
+
                                       await firstAnswerController
                                           .thumbImageUpload();
-                                      print(
-                                        firstAnswerController.thumbnailImageUrl,
-                                      );
+
                                       firstAnswerController
                                           .uploadVideo(widget.gymId);
                                       await showDialog(

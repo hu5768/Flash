@@ -6,7 +6,7 @@ import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide FormData hide MultipartFile;
+import 'package:get/get.dart' hide FormData hide MultipartFile hide Response;
 import 'package:video_player/video_player.dart';
 import 'package:dio/dio.dart';
 
@@ -50,7 +50,7 @@ class FirstAnswerController extends GetxController {
       selectSector.value = option;
       sectorImageUrlString.value = sectorImageUrl[index];
     }
-    selectSectorId = index;
+    selectSectorId = sectorIdList[index];
     requiredCheck();
   }
 
@@ -149,6 +149,24 @@ class FirstAnswerController extends GetxController {
     }
   }
 
+  Future<void> duplicateCheck() async {
+    Response response;
+    final token = await storage.read(key: ACCESS_TOKEN_KEY);
+    DioClient().updateOptions(token: token.toString());
+
+    try {
+      print('문제 중복확인 get');
+      response = await DioClient().dio.get(
+        "/problems/duplicate",
+        data: {
+          "sectorId": 'nickName',
+          "holdColorId": 'nickName',
+          "difficulty": 'nickName',
+        },
+      );
+    } catch (e) {}
+  }
+
   Future<void> uploadVideo(int gymId) async {
     if (selectVideo == null) return;
     print('새로운 문제 업로드 시작');
@@ -163,9 +181,9 @@ class FirstAnswerController extends GetxController {
         'thumbnailImageUrl': thumbnailImageUrl,
         'solvedDate': formatDateDate(selectDate.value),
         'difficulty': selectGrade.value,
-        'sectorId': selectSectorId.toString(),
-        'holdId': selectHoldId.toString(),
-        'gymId': gymId.toString(),
+        'sectorId': selectSectorId,
+        'holdId': selectHoldId,
+        'gymId': gymId,
         'review': userOpinionText.text,
         'perceivedDifficulty': diffName[difficultyLabel.value],
       });
