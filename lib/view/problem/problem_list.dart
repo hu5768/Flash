@@ -108,6 +108,12 @@ class ProblemList extends StatelessWidget {
       ),
       floatingActionButton: TextButton(
         onPressed: () async {
+          AnalyticsService.buttonClick(
+            'uploadbutton',
+            '플로팅버튼',
+            centerTitleController.centerTitle.value,
+            '',
+          );
           await firstAnswerController.initUpload();
           await Navigator.push(
             context,
@@ -169,6 +175,12 @@ class NoProblemCard extends StatelessWidget {
               height: 44,
               child: ElevatedButton(
                 onPressed: () async {
+                  AnalyticsService.buttonClick(
+                    'uploadbutton',
+                    '문제가없어요',
+                    centerTitleController.centerTitle.value,
+                    '',
+                  );
                   await firstAnswerController.initUpload();
                   await Navigator.push(
                     context,

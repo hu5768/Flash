@@ -131,10 +131,10 @@ class AnswersCarousell extends StatelessWidget {
                         TextButton(
                           onPressed: () async {
                             AnalyticsService.buttonClick(
-                              'upload',
-                              hasSolution.toString(),
+                              'uploadbutton',
+                              '문제에서 업로드',
                               gymName,
-                              difficulty,
+                              '',
                             );
                             firstAnswerController.NextiInitUpload(
                               holdColorCode,

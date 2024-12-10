@@ -74,6 +74,12 @@ class VoteSelectModal extends StatelessWidget {
         ),
       ),
       onPressed: () {
+        AnalyticsService.buttonClick(
+          'UploadButtonPage',
+          '체감난이도선택',
+          '',
+          '',
+        );
         RenderBox renderBox = context.findRenderObject() as RenderBox;
         Offset offset = renderBox.localToGlobal(
           Offset(

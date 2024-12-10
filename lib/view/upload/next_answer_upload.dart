@@ -274,6 +274,12 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                         EdgeInsets.fromLTRB(30, 125, 30, 125),
                                     child: ElevatedButton(
                                       onPressed: () {
+                                        AnalyticsService.buttonClick(
+                                          'solutionUploadPage',
+                                          '영상선택',
+                                          '',
+                                          '',
+                                        );
                                         if (!firstAnswerController.fileLoad) {
                                           PickVideo();
                                         } else {}
@@ -638,6 +644,12 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                       await showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
+                                          AnalyticsService.buttonClick(
+                                            'solutionUploadPage',
+                                            '업로드',
+                                            '',
+                                            '',
+                                          );
                                           return AlertDialog(
                                             actionsPadding: EdgeInsets.fromLTRB(
                                               0,

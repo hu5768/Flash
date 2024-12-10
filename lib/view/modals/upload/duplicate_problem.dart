@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/problem/problem_card_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,6 +74,12 @@ class DuplicateProblem extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
+                  AnalyticsService.buttonClick(
+                    'DuplicateUploadPage',
+                    '중복문제에업로드',
+                    '',
+                    '',
+                  );
                   if (isUploadClick) return;
                   isUploadClick = true; //더블터치 방지
                   firstAnswerController.isUpload = true;
@@ -115,6 +122,12 @@ class DuplicateProblem extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
+                  AnalyticsService.buttonClick(
+                    'DuplicateUploadPage',
+                    '새로운문제에업로드',
+                    '',
+                    '',
+                  );
                   if (isUploadClick) return;
                   isUploadClick = true; //더블터치 방지
                   firstAnswerController.isUpload = true;
@@ -153,6 +166,12 @@ class DuplicateProblem extends StatelessWidget {
               width: double.infinity,
               child: TextButton(
                 onPressed: () {
+                  AnalyticsService.buttonClick(
+                    'DuplicateUploadPage',
+                    '닫기',
+                    '',
+                    '',
+                  );
                   if (isUploadClick) return;
                   isUploadClick = true; //더블터치 방지
                   Navigator.of(context).pop(); // 팝업 닫기

@@ -10,6 +10,7 @@ import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/answers/answer_card_preview.dart';
 import 'package:flash/view/modals/upload/duplicate_problem.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
@@ -272,6 +273,12 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                         EdgeInsets.fromLTRB(30, 125, 30, 125),
                                     child: ElevatedButton(
                                       onPressed: () {
+                                        AnalyticsService.buttonClick(
+                                          'UploadButtonPage',
+                                          '영상선택',
+                                          '',
+                                          '',
+                                        );
                                         if (!firstAnswerController.fileLoad) {
                                           PickVideo();
                                         } else {}
@@ -370,7 +377,26 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                           height: 35,
                                           width: 35,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () async {
+                                              print(
+                                                firstAnswerController
+                                                    .selectVideo!.path,
+                                              );
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AnswerCardPreview(
+                                                    // videoController:firstAnswerController.videoController!,
+
+                                                    videoPath:
+                                                        firstAnswerController
+                                                            .selectVideo!.path,
+                                                  ),
+                                                  allowSnapshotting: true,
+                                                ),
+                                              );
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0,
                                               foregroundColor: Color.fromRGBO(
@@ -447,6 +473,12 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                       ),
                       GestureDetector(
                         onTap: () async {
+                          AnalyticsService.buttonClick(
+                            'UploadButtonPage',
+                            '날짜선택',
+                            '',
+                            '',
+                          );
                           DateTime? dateTmp;
                           await showDialog(
                             context: context,
@@ -623,6 +655,12 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                             child: firstAnswerController.requiredSelect.value
                                 ? ElevatedButton(
                                     onPressed: () async {
+                                      AnalyticsService.buttonClick(
+                                        'UploadButtonPage',
+                                        '업로드버튼',
+                                        '',
+                                        '',
+                                      );
                                       if (isUploadClick == true) return;
                                       isUploadClick = true;
                                       firstAnswerController.isUpload = false;
@@ -844,6 +882,12 @@ class SectorFilter extends StatelessWidget {
                     ),
                   ),
                   onSelected: (bool selected) {
+                    AnalyticsService.buttonClick(
+                      'UploadButtonPage',
+                      '섹터선택',
+                      '',
+                      '',
+                    );
                     firstAnswerController.SectorSelection(
                       option,
                       index,

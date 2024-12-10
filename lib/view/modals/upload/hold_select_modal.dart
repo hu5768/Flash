@@ -85,6 +85,12 @@ class HoldSelectModal extends StatelessWidget {
         ),
       ),
       onPressed: () {
+        AnalyticsService.buttonClick(
+          'UploadButtonPage',
+          '홀드선택',
+          '',
+          '',
+        );
         RenderBox renderBox = context.findRenderObject() as RenderBox;
         Offset offset = renderBox.localToGlobal(
           Offset(
