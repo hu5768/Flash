@@ -3,6 +3,7 @@ import 'package:flash/const/data.dart';
 import 'package:flash/const/uploadBaseUrl.dart';
 import 'package:flash/controller/date_form.dart';
 import 'package:flash/controller/dio/dio_singletone.dart';
+import 'package:flash/model/duplicate_problem_model.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -34,14 +35,21 @@ class FirstAnswerController extends GetxController {
 
   var difficultyLabel = '보통이에요'.obs; //체감 난이도
   Map<String, String> diffName = {'꿀이에요': '쉬움', '보통이에요': '보통', '어려워요': '어려움'};
-
+  Map<String, String> diffNameReverse = {
+    '쉬움': '꿀이에요',
+    '보통': '보통이에요',
+    '어려움': '어려워요',
+  };
   var selectDate = DateTime.now().obs; // 날짜
 
   final TextEditingController userOpinionText = TextEditingController(); //한줄평
   final userOpinionFocusNode = FocusNode();
-
+  bool isUpload = false; //최종업로드 여부 업로드 팝업용
   var requiredSelect = false.obs; //필수선택 하면true
 
+  List<DuplicateProblemModel> duplicateList = [];
+  PageController duplicatePageController = PageController();
+  var duplicatePage = 0.obs;
   void SectorSelection(String option, int index) {
     if (option == selectSector.value) {
       selectSector.value = '';
@@ -52,6 +60,9 @@ class FirstAnswerController extends GetxController {
     }
     selectSectorId = sectorIdList[index];
     requiredCheck();
+    duplicatePageController.addListener(() {
+      duplicatePage.value = duplicatePageController.page!.round();
+    });
   }
 
   Future<void> initUpload() async {
@@ -59,10 +70,11 @@ class FirstAnswerController extends GetxController {
     selectGrade.value = '';
     sectorImageUrlString.value = '';
     difficultyLabel.value = '보통이에요';
-    selectDate = DateTime.now().obs;
+    selectDate.value = DateTime.now();
     selectSector.value = '';
     userOpinionText.text = '';
     requiredSelect.value = false;
+    duplicatePage.value = 0;
   }
 
   Future<void> NextiInitUpload(
@@ -74,10 +86,65 @@ class FirstAnswerController extends GetxController {
     selectGrade.value = difficulty; //
     sectorImageUrlString.value = findSectorUrl(sector); //
     difficultyLabel.value = '보통이에요';
-    selectDate = DateTime.now().obs;
+    selectDate.value = DateTime.now();
     selectSector.value = sector; //
     userOpinionText.text = '';
     requiredSelect.value = false;
+  }
+
+  Future<void> initModify(
+    String holdColorCode,
+    String difficulty,
+    String solvedDate,
+    String perceivedDifficulty,
+    String review,
+    String thumbnailImageUrli,
+  ) async {
+    selectHoldColor.value = holdColorCode; //
+    selectGrade.value = difficulty; //
+    difficultyLabel.value = diffNameReverse[perceivedDifficulty]!;
+
+    selectDate.value = DateTime.parse(solvedDate);
+    userOpinionText.text = review;
+    requiredSelect.value = true;
+    thumbnailImageUrl = thumbnailImageUrli;
+  }
+
+  Future<void> userReviewFetch(
+    String videoUrl,
+    int solutionId,
+  ) async {
+    final data = {
+      "videoUrl": videoUrl,
+      "review": userOpinionText.text,
+      'perceivedDifficulty': diffName[difficultyLabel.value],
+      "thumbnailImageUrl": thumbnailImageUrl,
+      "solvedDate": formatDateDate(selectDate.value),
+    };
+    try {
+      // PATCH 요청
+      print('해설수정 Patch');
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      DioClient().updateOptions(token: token.toString());
+      final response =
+          await DioClient().dio.patch('/solutions/${solutionId}', data: data);
+
+      if (response.statusCode == 200) {
+        // 요청이 성공적으로 처리된 경우
+        print('solution updated successfully');
+      } else {
+        print('Failed to update member information: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null) {
+          print('DioError: ${e.response?.statusCode}');
+          print('Error Response Data: ${e.response?.data}');
+        } else {
+          print('Error: ${e.message}');
+        }
+      }
+    }
   }
 
   String findSectorUrl(String sector) {
@@ -149,7 +216,8 @@ class FirstAnswerController extends GetxController {
     }
   }
 
-  Future<void> duplicateCheck() async {
+  Future<bool> duplicateCheck() async {
+    bool duplicated = false;
     Response response;
     final token = await storage.read(key: ACCESS_TOKEN_KEY);
     DioClient().updateOptions(token: token.toString());
@@ -157,14 +225,28 @@ class FirstAnswerController extends GetxController {
     try {
       print('문제 중복확인 get');
       response = await DioClient().dio.get(
-        "/problems/duplicate",
-        data: {
-          "sectorId": 'nickName',
-          "holdColorId": 'nickName',
-          "difficulty": 'nickName',
-        },
-      );
-    } catch (e) {}
+            "/problems/duplicate?sectorId=${selectSectorId}&holdColorId=${selectHoldId}&difficulty=${selectGrade.value}",
+          );
+      print('중복체크!');
+      print(response.data['problems']);
+      List<Map<String, dynamic>> resMap =
+          List<Map<String, dynamic>>.from(response.data["problems"]);
+      duplicateList =
+          resMap.map((e) => DuplicateProblemModel.fromJson(e)).toList();
+      print(duplicateList);
+      duplicated = duplicateList.length > 0;
+    } on DioException catch (e) {
+      print('중복체크오류$e');
+      if (e.response != null) {
+        print('DioError: ${e.response?.statusCode}');
+        print('Error Response Data: ${e.response?.data}');
+      } else {
+        print('Error: ${e.message}');
+      }
+      print('오류 헤더${e.response?.headers}');
+      print('오류 바디${e.response?.data}');
+    }
+    return duplicated;
   }
 
   Future<void> uploadVideo(int gymId) async {
@@ -197,14 +279,6 @@ class FirstAnswerController extends GetxController {
           );
       if (apiResponse.statusCode == 200) {
         print("최종 업로드 완료!");
-        print("thumbnailImageUrl ${thumbnailImageUrl}");
-        print("solvedDate ${formatDateDate(selectDate.value)}");
-        print("difficulty ${selectGrade.value}");
-        print("sectorId ${selectSectorId.toString()}");
-        print("holdId ${selectHoldId.toString()}");
-        print("gymId ${gymId.toString()}");
-        print("review ${userOpinionText.text}");
-        print("perceivedDifficulty ${diffName[difficultyLabel.value]}");
       }
       //  }
     } on DioException catch (e) {

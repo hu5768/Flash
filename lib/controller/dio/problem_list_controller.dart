@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'dio_singletone.dart';
 
 class ProblemListController extends GetxController {
+  bool isDoubleClick = false; //문제 더블클릭 방지
+
   var problemList = <ProblemModel>[].obs;
   ScrollController? scrollController;
   final centerTitleController = Get.put(CenterTitleController());
@@ -101,6 +103,7 @@ class ProblemListController extends GetxController {
       print("시작 페이지 로딩 오류$e");
     }
     loadRunning = false;
+    isDoubleClick = false;
     /*
  
       scrollController!.animateTo(

@@ -35,7 +35,7 @@ class HoldColorController extends GetxController {
           List<Map<String, dynamic>>.from(response.data["holdList"]);
       List<HoldColorModel> hm =
           resMap.map((e) => HoldColorModel.fromJson(e)).toList();
-      print(hm);
+      print(response.data["holdList"]);
       firstAnswerController.HoldOption = hm.map((hold) {
         return hold.colorCode ?? '';
       }).toList();

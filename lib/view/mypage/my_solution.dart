@@ -226,6 +226,17 @@ class MySolution extends StatelessWidget {
                               perceivedDifficulty: mySolutionDetailController
                                       .sdm.perceivedDifficulty ??
                                   "보통",
+                              solvedDate:
+                                  mySolutionDetailController.sdm.solvedDate ??
+                                      '2024-12-01',
+                              difficulty: mySolutionDetailController
+                                  .sdm.difficultyName!,
+                              holdColorcode: mySolutionDetailController
+                                      .sdm.holdColorCode ??
+                                  '#171717',
+                              thumbnailImageUrl: mySolutionDetailController
+                                      .sdm.thumbnailImageUrl ??
+                                  '',
                             );
                           },
                         );

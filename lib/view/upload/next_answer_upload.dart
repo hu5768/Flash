@@ -39,7 +39,7 @@ class NextAnswerUpload extends StatefulWidget {
 
 class _NextAnswerUploadState extends State<NextAnswerUpload> {
   //static const platform = MethodChannel('com.example.filepicker');
-
+  bool isUploadClick = false;
   final firstAnswerController = Get.put(FirstAnswerController());
   final centerTitleController = Get.put(CenterTitleController());
   @override
@@ -625,8 +625,9 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                             child: firstAnswerController.requiredSelect.value
                                 ? ElevatedButton(
                                     onPressed: () async {
-                                      if (firstAnswerController.selectVideo ==
-                                          null) return;
+                                      if (isUploadClick) return;
+                                      isUploadClick = true;
+
                                       await firstAnswerController
                                           .thumbImageUpload();
                                       print(
@@ -666,7 +667,7 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                             ),
                                             title: Text('업로드 시작'),
                                             content: Text(
-                                              '영상이 업로드를 요청했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
+                                              '영상 업로드를 시작했습니다.\n답지에 표시될 때까지 시간이 걸릴 수 있습니다.',
                                             ),
                                             actions: [
                                               TextButton(
@@ -691,6 +692,7 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                           );
                                         },
                                       );
+                                      isUploadClick = false;
                                       Navigator.of(context).pop();
                                     },
                                     style: ElevatedButton.styleFrom(

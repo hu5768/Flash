@@ -35,7 +35,7 @@ class ProblemList extends StatelessWidget {
               GetX<ProblemListController>(
                 builder: (controller) {
                   return Container(
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.35,
                     child: RefreshIndicator(
                       onRefresh: () async {
                         await problemListController.newFetch();
@@ -49,44 +49,48 @@ class ProblemList extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              problemListController.problemList[index].id ==
-                                      'no'
-                                  ? NoProblemCard()
-                                  : ProblemCard(
-                                      gymName: centerTitleController
-                                          .centerTitle.value,
-                                      id: problemListController
-                                          .problemList[index].id
-                                          .toString(),
-                                      sector: problemListController
-                                          .problemList[index].sector
-                                          .toString(),
-                                      difficulty: problemListController
-                                          .problemList[index].difficulty
-                                          .toString(),
-                                      settingDate: problemListController
-                                          .problemList[index].settingDate
-                                          .toString(),
-                                      removalDate: problemListController
-                                          .problemList[index].removalDate
-                                          .toString(),
-                                      hasSolution: problemListController
-                                          .problemList[index].hasSolution!,
-                                      imageUrl: problemListController
-                                          .problemList[index].imageUrl
-                                          .toString(),
-                                      isHoney: problemListController
-                                              .problemList[index].isHoney ??
-                                          false,
-                                      solutionCount: problemListController
-                                              .problemList[index]
-                                              .solutionCount ??
-                                          0,
-                                      holdColorCode: problemListController
-                                              .problemList[index]
-                                              .holdColorCode ??
-                                          '#171717',
-                                    ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: problemListController
+                                            .problemList[index].id ==
+                                        'no'
+                                    ? NoProblemCard()
+                                    : ProblemCard(
+                                        gymName: centerTitleController
+                                            .centerTitle.value,
+                                        id: problemListController
+                                            .problemList[index].id
+                                            .toString(),
+                                        sector: problemListController
+                                            .problemList[index].sector
+                                            .toString(),
+                                        difficulty: problemListController
+                                            .problemList[index].difficulty
+                                            .toString(),
+                                        settingDate: problemListController
+                                            .problemList[index].settingDate
+                                            .toString(),
+                                        removalDate: problemListController
+                                            .problemList[index].removalDate
+                                            .toString(),
+                                        hasSolution: problemListController
+                                            .problemList[index].hasSolution!,
+                                        imageUrl: problemListController
+                                            .problemList[index].imageUrl
+                                            .toString(),
+                                        isHoney: problemListController
+                                                .problemList[index].isHoney ??
+                                            false,
+                                        solutionCount: problemListController
+                                                .problemList[index]
+                                                .solutionCount ??
+                                            0,
+                                        holdColorCode: problemListController
+                                                .problemList[index]
+                                                .holdColorCode ??
+                                            '#171717',
+                                      ),
+                              ),
                             ],
                           );
                         },

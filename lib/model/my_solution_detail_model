@@ -7,6 +7,9 @@ class MySolutionDetailModel {
   String? difficultyName;
   int? commentsCount;
   String? perceivedDifficulty;
+  String? thumbnailImageUrl;
+  String? holdColorCode;
+  String? solvedDate;
   String? removalDate;
   String? settingDate;
   String? uploadedAt;
@@ -20,6 +23,9 @@ class MySolutionDetailModel {
       this.difficultyName,
       this.commentsCount,
       this.perceivedDifficulty,
+      this.thumbnailImageUrl,
+      this.holdColorCode,
+      this.solvedDate,
       this.removalDate,
       this.settingDate,
       this.uploadedAt});
@@ -33,6 +39,9 @@ class MySolutionDetailModel {
     difficultyName = json['difficultyName'];
     commentsCount = json['commentsCount'];
     perceivedDifficulty = json['perceivedDifficulty'];
+    thumbnailImageUrl = json['thumbnailImageUrl'];
+    holdColorCode = json['holdColorCode'];
+    solvedDate = json['solvedDate'];
     removalDate = json['removalDate'];
     settingDate = json['settingDate'];
     uploadedAt = json['uploadedAt'];
@@ -48,6 +57,9 @@ class MySolutionDetailModel {
     data['difficultyName'] = this.difficultyName;
     data['commentsCount'] = this.commentsCount;
     data['perceivedDifficulty'] = this.perceivedDifficulty;
+    data['thumbnailImageUrl'] = this.thumbnailImageUrl;
+    data['holdColorCode'] = this.holdColorCode;
+    data['solvedDate'] = this.solvedDate;
     data['removalDate'] = this.removalDate;
     data['settingDate'] = this.settingDate;
     data['uploadedAt'] = this.uploadedAt;

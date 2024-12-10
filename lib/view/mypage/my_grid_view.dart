@@ -36,9 +36,9 @@ class MyGridView extends StatelessWidget {
                   .solutionList[index].difficultyName
                   .toString(),
               problemImageUrl: myGridviewController
-                  .solutionList[index].problemImageUrl
+                  .solutionList[index].thumbnailImageUrl
                   .toString(),
-              uploadedAt: myGridviewController.solutionList[index].uploadedAt
+              uploadedAt: myGridviewController.solutionList[index].solvedDate
                   .toString(),
               profileUrl: profileUrl,
             );
