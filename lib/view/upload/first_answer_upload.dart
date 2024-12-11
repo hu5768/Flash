@@ -86,6 +86,19 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                     firstAnswerController.videoController!.play();
                   });
           });
+          firstAnswerController.videoController!.addListener(() async {
+            if (firstAnswerController.videoController!.value.position ==
+                firstAnswerController.videoController!.value.duration) {
+              // 비디오가 끝났을 때 다시 재생
+              firstAnswerController.videoController!.seekTo(Duration.zero);
+              firstAnswerController.videoController!.play();
+            }
+
+            if (mounted && firstAnswerController.videoController != null) {
+              //slider 초기화를 위함
+              setState(() {});
+            }
+          });
 
           firstAnswerController.videoController!.play();
         } else {
@@ -369,7 +382,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      ), /*
                                       Positioned(
                                         right: 12,
                                         bottom: 12,
@@ -378,21 +391,11 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                           width: 35,
                                           child: ElevatedButton(
                                             onPressed: () async {
-                                              print(
-                                                firstAnswerController
-                                                    .selectVideo!.path,
-                                              );
-                                              await Navigator.push(
+                                              Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AnswerCardPreview(
-                                                    // videoController:firstAnswerController.videoController!,
-
-                                                    videoPath:
-                                                        firstAnswerController
-                                                            .selectVideo!.path,
-                                                  ),
+                                                      AnswerCardPreview(),
                                                   allowSnapshotting: true,
                                                 ),
                                               );
@@ -420,6 +423,7 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
                                           ),
                                         ),
                                       ),
+                                    */
                                     ],
                                   ),
                       ),

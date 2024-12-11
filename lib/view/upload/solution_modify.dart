@@ -163,7 +163,7 @@ class _SolutionModifyState extends State<SolutionModify> {
                                           firstAnswerController
                                               .thumbnailImageUrl,
                                         ),
-                                      ),
+                                      ), /*
                                       Positioned(
                                         left: 12,
                                         bottom: 12,
@@ -234,7 +234,7 @@ class _SolutionModifyState extends State<SolutionModify> {
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                       ),

@@ -10,6 +10,7 @@ import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/answers/answer_card_preview.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
 import 'package:flash/view/modals/upload/hold_select_modal.dart';
 import 'package:flash/view/modals/upload/next_upload_modal/next_grade_modal.dart';
@@ -371,14 +372,23 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                           ),
                                         ),
                                       ),
-                                      Positioned(
+                                      /*Positioned(
                                         right: 12,
                                         bottom: 12,
                                         child: SizedBox(
                                           height: 35,
                                           width: 35,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AnswerCardPreview(),
+                                                  allowSnapshotting: true,
+                                                ),
+                                              );
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0,
                                               foregroundColor: Color.fromRGBO(
@@ -402,6 +412,7 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                           ),
                                         ),
                                       ),
+                                    */
                                     ],
                                   ),
                       ),

@@ -37,7 +37,7 @@ class DuplicateProblem extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              '동일한 문제의 답지가 있는 것 같습니다.\n해당 답지에 추가로 업로드 할까요?',
+              '하단의 문제들 중 중복되는\n문제가 없는지 확인해 주세요!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -109,7 +109,7 @@ class DuplicateProblem extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  '네, 추가로 업로드 할게요',
+                  '위 문제에 업로드 할게요.',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black,
@@ -153,7 +153,7 @@ class DuplicateProblem extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  '아니요, 위 문제와 다른 문제입니다. ',
+                  '새로운 문제로 등록 할게요.',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black,
