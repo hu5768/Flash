@@ -10,6 +10,7 @@ import 'package:flash/controller/dio/dio_singletone.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/animations/upload_page_tutorial.dart';
 import 'package:flash/view/answers/answer_card_preview.dart';
 import 'package:flash/view/modals/upload/duplicate_problem.dart';
 import 'package:flash/view/modals/upload/grade_select_modal.dart';
@@ -46,6 +47,9 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
     // TODO: implement initState
     super.initState();
     firstAnswerController.difficultyLabel.value = '보통이에요';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkFirstMainpage();
+    });
   }
 
   @override
@@ -53,6 +57,28 @@ class _AnswerUploadState extends State<FirstAnswerUpload> {
     firstAnswerController.videoController?.pause();
     firstAnswerController.videoController = null;
     super.dispose();
+  }
+
+  Future<void> checkFirstMainpage() async {
+    // FlutterSecureStorage에서 값 읽기
+
+    String? isFirstLaunch = await storage.read(key: 'FIRST_UPLOADPAGE');
+
+    isFirstLaunch = null; //실행시 제거
+    if (isFirstLaunch == null) {
+      // 최초 실행인 경우
+      await storage.write(key: 'FIRST_UPLOADPAGE', value: 'false');
+
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              UploadPageTutorial(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child; // 애니메이션 없이 바로 페이지 표시
+          },
+        ),
+      );
+    }
   }
 
   Future<void> PickVideo() async {
