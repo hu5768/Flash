@@ -150,7 +150,7 @@ class UserOnboardingControlle extends gets.GetxController {
       DioClient().updateOptions(token: token.toString());
       final response = await DioClient()
           .dio
-          .post('${uploadServerUrl}/images/', data: data); //이미지 업로드
+          .post('${uploadServerUrl}images/', data: data); //이미지 업로드
 
       if (response.statusCode == 200) {
         // 요청이 성공적으로 처리된 경우

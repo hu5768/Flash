@@ -337,39 +337,35 @@ class _SolutionModifyState extends State<SolutionModify> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Obx(
-                        () {
-                          return SizedBox(
-                            height: 60,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await firstAnswerController.userReviewFetch(
-                                  widget.videoUrl,
-                                  widget.solutionId,
-                                );
-                                Navigator.pop(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: ColorGroup.selectBtnFGC,
-                                backgroundColor: ColorGroup.selectBtnBGC,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: const Text(
-                                "수정하기",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                      SizedBox(
+                        height: 60,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await firstAnswerController.userReviewFetch(
+                              widget.videoUrl,
+                              widget.solutionId,
+                            );
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: ColorGroup.selectBtnFGC,
+                            backgroundColor: ColorGroup.selectBtnBGC,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
                             ),
-                          );
-                        },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            "수정하기",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 40),
                     ],
