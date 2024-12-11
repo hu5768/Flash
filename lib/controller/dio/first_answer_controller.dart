@@ -75,6 +75,7 @@ class FirstAnswerController extends GetxController {
     userOpinionText.text = '';
     requiredSelect.value = false;
     duplicatePage.value = 0;
+    thumbnailFile = null;
   }
 
   Future<void> NextiInitUpload(
@@ -90,6 +91,7 @@ class FirstAnswerController extends GetxController {
     selectSector.value = sector; //
     userOpinionText.text = '';
     requiredSelect.value = false;
+    thumbnailFile = null;
   }
 
   Future<void> initModify(

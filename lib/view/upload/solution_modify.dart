@@ -48,8 +48,6 @@ class _SolutionModifyState extends State<SolutionModify> {
 
   @override
   void dispose() {
-    firstAnswerController.videoController?.pause();
-    firstAnswerController.videoController = null;
     super.dispose();
   }
 
@@ -163,78 +161,7 @@ class _SolutionModifyState extends State<SolutionModify> {
                                           firstAnswerController
                                               .thumbnailImageUrl,
                                         ),
-                                      ), /*
-                                      Positioned(
-                                        left: 12,
-                                        bottom: 12,
-                                        child: SizedBox(
-                                          height: 35,
-                                          width: 65,
-                                          child: ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                              elevation: 0,
-                                              foregroundColor: Color.fromRGBO(
-                                                102,
-                                                102,
-                                                102,
-                                                1,
-                                              ),
-                                              backgroundColor: Color.fromRGBO(
-                                                238,
-                                                238,
-                                                238,
-                                                1,
-                                              ),
-                                              padding: EdgeInsets.zero,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  24,
-                                                ), // 모서리 둥글기
-                                              ),
-                                            ),
-                                            child: Text(
-                                              '변경',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
                                       ),
-                                      Positioned(
-                                        right: 12,
-                                        bottom: 12,
-                                        child: SizedBox(
-                                          height: 35,
-                                          width: 35,
-                                          child: ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                              elevation: 0,
-                                              foregroundColor: Color.fromRGBO(
-                                                102,
-                                                102,
-                                                102,
-                                                1,
-                                              ),
-                                              backgroundColor: Color.fromRGBO(
-                                                238,
-                                                238,
-                                                238,
-                                                1,
-                                              ),
-                                              padding: EdgeInsets.zero,
-                                              shape: const CircleBorder(),
-                                            ),
-                                            child: Icon(
-                                              Icons.search,
-                                            ),
-                                          ),
-                                        ),
-                                      ),*/
                                     ],
                                   ),
                       ),
@@ -415,64 +342,32 @@ class _SolutionModifyState extends State<SolutionModify> {
                           return SizedBox(
                             height: 60,
                             width: double.infinity,
-                            child: firstAnswerController.requiredSelect.value
-                                ? ElevatedButton(
-                                    onPressed: () async {
-                                      await firstAnswerController
-                                          .userReviewFetch(
-                                        widget.videoUrl,
-                                        widget.solutionId,
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: ColorGroup.selectBtnFGC,
-                                      backgroundColor: ColorGroup.selectBtnBGC,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      "업로드",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () async {},
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: const Color.fromARGB(
-                                        255,
-                                        255,
-                                        255,
-                                        255,
-                                      ),
-                                      backgroundColor: const Color.fromARGB(
-                                        255,
-                                        238,
-                                        238,
-                                        238,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      "업로드",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                await firstAnswerController.userReviewFetch(
+                                  widget.videoUrl,
+                                  widget.solutionId,
+                                );
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: ColorGroup.selectBtnFGC,
+                                backgroundColor: ColorGroup.selectBtnBGC,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: const Text(
+                                "수정하기",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),

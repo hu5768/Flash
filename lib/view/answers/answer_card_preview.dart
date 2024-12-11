@@ -36,6 +36,30 @@ class _AnswerCardState extends State<AnswerCardPreview> {
   @override
   void initState() {
     super.initState();
+    initVideo();
+  }
+
+  Future<void> initVideo() async {
+    firstAnswerController.videoController =
+        VideoPlayerController.file(firstAnswerController.selectVideo!)
+          ..initialize().then((_) {
+            setState(() {});
+            firstAnswerController.videoController!.play();
+          });
+
+    firstAnswerController.videoController!.addListener(() async {
+      if (firstAnswerController.videoController!.value.position ==
+          firstAnswerController.videoController!.value.duration) {
+        // 비디오가 끝났을 때 다시 재생
+        firstAnswerController.videoController!.seekTo(Duration.zero);
+        firstAnswerController.videoController!.play();
+      }
+      if (mounted && firstAnswerController.videoController != null) {
+        //slider 초기화를 위함
+        setState(() {});
+      }
+    });
+    firstAnswerController.videoController!.play();
   }
 
   @override

@@ -10,17 +10,74 @@ import 'package:flash/view/modals/manage_modal.dart';
 import 'package:flash/view/mypage/my_solution_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
-class MySolution extends StatelessWidget {
+class MySolution extends StatefulWidget {
   final int solutionId;
   final String profileUrl;
-  final mySolutionDetailController = Get.put(MySolutionDetailController());
-  final commentController = Get.put(CommentController());
+
   MySolution({
     super.key,
     required this.solutionId,
     required this.profileUrl,
   });
+
+  @override
+  State<MySolution> createState() => _MySolutionState();
+}
+
+class _MySolutionState extends State<MySolution> {
+  final mySolutionDetailController = Get.put(MySolutionDetailController());
+  final commentController = Get.put(CommentController());
+  bool iscomplet = false;
+  bool pauseIcon = false;
+  VideoPlayerController? _videoController;
+  @override
+  void initState() {
+    super.initState();
+    initvideo();
+  }
+
+  @override
+  void dispose() {
+    _videoController?.dispose();
+    super.dispose();
+  }
+
+  Future<void> initvideo() async {
+    _videoController = VideoPlayerController.networkUrl(
+      Uri.parse(mySolutionDetailController.sdm.videoUrl!),
+      // 비디오 URL
+    );
+    try {
+      if (!_videoController!.value.isInitialized) {
+        await _videoController!.initialize();
+        //print('영상 다운');
+      }
+      iscomplet = true;
+
+      _videoController!.seekTo(Duration.zero);
+      _videoController!.play();
+      // print('영상 실행 ');
+      _videoController!.addListener(() {
+        if (_videoController!.value.position ==
+            _videoController!.value.duration) {
+          // 비디오가 끝났을 때 다시 재생
+          _videoController!.seekTo(Duration.zero);
+          _videoController!.play();
+        }
+        if (mounted) {
+          setState(() {});
+        }
+      });
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('영상 카드 만들기 오류 $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +92,73 @@ class MySolution extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
-            MySolutionPlayer(
+            /* MySolutionPlayer(
               useUri: mySolutionDetailController.sdm.videoUrl!,
+            ),*/
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration:
+                  const BoxDecoration(color: Color.fromARGB(255, 0, 0, 0)),
+              child: iscomplet
+                  ? GestureDetector(
+                      onTap: () {
+                        if (_videoController!.value.isPlaying) {
+                          _videoController!.pause();
+                          setState(() {
+                            pauseIcon = true;
+                          });
+                        } else {
+                          _videoController!.play();
+                          setState(() {
+                            pauseIcon = false;
+                          });
+                        }
+                      },
+                      child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.contain,
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              child: AspectRatio(
+                                aspectRatio:
+                                    _videoController!.value.aspectRatio,
+                                child: VideoPlayer(
+                                  _videoController!,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          backgroundColor: ColorGroup.modalSBtnBGC,
+                          color: ColorGroup.selectBtnBGC,
+                          strokeWidth: 10,
+                        ),
+                      ),
+                    ),
             ),
             Positioned(
-              top: 60,
-              right: 15,
-              child: CloseButton(),
+              top: 90,
+              left: 12,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
             ),
             Positioned(
               bottom: 0,
@@ -99,7 +216,7 @@ class MySolution extends StatelessWidget {
                     OverflowTextWithMore(
                       text: mySolutionDetailController.sdm.review!,
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     Row(
                       children: [
                         Container(
@@ -151,7 +268,75 @@ class MySolution extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 10,
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                if (_videoController!.value.isPlaying) {
+                                  _videoController!.pause();
+                                  setState(() {
+                                    pauseIcon = true;
+                                  });
+                                } else {
+                                  _videoController!.play();
+                                  setState(() {
+                                    pauseIcon = false;
+                                  });
+                                }
+                              },
+                              icon: Icon(
+                                pauseIcon ? Icons.play_arrow : Icons.pause,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Expanded(
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  thumbShape: RoundSliderThumbShape(
+                                    enabledThumbRadius:
+                                        1.0, // thumb 크기를 작게 설정 (기본값 10.0)
+                                  ),
+                                  overlayShape: RoundSliderOverlayShape(
+                                    overlayRadius: 6.0,
+                                  ), // 오버레이 크기 줄이기
+                                  overlayColor: Colors.transparent,
+                                ),
+                                child: SizedBox(
+                                  height: 50,
+                                  child: Slider(
+                                    activeColor: Colors.white,
+                                    inactiveColor:
+                                        Color.fromARGB(102, 217, 217, 217),
+                                    thumbColor:
+                                        const Color.fromARGB(0, 255, 255, 255),
+                                    value: _videoController!
+                                        .value.position.inSeconds
+                                        .toDouble(),
+                                    max: _videoController!
+                                        .value.duration.inSeconds
+                                        .toDouble(),
+                                    onChanged: (double var1) {
+                                      final position =
+                                          Duration(seconds: var1.toInt());
+                                      _videoController!.seekTo(position);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '${_videoController!.value.position.inMinutes.toString().padLeft(2, '0')}:${_videoController!.value.position.inSeconds.toString().padLeft(2, '0')}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -171,15 +356,15 @@ class MySolution extends StatelessWidget {
                         '',
                       );
                       commentController.commentText.clear();
-                      await commentController.newFetch(solutionId);
+                      await commentController.newFetch(widget.solutionId);
                       showModalBottomSheet(
                         backgroundColor: ColorGroup.modalBGC,
                         context: context,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           return CommentModal(
-                            solutionId: solutionId,
-                            profileUrl: profileUrl,
+                            solutionId: widget.solutionId,
+                            profileUrl: widget.profileUrl,
                           );
                         },
                       );
@@ -222,7 +407,7 @@ class MySolution extends StatelessWidget {
                               videoUrl:
                                   mySolutionDetailController.sdm.videoUrl!,
                               problemId: '',
-                              solutionId: solutionId,
+                              solutionId: widget.solutionId,
                               perceivedDifficulty: mySolutionDetailController
                                       .sdm.perceivedDifficulty ??
                                   "보통",
@@ -251,33 +436,6 @@ class MySolution extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CloseButton extends StatelessWidget {
-  const CloseButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 60, 60, 60).withOpacity(0.7), // 배경색 설정
-        shape: BoxShape.circle, // 동그란 모양으로 설정
-      ),
-      child: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.close,
-          color: Colors.white,
         ),
       ),
     );

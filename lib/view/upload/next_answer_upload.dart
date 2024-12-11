@@ -58,79 +58,18 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
   }
 
   Future<void> PickVideo() async {
-    int sizeLimit = 300 * 1024 * 1024;
     setState(() {
       firstAnswerController.fileLoad = true;
     });
-    try {
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.video);
-      if (result != null) {
-        PlatformFile fileCheck = result.files.first;
-        print('압축 시작 압축전 파일 크기: ${fileCheck.size} bytes');
-        if (fileCheck.size < sizeLimit) {
-          firstAnswerController.selectVideo = File(result.files.single.path!);
 
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SelectThumnail(
-                videoPath: firstAnswerController.selectVideo!.path,
-              ),
-              allowSnapshotting: true,
-            ),
-          );
-          setState(() {
-            firstAnswerController.videoController =
-                VideoPlayerController.file(firstAnswerController.selectVideo!)
-                  ..initialize().then((_) {
-                    setState(() {});
-                    firstAnswerController.videoController!.play();
-                  });
-          });
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectThumnail(),
+        allowSnapshotting: true,
+      ),
+    );
 
-          firstAnswerController.videoController!.play();
-        } else {
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
-                backgroundColor: ColorGroup.BGC,
-                titleTextStyle: TextStyle(
-                  fontSize: 15,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                  fontWeight: FontWeight.w700,
-                ),
-                contentTextStyle: TextStyle(
-                  fontSize: 13,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                ),
-                title: Text('파일 용량 초과'),
-                content: Text('300mb이상의 영상은 업로드 할 수 없습니다!'),
-                actions: [
-                  TextButton(
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      }
-    } catch (e) {
-      print("비디오 선택 오류 $e");
-    }
     setState(() {
       firstAnswerController.fileLoad = false;
     });
@@ -251,7 +190,7 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                         width: 169,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
-                          color: firstAnswerController.videoController != null
+                          color: firstAnswerController.thumbnailFile != null
                               ? Color.fromARGB(248, 0, 0, 0)
                               : Color.fromARGB(248, 242, 242, 242),
                           borderRadius: BorderRadius.circular(12),
@@ -267,8 +206,8 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                   strokeWidth: 10,
                                 ),
                               )
-                            : firstAnswerController.videoController ==
-                                    null // 비디오가 존재하는지
+                            : firstAnswerController.thumbnailFile ==
+                                    null // 썸내일이 존재하는지
                                 ? Container(
                                     //존재 안하면 선택화면
                                     padding:
@@ -311,15 +250,8 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                     //존재하면 비디오 보여주기
                                     children: [
                                       Center(
-                                        child: AspectRatio(
-                                          aspectRatio: firstAnswerController
-                                              .videoController!
-                                              .value
-                                              .aspectRatio,
-                                          child: VideoPlayer(
-                                            firstAnswerController
-                                                .videoController!,
-                                          ),
+                                        child: Image.file(
+                                          firstAnswerController.thumbnailFile!,
                                         ),
                                       ),
                                       Positioned(
@@ -332,11 +264,6 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                             onPressed: () {
                                               if (!firstAnswerController
                                                   .fileLoad) {
-                                                firstAnswerController
-                                                    .videoController
-                                                    ?.pause();
-                                                firstAnswerController
-                                                    .videoController = null;
                                                 PickVideo();
                                               } else {}
                                             },
@@ -372,7 +299,7 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                           ),
                                         ),
                                       ),
-                                      /*Positioned(
+                                      Positioned(
                                         right: 12,
                                         bottom: 12,
                                         child: SizedBox(
@@ -412,7 +339,6 @@ class _NextAnswerUploadState extends State<NextAnswerUpload> {
                                           ),
                                         ),
                                       ),
-                                    */
                                     ],
                                   ),
                       ),
@@ -846,7 +772,7 @@ class SectorFilter extends StatelessWidget {
                       30,
                     ),
                   ),
-                  //onSelected: (bool selected) {},
+                  onSelected: null,
                 ),
               );
             },

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/view/upload/TransparentSquareThumb.dart';
@@ -10,14 +11,14 @@ import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class SelectThumnail extends StatefulWidget {
-  final String videoPath;
-  const SelectThumnail({super.key, required this.videoPath});
+  const SelectThumnail({super.key});
 
   @override
   State<SelectThumnail> createState() => _SelectThumnailState();
 }
 
 class _SelectThumnailState extends State<SelectThumnail> {
+  String? videoPath;
   final firstAnswerController = Get.put(FirstAnswerController());
   List<File> frameThumbnails = [];
   double currentSliderValue = 0;
@@ -28,8 +29,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    generateThumbnails();
+    filePicking();
   }
 
   @override
@@ -37,18 +37,70 @@ class _SelectThumnailState extends State<SelectThumnail> {
     super.dispose();
   }
 
+  Future<void> filePicking() async {
+    int sizeLimit = 300 * 1024 * 1024;
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.video);
+    if (result != null) {
+      PlatformFile fileCheck = result.files.first;
+      if (fileCheck.size < sizeLimit) {
+        firstAnswerController.selectVideo = File(result.files.single.path!);
+        videoPath = firstAnswerController.selectVideo!.path;
+        generateThumbnails();
+      } else {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actionsPadding: EdgeInsets.fromLTRB(0, 0, 30, 10),
+              backgroundColor: ColorGroup.BGC,
+              titleTextStyle: TextStyle(
+                fontSize: 15,
+                color: const Color.fromARGB(255, 0, 0, 0),
+                fontWeight: FontWeight.w700,
+              ),
+              contentTextStyle: TextStyle(
+                fontSize: 13,
+                color: const Color.fromARGB(255, 0, 0, 0),
+              ),
+              title: Text('파일 용량 초과'),
+              content: Text('300mb이상의 영상은 업로드 할 수 없습니다!'),
+              actions: [
+                TextButton(
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   Future<void> selectThumbnailFile(int milliseconds) async {
     final tempDir = await getTemporaryDirectory();
     final String tempPath = tempDir.path;
 
     final String? filePath = await VideoThumbnail.thumbnailFile(
-      video: widget.videoPath,
+      video: videoPath!,
       imageFormat: ImageFormat.JPEG,
       timeMs: milliseconds, // 초를 밀리초로 변환
       quality: 75, // 품질 설정
       thumbnailPath: tempPath, // 파일 저장 경로
     );
-
     if (filePath != null) {
       firstAnswerController.thumbnailFile = File(filePath);
     }
@@ -69,7 +121,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
     }
 
     List<File> tempThumbnails = [];
-    videoController = VideoPlayerController.file(File(widget.videoPath));
+    videoController = VideoPlayerController.file(File(videoPath!));
     await videoController!.initialize();
 
     final videoDuration = videoController!.value.duration.inMilliseconds;
@@ -78,7 +130,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
       final timeMs = (videoDuration / totalFrames * i).round();
       print(videoDuration);
       final thumbnailPath = await VideoThumbnail.thumbnailFile(
-        video: widget.videoPath,
+        video: videoPath!,
         thumbnailPath:
             '${directory.path}/thumb_${DateTime.now().millisecondsSinceEpoch}.png',
         imageFormat: ImageFormat.PNG,
@@ -118,7 +170,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
                   icon: Icon(Icons.arrow_back_ios),
                 ),
                 Text(
-                  '미리보기 이미지 설정',
+                  '썸네일 설정 페이지',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -149,7 +201,15 @@ class _SelectThumnailState extends State<SelectThumnail> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: videoController == null
-                      ? SizedBox()
+                      ? Container(
+                          //로딩중이면 버퍼링
+                          padding: EdgeInsets.fromLTRB(62.5, 146, 62.5, 146),
+                          child: CircularProgressIndicator(
+                            backgroundColor: ColorGroup.modalSBtnBGC,
+                            color: ColorGroup.selectBtnBGC,
+                            strokeWidth: 13,
+                          ),
+                        )
                       : FittedBox(
                           // 비율 유지 및 여백 추가
                           fit: BoxFit.contain,
@@ -204,7 +264,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
                                   min: 0,
                                   max: (totalFrames - 1).toDouble(),
                                   value: currentSliderValue,
-                                  divisions: (totalFrames - 1) * 3, //일단 24개
+                                  divisions: (totalFrames - 1) * 6, //일단 24개
                                   onChanged: (value) {
                                     setState(() {
                                       currentSliderValue = value;
@@ -251,7 +311,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
                       ),
                     ),
                     child: const Text(
-                      "업로드",
+                      "설정하기",
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,

@@ -145,13 +145,13 @@ class ProblemDetailCard extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 2.0),
-                          Text(
+                          /*Text(
                             '문제사진 제공: @$imageSource',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12.0,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                       SizedBox(width: 8.0),

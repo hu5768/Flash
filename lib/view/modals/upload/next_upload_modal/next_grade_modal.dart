@@ -12,56 +12,45 @@ class NextGradeModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
-        side: BorderSide(
+    return Container(
+      padding: EdgeInsets.fromLTRB(14, 14, 14, 14), // 내부 여백
+      decoration: BoxDecoration(
+        border: Border.all(
           width: 1,
-          color: const Color.fromARGB(
-            255,
-            196,
-            196,
-            196,
-          ),
+          color: const Color.fromARGB(255, 196, 196, 196), // 테두리 색상
         ),
-        foregroundColor: const Color.fromARGB(255, 115, 115, 115),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
+        borderRadius: BorderRadius.circular(12.0), // 둥근 모서리 설정
       ),
-      onPressed: () {},
-      child: Container(
-        child: Obx(
-          () {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                firstAnswerController.selectGrade.value == ''
-                    ? SvgPicture.asset(
-                        'assets/images/empty_color.svg',
-                      )
-                    : Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: CenterColor.TheClimbColorList[
-                              firstAnswerController.selectGrade.value],
-                          borderRadius: BorderRadius.circular(100),
-                        ),
+      child: Obx(
+        () {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              firstAnswerController.selectGrade.value == ''
+                  ? SvgPicture.asset(
+                      'assets/images/empty_color.svg',
+                    )
+                  : Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: CenterColor.TheClimbColorList[
+                            firstAnswerController.selectGrade.value],
+                        borderRadius: BorderRadius.circular(100),
                       ),
-                SizedBox(width: 10),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 32,
-                  color: firstAnswerController.selectGrade.value == ''
-                      ? const Color.fromARGB(255, 17, 17, 17)
-                      : const Color.fromARGB(255, 196, 196, 196),
-                ),
-              ],
-            );
-          },
-        ),
+                    ),
+              SizedBox(width: 10),
+              Icon(
+                Icons.keyboard_arrow_down,
+                size: 32,
+                color: firstAnswerController.selectGrade.value == ''
+                    ? const Color.fromARGB(255, 17, 17, 17)
+                    : const Color.fromARGB(255, 196, 196, 196),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

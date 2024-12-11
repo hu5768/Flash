@@ -35,7 +35,6 @@ class _MySolutionPlayerState extends State<MySolutionPlayer> {
   Future<void> initvideo() async {
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse(widget.useUri),
-
       // 비디오 URL
     );
     try {
