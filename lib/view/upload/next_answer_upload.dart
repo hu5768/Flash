@@ -733,46 +733,35 @@ class SectorFilter extends StatelessWidget {
               return Container(
                 height: 30,
                 padding: EdgeInsets.only(right: 12),
-                child: ChoiceChip(
-                  selected: isSelected,
-                  visualDensity: VisualDensity(vertical: 0.0),
-                  showCheckmark: false,
-                  label: Align(
-                    alignment: Alignment(0, -1.2),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color.fromARGB(255, 217, 230, 255) // 선택된 배경색
+                        : Colors.white, // 기본 배경색
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: isSelected
+                          ? const Color.fromARGB(255, 0, 128, 255) // 선택된 테두리색
+                          : const Color.fromARGB(255, 196, 196, 196), // 기본 테두리색
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
+                  child: Align(
+                    alignment: const Alignment(0, -1.2),
                     child: Text(
                       option,
                       style: TextStyle(
                         fontSize: 14,
                         color: isSelected
-                            ? Color.fromARGB(
-                                255,
-                                0,
-                                128,
-                                255,
-                              )
-                            : Color.fromARGB(255, 17, 17, 17),
-                        height: 0,
+                            ? const Color.fromARGB(255, 0, 128, 255) // 선택된 글자색
+                            : const Color.fromARGB(255, 17, 17, 17), // 기본 글자색
+                        height: 1,
                       ),
                     ),
                   ),
-                  backgroundColor: Colors.white,
-                  selectedColor: const Color.fromARGB(255, 217, 230, 255),
-                  side: BorderSide(
-                    color: isSelected
-                        ? Color.fromARGB(
-                            255,
-                            0,
-                            128,
-                            255,
-                          )
-                        : Color.fromARGB(255, 196, 196, 196),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      30,
-                    ),
-                  ),
-                  onSelected: null,
                 ),
               );
             },
