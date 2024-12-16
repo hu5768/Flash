@@ -88,7 +88,7 @@ class ProblemList extends StatelessWidget {
                                         holdColorCode: problemListController
                                                 .problemList[index]
                                                 .holdColorCode ??
-                                            '#171717',
+                                            '',
                                       ),
                               ),
                             ],

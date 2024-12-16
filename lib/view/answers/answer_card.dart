@@ -274,7 +274,7 @@ class _AnswerCardState extends State<AnswerCard> {
                                           holdColorcode:
                                               mySolutionDetailController
                                                       .sdm.holdColorCode ??
-                                                  '#171717',
+                                                  '',
                                           thumbnailImageUrl:
                                               mySolutionDetailController
                                                       .sdm.thumbnailImageUrl ??
