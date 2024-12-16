@@ -1,7 +1,9 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/controller/first_answer_controller.dart';
 import 'package:flash/controller/problem_list_controller.dart';
+import 'package:flash/view/upload/admin_upload_new.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +16,7 @@ class ProblemFilter extends StatelessWidget {
   final ProblemFilterController problemFilterController = Get.find();
   final ProblemListController problemListController = Get.find();
   final CenterTitleController centerTitleController = Get.find();
+  final firstAnswerController = Get.put(FirstAnswerController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,6 +35,22 @@ class ProblemFilter extends StatelessWidget {
                   GradeFilter(),
                   const SizedBox(height: 12),
                   ToggleFilter(),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      firstAnswerController.initUpload();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminUploadNew(
+                            gymId: centerTitleController.centerId.value,
+                          ),
+                          allowSnapshotting: true,
+                        ),
+                      );
+                    },
+                    child: const Text('새로운 문제 업로드'),
+                  ),
                 ],
               ),
             ),

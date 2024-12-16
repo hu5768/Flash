@@ -4,4 +4,4 @@ const String uploadBaseUrl = "https://upload.climbing-answer.com/";
 const String uploadBaseUrlDev = "https://upload.dev.climbing-answer.com/";
 
 String apiServerUrl = baseUrl;
-String uploadServerUrl = uploadBaseUrl;
+String uploadServerUrl = uploadBaseUrlDev;

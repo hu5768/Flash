@@ -1,7 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
-import 'package:flash/view/problem/admin_upload_web.dart';
+import 'package:flash/view/upload/admin_upload_web.dart';
 
 import 'package:flash/view/problem/answer_upload.dart'
     if (dart.library.html) 'answer_upload_web.dart';

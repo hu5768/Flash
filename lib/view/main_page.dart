@@ -1,5 +1,6 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/controller/hold_color_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/problem/problem_list.dart';
@@ -13,9 +14,10 @@ class MainPage extends StatelessWidget {
     super.key,
   });
   final centerTitleController = Get.put(CenterTitleController());
-
+  final holdColorController = Get.put(HoldColorController());
   @override
   Widget build(BuildContext context) {
+    holdColorController.getHolds();
     return Scaffold(
       backgroundColor: ColorGroup.BGC,
       appBar: AppBar(

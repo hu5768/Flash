@@ -1,4 +1,5 @@
 import 'package:flash/controller/center_title_controller.dart';
+import 'package:flash/controller/hold_color_controller.dart';
 import 'package:flash/controller/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
@@ -17,6 +18,7 @@ class CenterCard extends StatelessWidget {
   final centerTitleController = Get.put(CenterTitleController());
   final ProblemListController problemListController = Get.find();
   final ProblemSortController problemSortController = Get.find();
+  final holdColorController = Get.put(HoldColorController());
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,7 +27,7 @@ class CenterCard extends StatelessWidget {
         centerTitleController.changeId(id);
         centerTitleController.getTitle();
         problemListController.newFetch();
-
+        holdColorController.getHolds();
         Navigator.pop(context);
       },
       child: Container(
