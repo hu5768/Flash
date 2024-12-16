@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # google play
 #version: 1.0.0+7
 #appstore
-version: 1.1.6+18
+version: 2.0.1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -61,6 +61,8 @@ dependencies:
   app_links: ^6.3.2
   package_info_plus: ^8.0.3
   flutter_svg: ^2.0.10+1
+  video_thumbnail: ^0.5.3
+  path_provider: ^2.1.5
 
 
 
@@ -123,10 +125,20 @@ flutter:
     - assets/images/gym_map.png
     - assets/images/select_color.svg
 
+    - assets/images/tutorial/main_tutorial1.png
+    - assets/images/tutorial/main_tutorial2.png
+    - assets/images/tutorial/main_tutorial3.png
+    - assets/images/tutorial/main_tutorial4.png
+    - assets/images/tutorial/upload_tutorial1.png
+    - assets/images/tutorial/upload_tutorial2.png
+
     - assets/images/icon/comment_icon.svg
     - assets/images/icon/height_icon.svg
     - assets/images/icon/width_icon.svg
     - assets/images/emptyHodIcon.png
+    - assets/images/empty_hold.svg
+    - assets/images/empty_color.svg
+    - assets/images/upload_button.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

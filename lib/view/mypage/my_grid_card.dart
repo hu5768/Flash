@@ -83,7 +83,7 @@ class MyVideoCard extends StatelessWidget {
                 ),
               ),
               Text(
-                formatDateString(uploadedAt) + '업로드',
+                uploadedAt + ' 업로드',
                 style: TextStyle(
                   fontSize: 12,
                   color: Color.fromRGBO(255, 255, 255, 0.8),

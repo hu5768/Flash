@@ -52,6 +52,7 @@ class AnswerDataController extends GetxController {
           imageSource: detailInfo.imageSource ?? 'theclimb_life',
           guide: guide ?? 'NULL',
           isHoney: detailInfo.isHoney ?? false,
+          holdColorCode: detailInfo.holdColorCode ?? "#171717",
         ),
       );
 

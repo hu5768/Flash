@@ -3,7 +3,9 @@ class MySolutionModel {
   String? gymName;
   String? sectorName;
   String? difficultyName;
-  String? problemImageUrl;
+  String? thumbnailImageUrl;
+  int? commentsCount;
+  String? solvedDate;
   String? uploadedAt;
 
   MySolutionModel({
@@ -11,7 +13,9 @@ class MySolutionModel {
     this.gymName,
     this.sectorName,
     this.difficultyName,
-    this.problemImageUrl,
+    this.thumbnailImageUrl,
+    this.commentsCount,
+    this.solvedDate,
     this.uploadedAt,
   });
 
@@ -20,7 +24,9 @@ class MySolutionModel {
     gymName = json['gymName'];
     sectorName = json['sectorName'];
     difficultyName = json['difficultyName'];
-    problemImageUrl = json['problemImageUrl'];
+    thumbnailImageUrl = json['thumbnailImageUrl'];
+    commentsCount = json['commentsCount'];
+    solvedDate = json['solvedDate'];
     uploadedAt = json['uploadedAt'];
   }
 
@@ -30,7 +36,9 @@ class MySolutionModel {
     data['gymName'] = this.gymName;
     data['sectorName'] = this.sectorName;
     data['difficultyName'] = this.difficultyName;
-    data['problemImageUrl'] = this.problemImageUrl;
+    data['thumbnailImageUrl'] = this.thumbnailImageUrl;
+    data['commentsCount'] = this.commentsCount;
+    data['solvedDate'] = this.solvedDate;
     data['uploadedAt'] = this.uploadedAt;
     return data;
   }

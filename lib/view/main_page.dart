@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
@@ -6,6 +7,7 @@ import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
+import 'package:flash/view/animations/main_page_tutorial.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/modals/map_modal.dart';
 import 'package:flash/view/mypage/mypage.dart';
@@ -109,10 +111,37 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    checkFirstMainpage();
+  }
+
+  Future<void> checkFirstMainpage() async {
+    // FlutterSecureStorage에서 값 읽기
+    String? isFirstLaunch = await storage.read(key: 'FIRST_MAINPAGE');
+
+    // isFirstLaunch = null;
+    if (isFirstLaunch == null) {
+      // 최초 실행인 경우
+      await storage.write(key: 'FIRST_MAINPAGE', value: 'false');
+
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              MainPageTutorial(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child;
+          },
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    centerTitleController.getContext(context);
-    problemListController.getContext(context);
-    mypageController.fetchMemberData();
+    mypageController.fetchMemberData(context);
 
     AnalyticsService.screenView(
       'MainPage',
@@ -149,7 +178,7 @@ class _MainPageState extends State<MainPage> {
             OpenForm();
             return;
           } else if (index == 2) {
-            await mypageController.fetchMemberData();
+            await mypageController.fetchMemberData(context);
             await myGridviewController.fetchData();
           }
           setState(() {

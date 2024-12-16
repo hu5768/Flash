@@ -13,3 +13,7 @@ String formatDateString(String dateString) {
 
   return '$year.$month.$day';
 }
+
+String formatDateDate(DateTime date) {
+  return DateFormat('yyyy-MM-dd').format(date);
+}

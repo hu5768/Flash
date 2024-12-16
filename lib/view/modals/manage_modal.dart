@@ -2,11 +2,14 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/answer_carousel_controller.dart';
 import 'package:flash/controller/dio/answer_data_controller.dart';
 import 'package:flash/controller/dio/answer_modify_controller.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
+import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/dio/solution_delete_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/upload/answer_modify.dart';
+import 'package:flash/view/upload/solution_modify.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,16 +21,30 @@ class ManageModal extends StatelessWidget {
     required this.videoUrl,
     required this.review,
     required this.perceivedDifficulty,
+    required this.solvedDate,
+    required this.difficulty,
+    required this.holdColorcode,
+    required this.thumbnailImageUrl,
   });
-  final String problemId, videoUrl, review, perceivedDifficulty;
+
+  final String problemId,
+      videoUrl,
+      review,
+      perceivedDifficulty,
+      solvedDate,
+      difficulty,
+      holdColorcode,
+      thumbnailImageUrl;
   final int solutionId;
   final answerCarouselController = Get.put(AnswerCarouselController());
+  final problemListController = Get.put(ProblemListController());
   final myGridviewController = Get.put(MyGridviewController());
   final mySolutionDetailController = Get.put(MySolutionDetailController());
   final SolutionDeleteController solutionDeleteController =
       SolutionDeleteController();
   final answerDataController = Get.put(AnswerDataController());
-  final answerModifyController = Get.put(AnswerModifyController());
+
+  final firstAnswerController = Get.put(FirstAnswerController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,17 +83,20 @@ class ManageModal extends StatelessWidget {
                       '',
                       '',
                     );
-                    answerModifyController.difficultyLabel.value =
-                        perceivedDifficulty;
+                    await firstAnswerController.initModify(
+                      holdColorcode,
+                      difficulty,
+                      solvedDate,
+                      perceivedDifficulty,
+                      review,
+                      thumbnailImageUrl,
+                    );
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AnswerModify(
-                          problemId: '',
-                          gymName: '',
+                        builder: (context) => SolutionModify(
                           videoUrl: videoUrl,
                           solutionId: solutionId,
-                          review: review,
                         ),
                       ),
                     );
@@ -188,16 +208,15 @@ class ManageModal extends StatelessWidget {
                                 await solutionDeleteController.DeleteSolution(
                                   solutionId,
                                 );
-                                await answerDataController.disposeVideo();
-                                answerCarouselController.cIndex.value = 0;
+
                                 if (problemId != '') //문제 캐러샐에서 본 경우
-                                  answerDataController.fetchData(problemId);
+                                  problemListController.newFetch();
                                 else {
                                   // 마이페이지에서 본 경우
                                   await myGridviewController
                                       .fetchData(); //잘 안되는듯
-                                  Navigator.of(context).pop();
                                 }
+                                Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },

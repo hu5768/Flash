@@ -118,7 +118,9 @@ class MypageModifyController extends GetxController {
               filename: fileName,
             ),
     });
-
+    for (var file in data.files) {
+      print("File: ${file.key}: ${file.value.filename}");
+    }
     try {
       // PATCH 요청
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
@@ -130,6 +132,7 @@ class MypageModifyController extends GetxController {
         // 요청이 성공적으로 처리된 경우
         print('Member information updated successfully');
         final String profileImageUrl = response.data["profileImageUrl"];
+
         await updateMemberInfoNoprofile(profileImageUrl);
       } else {
         print('Failed to update member information: ${response.statusCode}');

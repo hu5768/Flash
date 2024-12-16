@@ -2,8 +2,10 @@ import 'package:dio/dio.dart' as dios;
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/hold_color_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
+import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/model/problems_model.dart';
 import 'package:flash/view/login/login_page.dart';
 
@@ -12,12 +14,15 @@ import 'package:get/get.dart';
 import 'dio_singletone.dart';
 
 class ProblemListController extends GetxController {
+  bool isDoubleClick = false; //문제 더블클릭 방지
+
   var problemList = <ProblemModel>[].obs;
   ScrollController? scrollController;
   final centerTitleController = Get.put(CenterTitleController());
   final problemSortController = Get.put(ProblemSortController());
   final problemFilterController = Get.put(ProblemFilterController());
-  dynamic mainContext;
+  final holdColorController = Get.put(HoldColorController());
+  String userNickname = 'none';
 
   String nextCursor = "";
   bool loadRunning = false; //데이터 로딩중 여부
@@ -30,8 +35,19 @@ class ProblemListController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
-  void getContext(context) {
-    mainContext = context;
+  Future<void> firstConnect() async {
+    //앱 최초 접속시
+
+    await centerTitleController.getTitle();
+    await newFetch();
+    await holdColorController.getHolds();
+    AnalyticsService.buttonClick(
+      'firstConnect',
+      'userNickname',
+      '',
+      '',
+    );
+    print('username' + userNickname);
   }
 
   Future<void> newFetch() async {
@@ -87,6 +103,7 @@ class ProblemListController extends GetxController {
       print("시작 페이지 로딩 오류$e");
     }
     loadRunning = false;
+    isDoubleClick = false;
     /*
  
       scrollController!.animateTo(
@@ -102,14 +119,6 @@ class ProblemListController extends GetxController {
       0.0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-    );
-  }
-
-  void goOut() {
-    Navigator.pushAndRemoveUntil(
-      mainContext,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-      (route) => false, // 스택에 있는 모든 이전 라우트를 제거
     );
   }
 

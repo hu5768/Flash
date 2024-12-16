@@ -1,5 +1,7 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/gym_id.dart';
 import 'package:flash/controller/dio/center_title_controller.dart';
+import 'package:flash/controller/dio/first_answer_controller.dart';
 import 'package:flash/controller/problem_filter_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/controller/problem_sort_controller.dart';
@@ -8,7 +10,9 @@ import 'package:flash/view/modals/moreproblem_modal.dart';
 import 'package:flash/view/modals/sort_modal.dart';
 import 'package:flash/view/problem/problem_card.dart';
 import 'package:flash/view/problem/problem_filter.dart';
+import 'package:flash/view/upload/first_answer_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ProblemList extends StatelessWidget {
@@ -17,7 +21,8 @@ class ProblemList extends StatelessWidget {
 
   final ProblemFilterController problemFilterController = Get.find();
   final problemListController = Get.put(ProblemListController());
-  final CenterTitleController centerTitleController = Get.find();
+  final firstAnswerController = Get.put(FirstAnswerController());
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,7 @@ class ProblemList extends StatelessWidget {
               GetX<ProblemListController>(
                 builder: (controller) {
                   return Container(
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.35,
                     child: RefreshIndicator(
                       onRefresh: () async {
                         await problemListController.newFetch();
@@ -44,40 +49,48 @@ class ProblemList extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              problemListController.problemList[index].id ==
-                                      'no'
-                                  ? NoProblemCard()
-                                  : ProblemCard(
-                                      gymName: centerTitleController
-                                          .centerTitle.value,
-                                      id: problemListController
-                                          .problemList[index].id
-                                          .toString(),
-                                      sector: problemListController
-                                          .problemList[index].sector
-                                          .toString(),
-                                      difficulty: problemListController
-                                          .problemList[index].difficulty
-                                          .toString(),
-                                      settingDate: problemListController
-                                          .problemList[index].settingDate
-                                          .toString(),
-                                      removalDate: problemListController
-                                          .problemList[index].removalDate
-                                          .toString(),
-                                      hasSolution: problemListController
-                                          .problemList[index].hasSolution!,
-                                      imageUrl: problemListController
-                                          .problemList[index].imageUrl
-                                          .toString(),
-                                      isHoney: problemListController
-                                              .problemList[index].isHoney ??
-                                          false,
-                                      solutionCount: problemListController
-                                              .problemList[index]
-                                              .solutionCount ??
-                                          0,
-                                    ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: problemListController
+                                            .problemList[index].id ==
+                                        'no'
+                                    ? NoProblemCard()
+                                    : ProblemCard(
+                                        gymName: centerTitleController
+                                            .centerTitle.value,
+                                        id: problemListController
+                                            .problemList[index].id
+                                            .toString(),
+                                        sector: problemListController
+                                            .problemList[index].sector
+                                            .toString(),
+                                        difficulty: problemListController
+                                            .problemList[index].difficulty
+                                            .toString(),
+                                        settingDate: problemListController
+                                            .problemList[index].settingDate
+                                            .toString(),
+                                        removalDate: problemListController
+                                            .problemList[index].removalDate
+                                            .toString(),
+                                        hasSolution: problemListController
+                                            .problemList[index].hasSolution!,
+                                        imageUrl: problemListController
+                                            .problemList[index].imageUrl
+                                            .toString(),
+                                        isHoney: problemListController
+                                                .problemList[index].isHoney ??
+                                            false,
+                                        solutionCount: problemListController
+                                                .problemList[index]
+                                                .solutionCount ??
+                                            0,
+                                        holdColorCode: problemListController
+                                                .problemList[index]
+                                                .holdColorCode ??
+                                            '#171717',
+                                      ),
+                              ),
                             ],
                           );
                         },
@@ -93,6 +106,32 @@ class ProblemList extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: TextButton(
+        onPressed: () async {
+          AnalyticsService.buttonClick(
+            'uploadbutton',
+            '플로팅버튼',
+            centerTitleController.centerTitle.value,
+            '',
+          );
+          await firstAnswerController.initUpload();
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FirstAnswerUpload(
+                gymName: centerTitleController.centerTitle.value,
+                sector: '',
+                gymId: centerTitleController.centerId.value,
+              ),
+            ),
+          );
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+        ),
+        child: SvgPicture.asset("assets/images/upload_button.svg"),
+      ),
     );
   }
 }
@@ -103,7 +142,7 @@ class NoProblemCard extends StatelessWidget {
   });
 
   final CenterTitleController centerTitleController = Get.find();
-
+  final firstAnswerController = Get.put(FirstAnswerController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,7 +163,7 @@ class NoProblemCard extends StatelessWidget {
             Image.asset('assets/images/emptyHodIcon.png'),
             SizedBox(height: 15),
             Text(
-              '더 이상 문제가 없습니다',
+              '앗, 문제가 없어요!',
               style: TextStyle(
                 color: const Color.fromARGB(255, 153, 153, 153),
                 fontSize: 20,
@@ -132,6 +171,46 @@ class NoProblemCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5),
+            SizedBox(
+              height: 44,
+              child: ElevatedButton(
+                onPressed: () async {
+                  AnalyticsService.buttonClick(
+                    'uploadbutton',
+                    '문제가없어요',
+                    centerTitleController.centerTitle.value,
+                    '',
+                  );
+                  await firstAnswerController.initUpload();
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FirstAnswerUpload(
+                        gymName: centerTitleController.centerTitle.value,
+                        sector: '',
+                        gymId: centerTitleController.centerId.value,
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 56, 56, 56),
+                  backgroundColor: const Color.fromARGB(255, 238, 238, 238),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.0), // 둥근 모서리
+                  ),
+                ),
+                child: Text(
+                  '내 풀이 업로드',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: const Color.fromARGB(255, 102, 102, 102),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            /*
             GestureDetector(
               onTap: () {
                 AnalyticsService.buttonClick(
@@ -167,6 +246,7 @@ class NoProblemCard extends StatelessWidget {
                 ),
               ),
             ),
+          */
           ],
         ),
       ),

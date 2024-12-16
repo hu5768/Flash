@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 class ProblemFilterController extends GetxController {
   List<String> gradeOption = [];
   List<String> sectorOption = [];
+  List<String> sectorImageUrl = [];
+  var sectorImageUrlString = ''.obs;
+
   var allOption = <List<String>>[].obs; //난이도 ,벽 도메인
   var allSelection = <RxList<String>>[].obs; // 문제 리스트 페이지에 반영될 선택 여부
 
   var nobodySol = false.obs; // 아무도 못 푼 문제 보기
-
   var isHoney = false.obs; // 꿀 문제 보기
 
   @override
@@ -23,7 +25,7 @@ class ProblemFilterController extends GetxController {
     allSelection.clear();
     allSelection.add(<String>[].obs);
     allSelection.add(<String>[].obs);
-
+    sectorImageUrlString.value = '';
     nobodySol.value = false;
     isHoney.value = false;
   }
@@ -40,12 +42,14 @@ class ProblemFilterController extends GetxController {
   }
 
 // new
-  void SectorSelection(String option) {
+  void SectorSelection(String option, int index) {
     if (allSelection[1].contains(option)) {
       allSelection[1].remove(option);
+      sectorImageUrlString.value = '';
     } else {
       allSelection[1].clear();
       allSelection[1].add(option);
+      sectorImageUrlString.value = sectorImageUrl[index];
     }
   }
 

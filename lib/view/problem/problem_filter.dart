@@ -12,9 +12,9 @@ import '../../controller/problem_filter_controller.dart';
 
 class ProblemFilter extends StatelessWidget {
   ProblemFilter({super.key});
-  final ProblemFilterController problemFilterController = Get.find();
-  final ProblemListController problemListController = Get.find();
-  final CenterTitleController centerTitleController = Get.find();
+  final problemFilterController = Get.put(ProblemFilterController());
+  final problemListController = Get.put(ProblemListController());
+  final centerTitleController = Get.put(CenterTitleController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,13 +27,16 @@ class ProblemFilter extends StatelessWidget {
                   centerTitleController.centerDetailModel.value.mapImageUrl ??
                       "";
               print(mapImgUrl);
-              return mapImgUrl != ''
+              return mapImgUrl != '' //mapImgUrl없으면 빈화면 보여줌
                   ? SizedBox(
                       height: 112,
                       width: double.infinity,
                       child: Image.network(
-                        centerTitleController
-                            .centerDetailModel.value.mapImageUrl!,
+                        problemFilterController.sectorImageUrlString.value !=
+                                '' //섹터 이미지가 없으면 맵이미지 보여줌
+                            ? problemFilterController.sectorImageUrlString.value
+                            : centerTitleController
+                                .centerDetailModel.value.mapImageUrl!,
                         errorBuilder: (context, error, stackTrace) {
                           return const SizedBox(
                             width: 350,
@@ -208,17 +211,28 @@ class SectorFilter extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 color: isSelected
-                                    ? Colors.white
-                                    : Color.fromARGB(255, 17, 17, 17),
+                                    ? Color.fromARGB(
+                                        255,
+                                        0,
+                                        128,
+                                        255,
+                                      )
+                                    : Colors.black,
                                 height: 0,
                               ),
                             ),
                           ),
                           backgroundColor: Colors.white,
-                          selectedColor: const Color.fromARGB(255, 0, 87, 255),
+                          selectedColor:
+                              const Color.fromARGB(255, 217, 230, 255),
                           side: BorderSide(
                             color: isSelected
-                                ? Color.fromARGB(255, 0, 87, 255)
+                                ? Color.fromARGB(
+                                    255,
+                                    0,
+                                    128,
+                                    255,
+                                  )
                                 : Color.fromARGB(255, 196, 196, 196),
                           ),
                           shape: RoundedRectangleBorder(
@@ -234,7 +248,10 @@ class SectorFilter extends StatelessWidget {
                                   .toString(),
                               '',
                             );
-                            problemFilterController.SectorSelection(option);
+                            problemFilterController.SectorSelection(
+                              option,
+                              index,
+                            );
                             problemListController.FilterApply();
                           },
                         ),
@@ -311,12 +328,15 @@ class GradeFilter extends StatelessWidget {
 
                           return Stack(
                             children: [
-                              Icon(
-                                Icons.circle,
-                                size: 30,
-                                color: CenterColor.TheClimbColorList[
-                                    problemFilterController.allOption[0]
-                                        [index]],
+                              Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: CenterColor.TheClimbColorList[
+                                      problemFilterController.allOption[0]
+                                          [index]],
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
                               ),
                               if (isSelected)
                                 Positioned(
