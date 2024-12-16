@@ -418,7 +418,7 @@ class _MySolutionState extends State<MySolution> {
                                   .sdm.difficultyName!,
                               holdColorcode: mySolutionDetailController
                                       .sdm.holdColorCode ??
-                                  '#171717',
+                                  '',
                               thumbnailImageUrl: mySolutionDetailController
                                       .sdm.thumbnailImageUrl ??
                                   '',
