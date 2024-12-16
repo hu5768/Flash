@@ -115,14 +115,16 @@ class _MainPageState extends State<MainPage> {
     // TODO: implement initState
     super.initState();
 
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     checkFirstMainpage();
+    // });
   }
 
   Future<void> checkFirstMainpage() async {
     // FlutterSecureStorage에서 값 읽기
     String? isFirstLaunch = await storage.read(key: 'FIRST_MAINPAGE');
 
-    // isFirstLaunch = null;
+    isFirstLaunch = null;
     if (isFirstLaunch == null) {
       // 최초 실행인 경우
       await storage.write(key: 'FIRST_MAINPAGE', value: 'false');
