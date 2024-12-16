@@ -141,6 +141,9 @@ class ProblemList extends StatelessWidget {
                                 solutionCount: scrollController
                                     .problemList[index].solutionCount
                                     .toString(),
+                                holdColorCode: scrollController
+                                        .problemList[index].holdColorCode ??
+                                    '',
                               ),
                               const SizedBox(
                                 height: 30,
