@@ -166,8 +166,8 @@ class FirstAnswerController extends GetxController {
     tmp &= !(selectHoldColor.value == '');
     tmp &= !(selectGrade.value == '');
     tmp &= !(selectSector.value == '');
-    tmp &= !(videoController == null);
-
+    tmp &= !(thumbnailFile == null);
+    print(tmp);
     requiredSelect.value = tmp;
   }
 
