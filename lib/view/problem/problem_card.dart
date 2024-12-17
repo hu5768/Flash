@@ -2,6 +2,7 @@ import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/const/make_hold.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/answers/answers_carousell_page.dart';
+import 'package:flash/view/problem/hold_api_select_modal.dart';
 import 'package:flash/view/upload/admin_upload_web.dart';
 
 import 'package:flash/view/problem/answer_upload.dart'
@@ -157,6 +158,7 @@ class ProblemCard extends StatelessWidget {
                           width: 40,
                           height: 40,
                         ),
+                        HoldApiSelectModal(thisProblemId: id),
                         const SizedBox(
                           width: 30,
                         ),
