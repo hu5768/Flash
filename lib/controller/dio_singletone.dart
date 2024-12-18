@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flash/const/base_url.dart';
 
 class DioClient {
   late Dio _dio;
-  final String baseUrl = "https://api.climbing-answer.com";
-  final String baseUrlDev = "http://api.dev.climbing-answer.com";
+
   static final DioClient _instance = DioClient._internal();
 
   factory DioClient() {
@@ -13,7 +13,7 @@ class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: baseUrlDev,
+        baseUrl: apiServerUrl,
         connectTimeout: const Duration(milliseconds: 30000),
         receiveTimeout: const Duration(milliseconds: 30000),
         sendTimeout: const Duration(milliseconds: 30000),
