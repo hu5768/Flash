@@ -26,10 +26,8 @@ class SectorController extends GetxController {
       Response? respone;
       if (remoeCon.text == "") {
         respone = await DioClient().dio.post(
-              "/admin/gyms/${gymCon.text}/sectors",
+              "/admin/sectorInfos/${gymCon.text}/sectors",
               data: {
-                "name": secCon.text,
-                "adminName": adminCon.text,
                 "settingDate": settingCon.text,
               },
               options: Options(
@@ -40,10 +38,8 @@ class SectorController extends GetxController {
             );
       } else {
         respone = await DioClient().dio.post(
-              "/admin/gyms/${gymCon.text}/sectors",
+              "/admin/sectorInfos/${gymCon.text}/sectors",
               data: {
-                "name": secCon.text,
-                "adminName": adminCon.text,
                 "settingDate": settingCon.text,
                 "removalDate": remoeCon.text,
               },

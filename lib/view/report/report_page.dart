@@ -1,7 +1,9 @@
 import 'package:flash/const/Colors/color_group.dart';
 import 'package:flash/controller/login_controller.dart';
 import 'package:flash/controller/sector_controller.dart';
+import 'package:flash/controller/sector_info_list_controller.dart';
 import 'package:flash/controller/sector_list_controller.dart';
+import 'package:flash/view/sectors/sector_info_list.dart';
 import 'package:flash/view/sectors/sector_list.dart';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class ReportPage extends StatelessWidget {
 
   var sectorController = Get.put(SectorController());
   final sectorListController = Get.put(SectorListController());
+  final sectorInfoListController = Get.put(SectorInfoListController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +61,23 @@ class ReportPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SectorList(),
+                          builder: (context) => const SectorList(),
                         ),
                       );
                     },
                     child: const Text('섹터 보기'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await sectorInfoListController.newFetch();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SectorInfoList(),
+                        ),
+                      );
+                    },
+                    child: const Text('고정 섹터 보기'),
                   ),
                 ],
               ),
@@ -71,27 +86,7 @@ class ReportPage extends StatelessWidget {
                 controller: sectorController.gymCon,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'gym id',
-                  fillColor: Colors.white, // 배경색을 흰색으로 설정
-                  filled: true, // 배경색을 적용하도록 설정
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: sectorController.secCon,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '섹터명',
-                  fillColor: Colors.white, // 배경색을 흰색으로 설정
-                  filled: true, // 배경색을 적용하도록 설정
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: sectorController.adminCon,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'admin name',
+                  labelText: 'sector id',
                   fillColor: Colors.white, // 배경색을 흰색으로 설정
                   filled: true, // 배경색을 적용하도록 설정
                 ),
