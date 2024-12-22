@@ -34,6 +34,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
 
   @override
   void dispose() {
+    videoController?.dispose();
     super.dispose();
   }
 
