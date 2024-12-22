@@ -16,6 +16,6 @@ String makeHold(String colors) {
 </svg>
 ''';
 
-  if (colors == '') svgString = eventHoldString;
+  if (colors == 'event') svgString = eventHoldString;
   return svgString;
 }
