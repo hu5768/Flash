@@ -103,7 +103,7 @@ class _SelectThumnailState extends State<SelectThumnail> {
       thumbnailPath: tempPath, // 파일 저장 경로
     );
     if (filePath != null) {
-      firstAnswerController.thumbnailFile = File(filePath);
+      firstAnswerController.thumbnailFile = await File(filePath);
     }
   }
 

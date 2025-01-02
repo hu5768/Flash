@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/date_form.dart';
 import 'package:flash/controller/dio/my_gridview_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
 import 'package:flash/controller/dio/mypage_modify_controller.dart';
@@ -7,6 +8,7 @@ import 'package:flash/view/login/login_page.dart';
 import 'package:flash/view/mypage/my_grid_view.dart';
 import 'package:flash/view/mypage/my_modify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class Mypage extends StatefulWidget {
@@ -63,7 +65,7 @@ class _MypageState extends State<Mypage> {
                           Text(
                             mypageController.userModel.nickName ?? " ",
                             style: TextStyle(
-                              fontSize: 24.0,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
@@ -71,13 +73,14 @@ class _MypageState extends State<Mypage> {
                           Text(
                             '@' + mypageController.userModel.instagramId!,
                             style: TextStyle(
-                              fontSize: 16.0,
+                              fontSize: 14.0,
                               color: Colors.grey,
                             ),
                           ),
                         ],
                       ),
                       Spacer(),
+                      /*
                       TextButton(
                         onPressed: () async {
                           AnalyticsService.buttonClick(
@@ -113,50 +116,153 @@ class _MypageState extends State<Mypage> {
                           ),
                         ),
                       ),
+                    */
                     ],
                   ),
                   SizedBox(height: 16.0),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Expanded(
-                        child: InfoCard(
-                          label: '성별',
-                          value: mypageController.userModel.gender == ''
-                              ? '--'
-                              : mypageController.userModel.gender == 'MALE'
-                                  ? '남성'
-                                  : '여성',
-                          cm: false,
+                      if (mypageController.userModel.gender != '')
+                        Container(
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 238, 238, 238),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            mypageController.userModel.gender == 'MALE'
+                                ? Icons.male
+                                : Icons.female_outlined,
+                            color: const Color.fromARGB(255, 17, 17, 17),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: InfoCard(
-                          label: '키',
-                          value: mypageController.userModel.height == 0
-                              ? '--'
-                              : mypageController.userModel.height.toString(),
-                          cm: true,
+                      SizedBox(width: 4),
+                      if (mypageController.userModel.height != 0)
+                        Container(
+                          height: 32,
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 238, 238, 238),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/icon/height_icon.svg',
+                                colorFilter: ColorFilter.mode(
+                                  Color.fromARGB(255, 17, 17, 17),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                formatDouble(mypageController.userModel.height!)
+                                    .toString(),
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 17, 17, 17),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: InfoCard(
-                          label: '리치',
-                          value: mypageController.userModel.reach == 0
-                              ? '--'
-                              : mypageController.userModel.reach.toString(),
-                          cm: true,
+                      SizedBox(width: 4),
+                      if (mypageController.userModel.reach! != 0)
+                        Container(
+                          height: 32,
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 238, 238, 238),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/icon/width_icon.svg',
+                                colorFilter: ColorFilter.mode(
+                                  Color.fromARGB(255, 17, 17, 17),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                formatDouble(mypageController.userModel.reach!)
+                                    .toString(),
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 17, 17, 17),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Container(
+                        height: 32,
+                        padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 132, 0, 255),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '더클라임 23개 완등!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        mypageModifyController.fetchMemberData();
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyModify(),
+                          ),
+                        );
+                        //내 정보 다시 가져오기
+                        setState(() {});
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.fromLTRB(14, 9.5, 14, 9.5),
+                        side: BorderSide(
+                          width: 1,
+                          color: const Color.fromARGB(
+                            255,
+                            196,
+                            196,
+                            196,
+                          ),
+                        ),
+                        foregroundColor:
+                            const Color.fromARGB(255, 115, 115, 115),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      child: Text(
+                        '프로필 편집',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: const Color.fromARGB(255, 17, 17, 17),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Divider(
-              color: Color.fromRGBO(245, 245, 245, 1),
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),

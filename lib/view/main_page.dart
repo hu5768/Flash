@@ -10,9 +10,11 @@ import 'package:flash/firebase/firebase_event_button.dart';
 import 'package:flash/view/animations/main_page_tutorial.dart';
 import 'package:flash/view/centers/center_list_page.dart';
 import 'package:flash/view/modals/map_modal.dart';
+import 'package:flash/view/mypage/my_settings.dart';
 import 'package:flash/view/mypage/mypage.dart';
 import 'package:flash/view/problem/problem_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controller/dio/my_gridview_controller.dart';
@@ -223,16 +225,36 @@ class MyPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Container(
         child: Center(
-          child: Text(
-            '마이페이지',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(33, 33, 33, 1),
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 50),
+              Text(
+                '마이페이지',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(33, 33, 33, 1),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MySettings(),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/images/icon/setting_icon.svg',
+                ),
+              ),
+            ],
           ),
         ),
       ),
+      scrolledUnderElevation: 0,
       backgroundColor: ColorGroup.appbarBGC,
     );
   }
@@ -250,7 +272,7 @@ class ProblemAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      surfaceTintColor: ColorGroup.BGC, //스크롤시 바뀌는 색
+      scrolledUnderElevation: 0,
       backgroundColor: ColorGroup.appbarBGC,
       title: Container(
         padding: EdgeInsets.fromLTRB(24, 12, 24, 0),

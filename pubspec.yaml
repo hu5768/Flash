@@ -135,6 +135,7 @@ flutter:
     - assets/images/icon/comment_icon.svg
     - assets/images/icon/height_icon.svg
     - assets/images/icon/width_icon.svg
+    - assets/images/icon/setting_icon.svg
     - assets/images/emptyHodIcon.png
     - assets/images/empty_hold.svg
     - assets/images/empty_color.svg

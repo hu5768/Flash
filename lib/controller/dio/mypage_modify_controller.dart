@@ -16,6 +16,7 @@ class MypageModifyController extends GetxController {
   final mypageController = Get.put(MypageController());
 
   final TextEditingController modifyText = TextEditingController();
+  var toggleIndex = 0.obs;
   var genderTmp = ''.obs;
   RXUserModel rxUserModel = RXUserModel(
     nickName: '',

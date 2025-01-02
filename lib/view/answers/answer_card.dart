@@ -1,4 +1,5 @@
 import 'package:flash/const/Colors/color_group.dart';
+import 'package:flash/const/date_form.dart';
 import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/controller/dio/mypage_controller.dart';
@@ -419,8 +420,10 @@ class _AnswerCardState extends State<AnswerCard> {
                                   SvgPicture.asset(
                                     'assets/images/icon/height_icon.svg',
                                   ),
+                                  SizedBox(width: 5),
                                   Text(
-                                    widget.uploaderHeight.toString(),
+                                    formatDouble(widget.uploaderHeight)
+                                        .toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ],
@@ -441,8 +444,10 @@ class _AnswerCardState extends State<AnswerCard> {
                                   SvgPicture.asset(
                                     'assets/images/icon/width_icon.svg',
                                   ),
+                                  SizedBox(width: 5),
                                   Text(
-                                    widget.uploaderReach.toString(),
+                                    formatDouble(widget.uploaderReach)
+                                        .toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ],

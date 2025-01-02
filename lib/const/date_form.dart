@@ -17,3 +17,11 @@ String formatDateString(String dateString) {
 String formatDateDate(DateTime date) {
   return DateFormat('yyyy-MM-dd').format(date);
 }
+
+String formatDouble(double value) {
+  // 값이 정수인지 확인
+  if (value == value.toInt()) {
+    return value.toInt().toString(); // 정수로 변환 후 문자열 반환
+  }
+  return value.toString(); // 그대로 문자열로 반환
+}

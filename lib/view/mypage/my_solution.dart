@@ -1,6 +1,6 @@
 import 'package:flash/const/Colors/center_color.dart';
 import 'package:flash/const/Colors/color_group.dart';
-import 'package:flash/controller/date_form.dart';
+import 'package:flash/const/date_form.dart';
 import 'package:flash/controller/dio/comment_controller.dart';
 import 'package:flash/controller/dio/my_solution_detail_controller.dart';
 import 'package:flash/firebase/firebase_event_button.dart';
