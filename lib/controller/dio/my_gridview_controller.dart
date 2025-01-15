@@ -32,7 +32,7 @@ class MyGridviewController extends GetxController {
       DioClient().updateOptions(token: token.toString());
 
       response = await DioClient().dio.get(
-            "/solutions?size=6",
+            "/solutions?size=6?gymInfoId=1",
           );
       List<Map<String, dynamic>> resMapList =
           List<Map<String, dynamic>>.from(response.data["mySolutions"]);

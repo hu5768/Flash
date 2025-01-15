@@ -8,20 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyVideoCard extends StatelessWidget {
-  final int solutionId;
   final mySolutionDetailController = Get.put(MySolutionDetailController());
-  final String gymName,
-      sectorName,
-      difficultyName,
-      problemImageUrl,
-      uploadedAt,
-      profileUrl;
+  final String gymName, problemImageUrl, uploadedAt, profileUrl;
   MyVideoCard({
     super.key,
-    required this.solutionId,
     required this.gymName,
-    required this.sectorName,
-    required this.difficultyName,
     required this.problemImageUrl,
     required this.uploadedAt,
     required this.profileUrl,
@@ -30,24 +21,7 @@ class MyVideoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        AnalyticsService.buttonClick(
-          'MySolutionClick',
-          solutionId.toString(),
-          gymName,
-          difficultyName,
-        );
-        await mySolutionDetailController.fetchData(solutionId);
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MySolution(
-              solutionId: solutionId,
-              profileUrl: profileUrl,
-            ),
-          ),
-        );
-      },
+      onTap: () async {},
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
@@ -75,7 +49,7 @@ class MyVideoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$gymName $sectorName',
+                '$gymName ',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -107,8 +81,7 @@ class MyVideoCard extends StatelessWidget {
                           width: 15,
                           height: 15,
                           decoration: BoxDecoration(
-                            color:
-                                CenterColor.TheClimbColorList[difficultyName],
+                            color: CenterColor.TheClimbColorList['파랑'],
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: Colors.white, // 테두리 색상
@@ -117,10 +90,6 @@ class MyVideoCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 4),
-                        Text(
-                          difficultyName,
-                          style: TextStyle(color: ColorGroup.btnBGC),
-                        ),
                       ],
                     ),
                   ),

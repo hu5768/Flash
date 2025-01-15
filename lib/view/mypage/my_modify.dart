@@ -249,6 +249,79 @@ class AchievementsModify extends StatelessWidget {
           ],
         ),
         SizedBox(height: 8.0),
+        Row(
+          children: [
+            Container(
+              height: 32,
+              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color.fromARGB(255, 196, 196, 196),
+                ),
+                color: const Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  '이곳에 보여집니다.',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 196, 196, 196),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 4),
+          ],
+        ),
+        SizedBox(height: 40.0),
+        Column(
+          children: [
+            Row(
+              children: [],
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+        SizedBox(
+          height: 58,
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: () async {},
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.fromLTRB(14, 9.5, 14, 9.5),
+              side: BorderSide(
+                width: 1,
+                color: const Color.fromARGB(
+                  255,
+                  196,
+                  196,
+                  196,
+                ),
+              ),
+              foregroundColor: const Color.fromARGB(255, 115, 115, 115),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
+            child: Text(
+              '업적 추가',
+              style: TextStyle(
+                fontSize: 14,
+                color: const Color.fromARGB(255, 17, 17, 17),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          '· 내가 업로드한 문제의 난이도를 합산하여 표기합니다.\n· 업적은 최대 2개까지만 설정이 가능합니다.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 12,
+            color: const Color.fromARGB(255, 102, 102, 102),
+          ),
+        ),
       ],
     );
   }

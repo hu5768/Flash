@@ -1,45 +1,59 @@
 class MySolutionModel {
-  int? solutionId;
+  int? gymId;
   String? gymName;
-  String? sectorName;
-  String? difficultyName;
-  String? thumbnailImageUrl;
-  int? commentsCount;
+  List<Difficulties>? difficulties;
   String? solvedDate;
-  String? uploadedAt;
+  String? thumbnailImageUrl;
 
   MySolutionModel({
-    this.solutionId,
+    this.gymId,
     this.gymName,
-    this.sectorName,
-    this.difficultyName,
-    this.thumbnailImageUrl,
-    this.commentsCount,
+    this.difficulties,
     this.solvedDate,
-    this.uploadedAt,
+    this.thumbnailImageUrl,
   });
 
   MySolutionModel.fromJson(Map<String, dynamic> json) {
-    solutionId = json['solutionId'];
+    gymId = json['gymId'];
     gymName = json['gymName'];
-    sectorName = json['sectorName'];
-    difficultyName = json['difficultyName'];
-    thumbnailImageUrl = json['thumbnailImageUrl'];
-    commentsCount = json['commentsCount'];
+    if (json['difficulties'] != null) {
+      difficulties = <Difficulties>[];
+      json['difficulties'].forEach((v) {
+        difficulties!.add(new Difficulties.fromJson(v));
+      });
+    }
     solvedDate = json['solvedDate'];
-    uploadedAt = json['uploadedAt'];
+    thumbnailImageUrl = json['thumbnailImageUrl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['solutionId'] = this.solutionId;
+    data['gymId'] = this.gymId;
     data['gymName'] = this.gymName;
-    data['sectorName'] = this.sectorName;
-    data['difficultyName'] = this.difficultyName;
-    data['thumbnailImageUrl'] = this.thumbnailImageUrl;
-    data['commentsCount'] = this.commentsCount;
+    if (this.difficulties != null) {
+      data['difficulties'] = this.difficulties!.map((v) => v.toJson()).toList();
+    }
     data['solvedDate'] = this.solvedDate;
-    data['uploadedAt'] = this.uploadedAt;
+    data['thumbnailImageUrl'] = this.thumbnailImageUrl;
+    return data;
+  }
+}
+
+class Difficulties {
+  String? difficultyName;
+  int? count;
+
+  Difficulties({this.difficultyName, this.count});
+
+  Difficulties.fromJson(Map<String, dynamic> json) {
+    difficultyName = json['difficultyName'];
+    count = json['count'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['difficultyName'] = this.difficultyName;
+    data['count'] = this.count;
     return data;
   }
 }

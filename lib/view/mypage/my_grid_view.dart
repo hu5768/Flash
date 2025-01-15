@@ -27,14 +27,8 @@ class MyGridView extends StatelessWidget {
           itemCount: myGridviewController.solutionList.length,
           itemBuilder: (context, index) {
             return MyVideoCard(
-              solutionId: myGridviewController.solutionList[index].solutionId!,
               gymName:
                   myGridviewController.solutionList[index].gymName.toString(),
-              sectorName: myGridviewController.solutionList[index].sectorName
-                  .toString(),
-              difficultyName: myGridviewController
-                  .solutionList[index].difficultyName
-                  .toString(),
               problemImageUrl: myGridviewController
                   .solutionList[index].thumbnailImageUrl
                   .toString(),
