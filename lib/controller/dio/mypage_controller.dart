@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flash/const/data.dart';
+import 'package:flash/controller/dio/achievements_controller.dart';
 import 'package:flash/controller/dio/problem_list_controller.dart';
 import 'package:flash/model/user_model.dart';
 import 'package:flash/view/login/login_page.dart';
@@ -10,6 +11,7 @@ import 'package:dio/dio.dart' as dios;
 
 class MypageController extends GetxController {
   final problemListController = Get.put(ProblemListController());
+  final achievementsController = Get.put(AchievementsController());
   var userModel = UserModel(
     nickName: '',
     instagramId: '',
@@ -59,6 +61,7 @@ class MypageController extends GetxController {
   }
 
   Future<void> fetchMemberData(context) async {
+    achievementsController.fetchData();
     //유저 정보 받아오기
     dios.Response response;
     final token = await storage.read(key: ACCESS_TOKEN_KEY);

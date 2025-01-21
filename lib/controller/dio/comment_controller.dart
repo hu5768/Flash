@@ -133,7 +133,7 @@ class CommentController extends GetxController {
     } catch (e) {
       if (e is DioException) {
         if (e.response != null) {
-          print('마이페이지 첫 해설 데이터 로딩 실패DioError: ${e.response?.statusCode}');
+          print(' 댓글  로딩 실패DioError: ${e.response?.statusCode}');
           print('Error Response Data: ${e.response?.data}');
         } else {
           print('Error: ${e.message}');

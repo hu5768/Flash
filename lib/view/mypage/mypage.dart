@@ -264,6 +264,9 @@ class _MypageState extends State<Mypage> {
                 ],
               ),
             ),
+            Column(
+              children: [],
+            ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: MyGridView(
